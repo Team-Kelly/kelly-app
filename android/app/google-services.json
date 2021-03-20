@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "984107876879",
+    "project_id": "push-notification-exam-2c27d",
+    "storage_bucket": "push-notification-exam-2c27d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:984107876879:android:e13ddf042db569c4aed97a",
+        "android_client_info": {
+          "package_name": "com.kelly.kelly_proto"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "984107876879-3nq2aumig83jaleb56v7n22qrfcuknne.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBi6uxLMTkAILWg_j2hgViTqZb8-2Z2XGw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "984107876879-3nq2aumig83jaleb56v7n22qrfcuknne.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
