@@ -12,7 +12,9 @@ class AppNoti implements Noti {
       'id', 'notiTitle', 'notiDesc',
       importance: Importance.max, priority: Priority.max); //안드로이드 설정
   IOSNotificationDetails ios = IOSNotificationDetails(); //IOS 설정
+
   NotificationDetails detail;
+
 
   static Future<void> backInit(RemoteMessage message) async {
     await Firebase.initializeApp(); //flutterfire 초기화
@@ -58,10 +60,12 @@ class AppNoti implements Noti {
         return;
       }).then((_) async {
         await Firebase.initializeApp();
+
         FirebaseMessaging?.onBackgroundMessage(AppNoti.backInit);
         RemoteMessage r = await FirebaseMessaging.instance.getInitialMessage();
+
         print("INIT r : ${r ?? 'r'}");
-        String /*?*/ token = await FirebaseMessaging.instance.getToken();
+        String token = await FirebaseMessaging.instance.getToken();
         print("token : ${token ?? 'token NULL!'}");
         if (Platform.isIOS) {
           await FirebaseMessaging.instance

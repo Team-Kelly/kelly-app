@@ -15,6 +15,7 @@ class Kelly extends StatefulWidget {
 
 class _KellyState extends State<Kelly> {
   appNoti.Noti noti = appNoti.AppNoti();
+  
   String appToken = ' ';
   String timeSet = TimeOfDay.now().toString()[10] +
       TimeOfDay.now().toString()[11] +
