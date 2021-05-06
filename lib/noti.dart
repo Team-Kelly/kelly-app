@@ -12,7 +12,9 @@ class AppNoti implements Noti {
       'id', 'notiTitle', 'notiDesc',
       importance: Importance.max, priority: Priority.max); //안드로이드 설정
   IOSNotificationDetails ios = IOSNotificationDetails(); //IOS 설정
-  NotificationDetails /*?*/ detail;
+
+  NotificationDetails detail;
+
 
   static Future<void> backInit(RemoteMessage message) async {
     await Firebase.initializeApp(); //flutterfire 초기화
@@ -58,11 +60,12 @@ class AppNoti implements Noti {
         return;
       }).then((_) async {
         await Firebase.initializeApp();
-        FirebaseMessaging.onBackgroundMessage(AppNoti.backInit);
-        RemoteMessage /*?*/ r =
-            await FirebaseMessaging.instance.getInitialMessage();
+
+        FirebaseMessaging?.onBackgroundMessage(AppNoti.backInit);
+        RemoteMessage r = await FirebaseMessaging.instance.getInitialMessage();
+
         print("INIT r : ${r ?? 'r'}");
-        String /*?*/ token = await FirebaseMessaging.instance.getToken();
+        String token = await FirebaseMessaging.instance.getToken();
         print("token : ${token ?? 'token NULL!'}");
         if (Platform.isIOS) {
           await FirebaseMessaging.instance
@@ -74,8 +77,8 @@ class AppNoti implements Noti {
         }
 
         FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-          RemoteNotification /*?*/ notification = message.notification;
-          AndroidNotification /*?*/ android = message.notification?.android;
+          RemoteNotification notification = message.notification;
+          AndroidNotification android = message.notification?.android;
           if (notification != null && android != null) {
             flutterLocalNotificationsPlugin.show(notification.hashCode,
                 notification.title, notification.body, detail);
@@ -89,7 +92,7 @@ class AppNoti implements Noti {
   @override
   Future<void> show() async => this
       .flutterLocalNotificationsPlugin
-      .show(1, "p title", "p body", this.detail);
+      .show(1, "Alarm title", "Alarm contents", this.detail);
 }
 
 abstract class Noti {

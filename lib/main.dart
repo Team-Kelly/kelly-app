@@ -1,5 +1,6 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'noti.dart' as appNoti;
 import 'calling.dart';
 
@@ -14,6 +15,8 @@ class Kelly extends StatefulWidget {
 
 class _KellyState extends State<Kelly> {
   appNoti.Noti noti = appNoti.AppNoti();
+  
+  String appToken = ' ';
   String timeSet = TimeOfDay.now().toString()[10] +
       TimeOfDay.now().toString()[11] +
       TimeOfDay.now().toString()[12] +
@@ -35,6 +38,16 @@ class _KellyState extends State<Kelly> {
     });
   }
 
+  void toastMessage() {
+    Fluttertoast.showToast(
+        msg: "알람이 설정되었습니다.",
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.grey[600],
+        fontSize: 10,
+        textColor: Colors.white,
+        toastLength: Toast.LENGTH_SHORT);
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
@@ -45,37 +58,32 @@ class _KellyState extends State<Kelly> {
           backgroundColor: Colors.white,
         ),
         body: Center(
-          child: Column(
-            children: [
-              TextButton(
-                child: Text("Local Notifications Show!"),
-                onPressed: () async => await noti.show(),
-              ),
-              ElevatedButton(
-                onPressed: () {
-                  setTime();
-                },
-                child:
-                    Text("Select time", style: TextStyle(color: Colors.black)),
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                ),
-              ),
-              Text("$timeSet"),
-              ElevatedButton(
-                onPressed: () async {
-                  String appToken = await FirebaseMessaging.instance.getToken();
-                  updateAlarm(timeSet, appToken);
-                },
-                child: Text("Send FCM", style: TextStyle(color: Colors.black)),
-                style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                ),
-              ),
-            ],
+            child:
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+          TextButton(
+            child: Text("Local Notifications Show!"),
+            onPressed: () async => await noti.show(),
           ),
-        ),
+          ElevatedButton(
+              onPressed: () {
+                setTime();
+              },
+              child: Text("Select time", style: TextStyle(color: Colors.black)),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white))),
+          Text("$timeSet"),
+          ElevatedButton(
+            onPressed: () async {
+              String appToken = await FirebaseMessaging.instance.getToken();
+              createAlarm(timeSet, appToken);
+              toastMessage();
+            },
+            child: Text("save alarm", style: TextStyle(color: Colors.black)),
+            style: ButtonStyle(
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.white)),
+          ),
+        ])),
       );
 }
