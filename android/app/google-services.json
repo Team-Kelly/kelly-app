@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "984107876879",
-    "project_id": "push-notification-exam-2c27d",
-    "storage_bucket": "push-notification-exam-2c27d.appspot.com"
+    "project_number": "1097750727509",
+    "project_id": "team-kelly",
+    "storage_bucket": "team-kelly.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:984107876879:android:e13ddf042db569c4aed97a",
+        "mobilesdk_app_id": "1:1097750727509:android:dfeae98467d01cd5f73ddc",
         "android_client_info": {
-          "package_name": "com.kelly.kelly_proto"
+          "package_name": "com.kelly.kelly"
         }
       },
       "oauth_client": [
         {
-          "client_id": "984107876879-3nq2aumig83jaleb56v7n22qrfcuknne.apps.googleusercontent.com",
+          "client_id": "1097750727509-kpbjpekul0tamsv4ns6f44fj4bop3512.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBi6uxLMTkAILWg_j2hgViTqZb8-2Z2XGw"
+          "current_key": "AIzaSyD5uA-sAl_AxJD0MoYZexj9uvzdMtinMTU"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "984107876879-3nq2aumig83jaleb56v7n22qrfcuknne.apps.googleusercontent.com",
+              "client_id": "1097750727509-kpbjpekul0tamsv4ns6f44fj4bop3512.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
