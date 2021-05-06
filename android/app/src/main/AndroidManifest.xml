@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.kelly.kelly">
-   <application android:usesCleartextTraffic="true"
+   <application 
+        android:usesCleartextTraffic="true"
         android:label="kelly"
         android:icon="@mipmap/ic_launcher">
         <activity
@@ -41,12 +42,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
-        <service
-            android:name=".java.MyFirebaseMessagingService"
+        <!-- <service
+            android:name=".service.MyFirebaseMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
-        </service>
+        </service> -->
     </application>
 </manifest>
