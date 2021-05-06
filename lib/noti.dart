@@ -6,13 +6,13 @@ import 'package:permission_handler/permission_handler.dart';
 
 class AppNoti implements Noti {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();  //localNoti 생성자 호출
+      FlutterLocalNotificationsPlugin(); //localNoti 생성자 호출
 
   AndroidNotificationDetails android = AndroidNotificationDetails(
       'id', 'notiTitle', 'notiDesc',
-      importance: Importance.max, priority: Priority.max);  //안드로이드 설정
-  IOSNotificationDetails ios = IOSNotificationDetails();  //IOS 설정
-  NotificationDetails/*?*/ detail;
+      importance: Importance.max, priority: Priority.max); //안드로이드 설정
+  IOSNotificationDetails ios = IOSNotificationDetails(); //IOS 설정
+  NotificationDetails /*?*/ detail;
 
   static Future<void> backInit(RemoteMessage message) async {
     await Firebase.initializeApp(); //flutterfire 초기화
@@ -22,25 +22,24 @@ class AppNoti implements Noti {
 
   @override
   Future<bool> init() async => await Future(() async {
-        PermissionStatus status = await Permission.notification.request();  //noti에 대한 권한 요청
+        PermissionStatus status =
+            await Permission.notification.request(); //noti에 대한 권한 요청
         while (status.isDenied) {
           status = await Permission.notification.request();
           await openAppSettings();
         } //권한 요청이 거절될 경우
-        if(Platform.isIOS){
-          
-        }
+        if (Platform.isIOS) {}
         AndroidInitializationSettings initSettingsAndroid =
-            AndroidInitializationSettings('app_icon');  //안드로이드 초기 세팅 설정
+            AndroidInitializationSettings('app_icon'); //안드로이드 초기 세팅 설정
         IOSInitializationSettings initSettingsIOS = IOSInitializationSettings(
           requestSoundPermission: true,
           requestBadgePermission: true,
           requestAlertPermission: true,
-        );  //IOS 초기 세팅 설정
+        ); //IOS 초기 세팅 설정
         InitializationSettings initSettings = InitializationSettings(
           android: initSettingsAndroid,
           iOS: initSettingsIOS,
-        );  //OS별 초기 세팅 진행
+        ); //OS별 초기 세팅 진행
         flutterLocalNotificationsPlugin.initialize(initSettings);
         detail = NotificationDetails(android: android, iOS: ios);
         await flutterLocalNotificationsPlugin
@@ -59,7 +58,7 @@ class AppNoti implements Noti {
         return;
       }).then((_) async {
         await Firebase.initializeApp();
-        FirebaseMessaging?.onBackgroundMessage(AppNoti.backInit);
+        FirebaseMessaging.onBackgroundMessage(AppNoti.backInit);
         RemoteMessage /*?*/ r =
             await FirebaseMessaging.instance.getInitialMessage();
         print("INIT r : ${r ?? 'r'}");

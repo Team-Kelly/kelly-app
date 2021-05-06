@@ -1,6 +1,6 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'noti.dart' as appNoti;
-import 'noti.dart';
 import 'calling.dart';
 
 void main() => runApp(MaterialApp(
@@ -13,7 +13,7 @@ class Kelly extends StatefulWidget {
 }
 
 class _KellyState extends State<Kelly> {
-  Noti noti = appNoti.AppNoti();
+  appNoti.Noti noti = appNoti.AppNoti();
   String timeSet = TimeOfDay.now().toString()[10] +
       TimeOfDay.now().toString()[11] +
       TimeOfDay.now().toString()[12] +
@@ -45,20 +45,37 @@ class _KellyState extends State<Kelly> {
           backgroundColor: Colors.white,
         ),
         body: Center(
-            child: Column(children: [
-          TextButton(
-            child: Text("Local Notifications Show!"),
-            onPressed: () async => await noti.show(),
-          ),
-          ElevatedButton(
-              onPressed: () {
-                setTime();
-              },
-              child: Text("Select time", style: TextStyle(color: Colors.black)),
-              style: ButtonStyle(
+          child: Column(
+            children: [
+              TextButton(
+                child: Text("Local Notifications Show!"),
+                onPressed: () async => await noti.show(),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  setTime();
+                },
+                child:
+                    Text("Select time", style: TextStyle(color: Colors.black)),
+                style: ButtonStyle(
                   backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white))),
-                      Text("$timeSet"),
-        ])),
+                      MaterialStateProperty.all<Color>(Colors.white),
+                ),
+              ),
+              Text("$timeSet"),
+              ElevatedButton(
+                onPressed: () async {
+                  String appToken = await FirebaseMessaging.instance.getToken();
+                  updateAlarm(timeSet, appToken);
+                },
+                child: Text("Send FCM", style: TextStyle(color: Colors.black)),
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white),
+                ),
+              ),
+            ],
+          ),
+        ),
       );
 }
