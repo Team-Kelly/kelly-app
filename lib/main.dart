@@ -15,7 +15,6 @@ class Kelly extends StatefulWidget {
 
 class _KellyState extends State<Kelly> {
   appNoti.Noti noti = appNoti.AppNoti();
-  
   String appToken = ' ';
   String timeSet = TimeOfDay.now().toString()[10] +
       TimeOfDay.now().toString()[11] +
@@ -64,6 +63,7 @@ class _KellyState extends State<Kelly> {
             child: Text("Local Notifications Show!"),
             onPressed: () async => await noti.show(),
           ),
+          Text("$timeSet"),
           ElevatedButton(
               onPressed: () {
                 setTime();
@@ -72,7 +72,6 @@ class _KellyState extends State<Kelly> {
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.white))),
-          Text("$timeSet"),
           ElevatedButton(
             onPressed: () async {
               String appToken = await FirebaseMessaging.instance.getToken();

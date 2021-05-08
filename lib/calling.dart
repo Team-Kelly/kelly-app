@@ -2,10 +2,9 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-
 Future<Alarm> createAlarm(String timer, String appToken) async {
   final http.Response response = await http.post(
-    Uri.parse('http://kelly.doky.space:8081/test'),
+    Uri.parse('http://222.112.225.80:8081/test'),
     headers: <String, String>{
       'Content-Type': 'application/json',
     },
@@ -14,7 +13,6 @@ Future<Alarm> createAlarm(String timer, String appToken) async {
       "appToken":appToken
     }), //jsonEncode로 서버에 추가할 json파일 생성 후 post
   );
-
 
   if (response.statusCode == 200) {
     return Alarm.fromJson(jsonDecode(response.body));
@@ -35,4 +33,4 @@ class Alarm {
       appToken: json['appToken'],
     );
   } //json파일로부터 값을 전달받아 클래스에 저장
-} //알람 정보를 저장할 클래스,
+} //알람 정보를 저장하는 클래스
