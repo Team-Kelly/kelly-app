@@ -16,6 +16,10 @@ class Kelly extends StatefulWidget {
 class _KellyState extends State<Kelly> {
   appNoti.Noti noti = appNoti.AppNoti();
   String appToken = ' ';
+  int hourSet = int.parse(
+      TimeOfDay.now().toString()[10] + TimeOfDay.now().toString()[11]);
+  int minuteSet = int.parse(
+      TimeOfDay.now().toString()[13] + TimeOfDay.now().toString()[14]);
   String timeSet = TimeOfDay.now().toString()[10] +
       TimeOfDay.now().toString()[11] +
       TimeOfDay.now().toString()[12] +
@@ -33,6 +37,8 @@ class _KellyState extends State<Kelly> {
     selectedTime.then((timeOfDay) {
       setState(() {
         timeSet = '${timeOfDay.hour}:${timeOfDay.minute}';
+        hourSet = timeOfDay.hour;
+        minuteSet = timeOfDay.minute;
       });
     });
   }
@@ -59,11 +65,17 @@ class _KellyState extends State<Kelly> {
         body: Center(
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-          TextButton(
-            child: Text("Local Notifications Show!"),
-            onPressed: () async => await noti.show(),
-          ),
           Text("$timeSet"),
+          ElevatedButton(
+              onPressed: () async {
+                await noti.alert(hourSet, minuteSet);
+                toastMessage();
+              },
+              child: Text("Local Notification",
+                  style: TextStyle(color: Colors.black)),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white))),
           ElevatedButton(
               onPressed: () {
                 setTime();
@@ -73,16 +85,15 @@ class _KellyState extends State<Kelly> {
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.white))),
           ElevatedButton(
-            onPressed: () async {
-              String appToken = await FirebaseMessaging.instance.getToken();
-              createAlarm(timeSet, appToken);
-              toastMessage();
-            },
-            child: Text("save alarm", style: TextStyle(color: Colors.black)),
-            style: ButtonStyle(
-                backgroundColor:
-                    MaterialStateProperty.all<Color>(Colors.white)),
-          ),
+              onPressed: () async {
+                String appToken = await FirebaseMessaging.instance.getToken();
+                createAlarm(timeSet, appToken);
+                toastMessage();
+              },
+              child: Text("save alarm", style: TextStyle(color: Colors.black)),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.white))),
         ])),
       );
 }

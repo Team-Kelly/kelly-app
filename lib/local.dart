@@ -12,21 +12,19 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Notification Demo'),
+      home: MyHomePage(),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  final String title;
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  
   FlutterLocalNotificationsPlugin  _flutterLocalNotificationsPlugin;
 
   @override
@@ -57,14 +55,14 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.title),
+        title: Text('local noti exam'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             ElevatedButton(
-              onPressed: _showNotification,
+              onPressed: showNotification,
               child: Text('Show Notification'),
             ),
             ElevatedButton(
@@ -87,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
   
   //기본 Notification
-  Future<void> _showNotification() async {
+  Future<void> showNotification() async {
     var android = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
         importance: Importance.max, priority: Priority.high);
@@ -97,8 +95,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     await _flutterLocalNotificationsPlugin.show(
       0,
-      '단일 Notification',
-      '단일 Notification 내용',
+      '날씨 정보',
+      '알아서 찾아보세요ㅋ',
       detail,
       payload: 'Hello Flutter',
     );
@@ -106,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   //지정 Notification
   Future<void> _dailyAtTimeNotification() async {
-    var time = Time(19, 30, 0);
+    var time = Time(2, 6, 0);
 
     var android = AndroidNotificationDetails(
         'your channel id', 'your channel name', 'your channel description',
