@@ -90,7 +90,7 @@ class _KellyState extends State<Kelly> {
                 createAlarm(timeSet, appToken);
                 toastMessage();
               },
-              child: Text("save alarm", style: TextStyle(color: Colors.black)),
+              child: Text("Save alarm", style: TextStyle(color: Colors.black)),
               style: ButtonStyle(
                   backgroundColor:
                       MaterialStateProperty.all<Color>(Colors.white))),
