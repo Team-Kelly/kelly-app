@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'noti.dart' as appNoti;
-import 'calling.dart' as call;
 
 void main() => runApp(MaterialApp(
       home: Kelly(),
@@ -65,6 +64,102 @@ class _KellyState extends State<Kelly> {
         toastLength: Toast.LENGTH_SHORT);
   } //notification을 요청하는 버튼 onPressed일 때 메시지 출력
 
+  void setWeatherInfo() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          title: Column(
+            children: <Widget>[
+              Text('날씨 정보 설정'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(hintText: '지역명을 입력하세요'),
+                onChanged: (value) {
+                  setState(() {
+                    location = value;
+                  });
+                },
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('저장'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void setBusInfo() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          title: Column(
+            children: <Widget>[
+              Text('버스 정보 설정'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(hintText: '노선번호를 입력하세요'),
+                onChanged: (value) {
+                  setState(() {
+                    routeID = value;
+                  });
+                },
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: '정류장번호를 입력하세요'),
+                onChanged: (value) {
+                  setState(() {
+                    busStationID = value;
+                  });
+                },
+              ),
+              TextField(
+                decoration: InputDecoration(hintText: '정류장 방향을 입력하세요'),
+                onChanged: (value) {
+                  setState(() {
+                    direction = value;
+                  });
+                },
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('저장'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
@@ -88,7 +183,7 @@ class _KellyState extends State<Kelly> {
                     child: Card(
                         elevation: 2,
                         child: Text(
-                          '\n$selectedInfo | $location | $timeSet',
+                          '\n$selectedInfo | $timeSet',
                           style: TextStyle(fontSize: 20),
                           textAlign: TextAlign.center,
                         ))), // 현재 설정된 알람의 정보를 card에 표시
@@ -108,27 +203,29 @@ class _KellyState extends State<Kelly> {
                     },
                   ),
                 ),
-                Container(
-                    width: 160,
-                    child: TextField(
-                      decoration: InputDecoration(hintText: '지역명을 입력하세요'),
-                      onChanged: (value) {
-                        setState(() {
-                          location = value;
-                        });
-                      },
-                    )),
+                ElevatedButton(
+                    onPressed: () {
+                      if (selectedInfo == '날씨 정보') {
+                        setWeatherInfo();
+                      } else if (selectedInfo == '버스 정보') {
+                        setBusInfo();
+                      }
+                    },
+                    child: Text("Set infomation",
+                        style: TextStyle(color: Colors.black)),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white))),
                 ElevatedButton(
                     onPressed: () async {
-                      if(selectedInfo == '날씨 정보'){
+                      if (selectedInfo == '날씨 정보') {
                         await noti.weatherAlert(
-                          notiID, hourSet, minuteSet, selectedInfo, location);
+                            notiID, hourSet, minuteSet, selectedInfo, location);
+                      } else if (selectedInfo == '버스 정보') {
+                        await noti.busAlert(notiID, hourSet, minuteSet,
+                            selectedInfo, routeID, busStationID, direction);
                       }
-                      else if(selectedInfo == '버스 정보'){
-                        await noti.busAlert(
-                          notiID, hourSet, minuteSet, selectedInfo, routeID, busStationID, direction);
-                      }
-                      
+
                       toastMessage();
                       notiID++;
                     },
