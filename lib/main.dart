@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:workmanager/workmanager.dart';
 import 'noti.dart' as appNoti;
 
-void main() => runApp(MaterialApp(
-      home: Kelly(),
-    ));
+void main() {
+  Workmanager().initialize(appNoti.callbackDispatcher, isInDebugMode: true);
+  runApp(MaterialApp(
+    home: Kelly(),
+  ));
+}
 
 class Kelly extends StatefulWidget {
   @override
@@ -13,17 +19,27 @@ class Kelly extends StatefulWidget {
 
 class _KellyState extends State<Kelly> {
   appNoti.Noti noti = appNoti.AppNoti();
+  FlutterTts tts = FlutterTts();
 
-  List infoList = ['날씨 정보', '버스 정보', '지하철 정보', '주식 시세 정보', '암호화폐 시세 정보'];
+  List infoList = [
+    '날씨 정보',
+    '버스 정보',
+    '지하철 정보',
+    '주식 시세 정보',
+    '암호화폐 시세 정보',
+    '음성메시지'
+  ];
   //dropdown메뉴의 요소들 선언 및 초기화
   int notiID = 1;
   String selectedInfo = '날씨 정보';
+  //알람 기본정보에 관한 parameter 선언 및 초기화
   String location = '서울';
   //날시정보 호출에 필요한 parameter 선언 및 초기화
   String routeID = '100100148';
   String busStationID = '11283';
   String direction = '월계동';
   //버스정보 호출에 필요한 parameter 선언 및 초기화
+  String ttsText = '';
   int hourSet = int.parse(
       TimeOfDay.now().toString()[10] + TimeOfDay.now().toString()[11]);
   int minuteSet = int.parse(
@@ -35,6 +51,8 @@ class _KellyState extends State<Kelly> {
       TimeOfDay.now().toString()[13] +
       TimeOfDay.now().toString()[14];
   //timepicker에서의 시간 호출에 필요한 parameter 선언 및 초기화
+  DateTime cupertinoTime;
+
   @override
   void initState() {
     Future(noti.init);
@@ -53,6 +71,39 @@ class _KellyState extends State<Kelly> {
       });
     });
   } //timepicker로 시간 설정
+
+  void cupertinoSet(ctx) {
+    showCupertinoModalPopup(
+        context: ctx,
+        builder: (_) => Container(
+              height: 500,
+              color: Color.fromARGB(255, 255, 255, 255),
+              child: Column(
+                children: [
+                  Container(
+                    height: 400,
+                    child: CupertinoDatePicker(
+                        mode: CupertinoDatePickerMode.time,
+                        initialDateTime: DateTime.now(),
+                        onDateTimeChanged: (val) {
+                          setState(() {
+                            cupertinoTime = val;
+                            timeSet = '${val.hour}:${val.minute}';
+                            hourSet = val.hour;
+                            minuteSet = val.minute;
+                          });
+                        }),
+                  ),
+
+                  // Close the modal
+                  CupertinoButton(
+                    child: Text('OK'),
+                    onPressed: () => Navigator.of(ctx).pop(),
+                  )
+                ],
+              ),
+            ));
+  }
 
   void toastMessage() {
     Fluttertoast.showToast(
@@ -160,6 +211,46 @@ class _KellyState extends State<Kelly> {
     );
   }
 
+  void setTextInfo() {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          title: Column(
+            children: <Widget>[
+              Text('음성메시지 설정'),
+            ],
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              TextField(
+                decoration: InputDecoration(hintText: '음성메시지를 입력하세요'),
+                onChanged: (value) {
+                  setState(() {
+                    ttsText = value;
+                  });
+                },
+              ),
+            ],
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('저장'),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
@@ -169,6 +260,13 @@ class _KellyState extends State<Kelly> {
         ),
         backgroundColor: Colors.white,
       ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   selectedItemColor: Colors.black,
+      //   items: [
+      //     BottomNavigationBarItem(label: 'HOME', icon: Icon(Icons.home)),
+      //     BottomNavigationBarItem(label: 'ADD', icon: Icon(Icons.add_alarm))
+      //   ],
+      // ),
       body: ListView(
         scrollDirection: Axis.vertical,
         children: [
@@ -209,6 +307,8 @@ class _KellyState extends State<Kelly> {
                         setWeatherInfo();
                       } else if (selectedInfo == '버스 정보') {
                         setBusInfo();
+                      } else if (selectedInfo == '음성메시지') {
+                        setTextInfo();
                       }
                     },
                     child: Text("Set infomation",
@@ -216,6 +316,7 @@ class _KellyState extends State<Kelly> {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.white))),
+
                 ElevatedButton(
                     onPressed: () async {
                       if (selectedInfo == '날씨 정보') {
@@ -224,8 +325,10 @@ class _KellyState extends State<Kelly> {
                       } else if (selectedInfo == '버스 정보') {
                         await noti.busAlert(notiID, hourSet, minuteSet,
                             selectedInfo, routeID, busStationID, direction);
+                      } else if (selectedInfo == '음성메시지') {
+                        //AudioServiceBackground.run(()=>TextPlayerTask());
+                        tts.speak(ttsText);
                       }
-
                       toastMessage();
                       notiID++;
                     },
@@ -234,11 +337,22 @@ class _KellyState extends State<Kelly> {
                     style: ButtonStyle(
                         backgroundColor:
                             MaterialStateProperty.all<Color>(Colors.white))),
+
                 ElevatedButton(
                     onPressed: () {
                       setTime();
                     },
-                    child: Text("Select time",
+                    child: Text("Select Android time",
+                        style: TextStyle(color: Colors.black)),
+                    style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all<Color>(Colors.white))),
+                Text('$cupertinoTime'),
+                ElevatedButton(
+                    onPressed: () {
+                      cupertinoSet(context);
+                    },
+                    child: Text("Select Cupertino time",
                         style: TextStyle(color: Colors.black)),
                     style: ButtonStyle(
                         backgroundColor:

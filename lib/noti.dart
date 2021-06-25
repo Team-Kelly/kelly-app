@@ -1,9 +1,20 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:workmanager/workmanager.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'calling.dart' as call;
+import 'package:flutter_tts/flutter_tts.dart';
 import 'calling.dart';
+
+
+FlutterTts tts = FlutterTts();
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) {
+     //simpleTask will be emitted here.
+    tts.speak('$inputData');
+    return Future.value(true);
+  });
+}
 
 class AppNoti implements Noti {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -14,7 +25,7 @@ class AppNoti implements Noti {
       importance: Importance.max,
       priority: Priority.max,
       styleInformation: BigTextStyleInformation(
-          '날씨도\n좋은데\n집에서\n과제나\n해야지\nㅠㅠㅠ')); //안드로이드 세부설정에 관한 생성자 호출
+          'n\nu\nl\nl\n!\n')); //안드로이드 세부설정에 관한 생성자 호출
   IOSNotificationDetails ios = IOSNotificationDetails(); //IOS 세부설정에 관한 생성자 호출
 
   NotificationDetails detail; //플랫폼 별 세부설정에 관한 변수 선언
@@ -53,7 +64,7 @@ class AppNoti implements Noti {
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate =
         tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-    WeatherAlarm weatherAlarm = await call.fetchWeather(location);
+    WeatherAlarm weatherAlarm = await fetchWeather(location);
     await this.flutterLocalNotificationsPlugin.zonedSchedule(
         id,
         "$info",
@@ -65,6 +76,7 @@ class AppNoti implements Noti {
             UILocalNotificationDateInterpretation.absoluteTime
         //표준시간대 기준 or 기기 내의 사간 기준인지 설정
         );
+tts.speak('${weatherAlarm.currentTemper}');
   }
 
   Future<void> busAlert(id, hour, minute, info, routeID, busStationID, direction) async {
@@ -73,7 +85,7 @@ class AppNoti implements Noti {
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate =
         tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-    BusAlarm busAlarm = await call.fetchBus(routeID, busStationID, direction);
+    BusAlarm busAlarm = await fetchBus(routeID, busStationID, direction);
     await this.flutterLocalNotificationsPlugin.zonedSchedule(
         id,
         "$info",
@@ -95,3 +107,5 @@ abstract class Noti {
   Future<void> weatherAlert(id, hour, minute, info, location);
   Future<void> busAlert(id, hour, minute, info, routeID, busStationID, direction);
 }
+
+//full screen alert : https://medium.com/android-news/full-screen-intent-notifications-android-85ea2f5b5dc1
