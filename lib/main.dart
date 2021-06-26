@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:workmanager/workmanager.dart';
 import 'noti.dart' as appNoti;
 
 void main() {
-  Workmanager().initialize(appNoti.callbackDispatcher, isInDebugMode: true);
   runApp(MaterialApp(
     home: Kelly(),
   ));
@@ -58,6 +56,10 @@ class _KellyState extends State<Kelly> {
     Future(noti.init);
     //notification에 대한 권한요청과 초기설정
     super.initState();
+  }
+
+  void soundSet(String path){
+
   }
 
   void setTime() {

@@ -1,32 +1,26 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:workmanager/workmanager.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'calling.dart';
 
-
 FlutterTts tts = FlutterTts();
-void callbackDispatcher() {
-  Workmanager().executeTask((task, inputData) {
-     //simpleTask will be emitted here.
-    tts.speak('$inputData');
-    return Future.value(true);
-  });
-}
 
 class AppNoti implements Noti {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin(); //localNoti 생성자 호출
 
   AndroidNotificationDetails android = AndroidNotificationDetails(
-      'id', 'notiTitle', 'notiDesc',
+      'id', 'notiChannel', 'notiDesc',
       importance: Importance.max,
       priority: Priority.max,
-      styleInformation: BigTextStyleInformation(
-          'n\nu\nl\nl\n!\n')); //안드로이드 세부설정에 관한 생성자 호출
-  IOSNotificationDetails ios = IOSNotificationDetails(); //IOS 세부설정에 관한 생성자 호출
+      playSound: true,
+      sound: RawResourceAndroidNotificationSound('slackhi'),
+      styleInformation:
+          BigTextStyleInformation('n\nu\nl\nl\n!\n')); //안드로이드 세부설정에 관한 생성자 호출
+  IOSNotificationDetails ios =
+      IOSNotificationDetails(sound: 'slackhi'); //IOS 세부설정에 관한 생성자 호출
 
   NotificationDetails detail; //플랫폼 별 세부설정에 관한 변수 선언
 
@@ -60,26 +54,40 @@ class AppNoti implements Noti {
 
   Future<void> weatherAlert(id, hour, minute, info, location) async {
     tz.initializeTimeZones();
+
+    //tts.synthesizeToFile('${(await fetchWeather(location)).currentTemper}', fileName)
+    
     tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
     final now = tz.TZDateTime.now(tz.local);
     var scheduledDate =
         tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
     WeatherAlarm weatherAlarm = await fetchWeather(location);
+
     await this.flutterLocalNotificationsPlugin.zonedSchedule(
         id,
         "$info",
-        "현재 온도 : ${weatherAlarm.currentTemper}\n최고 기온 : ${weatherAlarm.maxTemper}\n최저 기온 : ${weatherAlarm.minTemper}",
+        "${(await fetchWeather(location)).currentTemper}현재 온도 : ${weatherAlarm.currentTemper}\n최고 기온 : ${weatherAlarm.maxTemper}\n최저 기온 : ${weatherAlarm.minTemper}",
         scheduledDate,
-        this.detail,
+        NotificationDetails(
+            android: AndroidNotificationDetails(
+                id.toString(), 'notiChannel', 'notiDesc',
+                importance: Importance.max,
+                priority: Priority.max,
+                playSound: true,
+                sound: RawResourceAndroidNotificationSound('slackhi'),
+                styleInformation: BigTextStyleInformation('n\nu\nl\nl\n!\n')),
+            iOS: IOSNotificationDetails(sound: 'slackhi')),
+        //this.detail,
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime
         //표준시간대 기준 or 기기 내의 사간 기준인지 설정
         );
-tts.speak('${weatherAlarm.currentTemper}');
+    //tts.speak('${weatherAlarm.currentTemper}');
   }
 
-  Future<void> busAlert(id, hour, minute, info, routeID, busStationID, direction) async {
+  Future<void> busAlert(
+      id, hour, minute, info, routeID, busStationID, direction) async {
     tz.initializeTimeZones();
     tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
     final now = tz.TZDateTime.now(tz.local);
@@ -89,7 +97,7 @@ tts.speak('${weatherAlarm.currentTemper}');
     await this.flutterLocalNotificationsPlugin.zonedSchedule(
         id,
         "$info",
-        "${busAlarm.firstArr}\n${busAlarm.secondArr}",
+        "${(await fetchBus(routeID, busStationID, direction)).firstArr} ${busAlarm.firstArr}\n${busAlarm.secondArr}",
         scheduledDate,
         this.detail,
         androidAllowWhileIdle: true,
@@ -105,7 +113,8 @@ tts.speak('${weatherAlarm.currentTemper}');
 abstract class Noti {
   Future<bool> init();
   Future<void> weatherAlert(id, hour, minute, info, location);
-  Future<void> busAlert(id, hour, minute, info, routeID, busStationID, direction);
+  Future<void> busAlert(
+      id, hour, minute, info, routeID, busStationID, direction);
 }
 
 //full screen alert : https://medium.com/android-news/full-screen-intent-notifications-android-85ea2f5b5dc1

@@ -21,7 +21,6 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
-  workmanager: ^0.4.1
   audio_service: ^0.17.1
   audio_session: ^0.1.2
   rxdart: ^0.27.0
