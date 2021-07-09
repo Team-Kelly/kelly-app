@@ -24,12 +24,12 @@ class WeatherAlarm {
   String curUltraDust;
 
   WeatherAlarm(
-      {this.currentLocation,
-      this.currentTemper,
-      this.minTemper,
-      this.maxTemper,
-      this.curDust,
-      this.curUltraDust});
+      {required this.currentLocation,
+      required this.currentTemper,
+      required this.minTemper,
+      required this.maxTemper,
+      required this.curDust,
+      required this.curUltraDust});
 
   factory WeatherAlarm.fromJson(Map<String, dynamic> json) {
     return WeatherAlarm(
@@ -59,7 +59,7 @@ class BusAlarm {
   String firstArr;
   String secondArr;
 
-  BusAlarm({this.firstArr, this.secondArr});
+  BusAlarm({required this.firstArr, required this.secondArr});
 
   factory BusAlarm.fromJson(Map<String, dynamic> json) {
     return BusAlarm(firstArr: json['firstArr'], secondArr: json['secondArr']);

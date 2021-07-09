@@ -2,7 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'permission.dart';
 import 'noti.dart' as appNoti;
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
+import 'package:app_settings/app_settings.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -36,6 +40,7 @@ class _KellyState extends State<Kelly> {
   String routeID = '100100148';
   String busStationID = '11283';
   String direction = '월계동';
+  String ttsTitle = 'title1';
   //버스정보 호출에 필요한 parameter 선언 및 초기화
   String ttsText = '';
   int hourSet = int.parse(
@@ -49,25 +54,28 @@ class _KellyState extends State<Kelly> {
       TimeOfDay.now().toString()[13] +
       TimeOfDay.now().toString()[14];
   //timepicker에서의 시간 호출에 필요한 parameter 선언 및 초기화
-  DateTime cupertinoTime;
+  late DateTime cupertinoTime = DateTime.now();
 
   @override
   void initState() {
-    Future(noti.init);
+    requestPermission();
+    noti.init();
+    soundSet();
     //notification에 대한 권한요청과 초기설정
     super.initState();
   }
 
-  void soundSet(String path){
-
+  void soundSet() async {
+    Directory? exDir = await getExternalStorageDirectory();
+    print("${exDir!.path}");
   }
 
   void setTime() {
-    Future<TimeOfDay> selectedTime =
+    Future<TimeOfDay?> selectedTime =
         showTimePicker(context: context, initialTime: TimeOfDay.now());
     selectedTime.then((timeOfDay) {
       setState(() {
-        timeSet = '${timeOfDay.hour}:${timeOfDay.minute}';
+        timeSet = '${timeOfDay!.hour}:${timeOfDay.minute}';
         hourSet = timeOfDay.hour;
         minuteSet = timeOfDay.minute;
       });
@@ -231,6 +239,14 @@ class _KellyState extends State<Kelly> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
               TextField(
+                decoration: InputDecoration(hintText: '음성파일 제목을 입력하세요'),
+                onChanged: (value) {
+                  setState(() {
+                    ttsTitle = value;
+                  });
+                },
+              ),
+              TextField(
                 decoration: InputDecoration(hintText: '음성메시지를 입력하세요'),
                 onChanged: (value) {
                   setState(() {
@@ -256,11 +272,36 @@ class _KellyState extends State<Kelly> {
   @override
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
+        leading: Builder(
+      builder: (BuildContext context) {
+        return IconButton(
+          icon: const Icon(Icons.menu, color: Colors.black,),
+          onPressed: () {
+            Scaffold.of(context).openDrawer();
+          },
+          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+        );
+      },
+    ),
         title: Text(
           "Kelly",
           style: TextStyle(color: Colors.black),
         ),
         backgroundColor: Colors.white,
+      ),
+      drawer: Drawer(
+        child: ListView(
+          children: [
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("설정"),
+              subtitle: Text("앱 권한 설정으로 이동합니다."),
+              onTap: () async {
+                await AppSettings.openAppSettings();
+              },
+            ) //애플리케이션 설정 페이지로 이동하는 tile
+          ],
+        ),
       ),
       // bottomNavigationBar: BottomNavigationBar(
       //   selectedItemColor: Colors.black,
@@ -298,7 +339,7 @@ class _KellyState extends State<Kelly> {
                     }).toList(),
                     onChanged: (value) {
                       setState(() {
-                        selectedInfo = value;
+                        selectedInfo = value.toString();
                       });
                     },
                   ),
@@ -329,7 +370,8 @@ class _KellyState extends State<Kelly> {
                             selectedInfo, routeID, busStationID, direction);
                       } else if (selectedInfo == '음성메시지') {
                         //AudioServiceBackground.run(()=>TextPlayerTask());
-                        tts.speak(ttsText);
+                        //await noti.ttsAlert(notiID, hourSet, minuteSet, ttsTitle, ttsText);
+                        await tts.synthesizeToFile('$ttsText', '$ttsTitle.mp3');
                       }
                       toastMessage();
                       notiID++;
