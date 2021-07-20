@@ -27,8 +27,8 @@ class _KellyState extends State<Kelly> {
     '날씨 정보',
     '버스 정보',
     '지하철 정보',
-    '주식 시세 정보',
-    '암호화폐 시세 정보',
+    // '주식 시세 정보',
+    // '암호화폐 시세 정보',
     '음성메시지'
   ];
   //dropdown메뉴의 요소들 선언 및 초기화
@@ -273,16 +273,19 @@ class _KellyState extends State<Kelly> {
   Widget build(BuildContext context) => Scaffold(
       appBar: AppBar(
         leading: Builder(
-      builder: (BuildContext context) {
-        return IconButton(
-          icon: const Icon(Icons.menu, color: Colors.black,),
-          onPressed: () {
-            Scaffold.of(context).openDrawer();
+          builder: (BuildContext context) {
+            return IconButton(
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.black,
+              ),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
+            );
           },
-          tooltip: MaterialLocalizations.of(context).openAppDrawerTooltip,
-        );
-      },
-    ),
+        ),
         title: Text(
           "Kelly",
           style: TextStyle(color: Colors.black),
@@ -292,14 +295,39 @@ class _KellyState extends State<Kelly> {
       drawer: Drawer(
         child: ListView(
           children: [
+            UserAccountsDrawerHeader(
+                decoration: BoxDecoration(color: Colors.orangeAccent),
+                currentAccountPicture: CircleAvatar(
+                    backgroundColor: Colors.orangeAccent,
+                    foregroundImage: AssetImage('assets/kelly.png')),
+                accountName: Text(
+                  'name',
+                  style: TextStyle(color: Colors.black),
+                ),
+                accountEmail: Text(
+                  'kelly@kelly.com',
+                  style: TextStyle(color: Colors.black),
+                )),
+            ListTile(
+              leading: Icon(Icons.perm_identity),
+              title: Text("계정 관리"),
+              subtitle: Text("계정 설정으로 이동합니다."),
+              onTap: () {},
+            ),
             ListTile(
               leading: Icon(Icons.settings),
-              title: Text("설정"),
+              title: Text("권한 설정"),
               subtitle: Text("앱 권한 설정으로 이동합니다."),
               onTap: () async {
                 await AppSettings.openAppSettings();
               },
-            ) //애플리케이션 설정 페이지로 이동하는 tile
+            ), //애플리케이션 설정 페이지로 이동하는 tile
+            ListTile(
+              leading: Icon(Icons.credit_card),
+              title: Text("API 마켓"),
+              subtitle: Text("API 마켓으로 이동합니다."),
+              onTap: () {},
+            ),
           ],
         ),
       ),

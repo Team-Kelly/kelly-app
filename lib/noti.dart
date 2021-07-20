@@ -1,13 +1,21 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
-import 'package:flutter_tts/flutter_tts.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+// import 'package:path_provider/path_provider.dart';
+// import 'dart:io';
 import 'calling.dart';
-//import 'dart:isolate';
 
-//FlutterTts tts = FlutterTts();
+abstract class Noti {
+  Future<void> init();
+  Future<void> weatherAlert(id, hour, minute, info, location);
+  Future<void> busAlert(
+      id, hour, minute, info, routeID, busStationID, direction);
+  //Future<void> ttsAlert(id, hour, minute, title, text);
+  Future<void> weather(id, info, location);
+}
+
+FlutterTts tts = FlutterTts();
 
 class AppNoti implements Noti {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -23,7 +31,6 @@ class AppNoti implements Noti {
       NotificationDetails(android: android, iOS: ios); //플랫폼 별 세부설정에 관한 변수 선언
 
   Future<void> init() async {
-    //if (Platform.isIOS) {}
     AndroidInitializationSettings initSettingsAndroid =
         AndroidInitializationSettings('app_icon'); //안드로이드 초기 세팅 설정
     IOSInitializationSettings initSettingsIOS = IOSInitializationSettings(
@@ -63,10 +70,10 @@ class AppNoti implements Noti {
               importance: Importance.max,
               priority: Priority.max,
               playSound: true,
-              sound: RawResourceAndroidNotificationSound('slackhi'),
+              sound: RawResourceAndroidNotificationSound('tts_sample'),
               //sound:UriAndroidNotificationSound('/storage/emulated/0/Android/data/com.kelly.kelly/files/hello.mp3'),
             ),
-            iOS: IOSNotificationDetails(sound: 'slackhi')),
+            iOS: IOSNotificationDetails(sound: 'tts_sample')),
         androidAllowWhileIdle: true,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime
@@ -104,49 +111,25 @@ class AppNoti implements Noti {
         );
   }
 
-// Future<void> ttsAlert(id, hour, minute, title, text) async {
-//     tz.initializeTimeZones();
+  Future<void> weather(id, info, location) async {
+    WeatherAlarm weatherAlarm = await fetchWeather(location);
 
-//     await tts.synthesizeToFile('$text', 'android/app/src/main/res/raw/$title');
-//     //https://zion830.tistory.com/51
-
-//     tz.setLocalLocation(tz.getLocation('Asia/Seoul'));
-//     final now = tz.TZDateTime.now(tz.local);
-//     var scheduledDate =
-//         tz.TZDateTime(tz.local, now.year, now.month, now.day, hour, minute);
-
-//     await this.flutterLocalNotificationsPlugin.zonedSchedule(
-//         id,
-//         "$title",
-//         "$text",
-//         scheduledDate,
-//         NotificationDetails(
-//             android: AndroidNotificationDetails(
-//                 id.toString(), 'notiChannel', 'notiDesc',
-//                 importance: Importance.max,
-//                 priority: Priority.max,
-//                 playSound: true,
-//                 sound: RawResourceAndroidNotificationSound('$title'),
-//                 styleInformation: BigTextStyleInformation('n\nu\nl\nl\n!\n')),
-//             iOS: IOSNotificationDetails(sound: '$title')),
-//         //this.detail,
-//         androidAllowWhileIdle: true,
-//         uiLocalNotificationDateInterpretation:
-//             UILocalNotificationDateInterpretation.absoluteTime
-//         //표준시간대 기준 or 기기 내의 사간 기준인지 설정
-//         );
-//     //tts.speak('${weatherAlarm.currentTemper}');
-//   }
+    await this.flutterLocalNotificationsPlugin.show(
+        id,
+        "$info",
+        "현재 온도 : ${weatherAlarm.currentTemper}\n최고 기온 : ${weatherAlarm.maxTemper}\n최저 기온 : ${weatherAlarm.minTemper}",
+        NotificationDetails(
+            android: AndroidNotificationDetails(
+              id.toString(), 'notiChannel', 'notiDesc',
+              importance: Importance.max,
+              priority: Priority.max,
+            ),
+            iOS: IOSNotificationDetails())
+        );
+        tts.speak('현재기온은 ${weatherAlarm.currentTemper}도 입니다.');
+  }
 
 //   Future<void> onSelectNotification(String payload) async {}
-}
-
-abstract class Noti {
-  Future<void> init();
-  Future<void> weatherAlert(id, hour, minute, info, location);
-  Future<void> busAlert(
-      id, hour, minute, info, routeID, busStationID, direction);
-  //Future<void> ttsAlert(id, hour, minute, title, text);
 }
 
 //full screen alert : https://medium.com/android-news/full-screen-intent-notifications-android-85ea2f5b5dc1
