@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-//import 'view/splash.dart';
 import 'view/home.dart';
+import 'view/search.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,10 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: HomeView(),
+      debugShowCheckedModeBanner: false,
+      home: const HomeView(),
       routes: {
-        //'/splash': (context) => SplashView(),
-        '/home': (context) => HomeView(),
+        '/home': (context) => const HomeView(),
+        '/search': (context) => const Search(),
       },
     );
   }
