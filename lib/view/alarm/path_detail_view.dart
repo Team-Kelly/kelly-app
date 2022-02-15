@@ -1,4 +1,7 @@
+import 'package:app/view/main/home_view.dart';
+import 'package:cotten_candy_ui/cotten_candy_ui.dart';
 import 'package:flutter/material.dart';
+import 'select_path_view.dart';
 
 class PathDetailView extends StatefulWidget {
   const PathDetailView({Key? key}) : super(key: key);
@@ -10,6 +13,86 @@ class PathDetailView extends StatefulWidget {
 class _PathDetailViewState extends State<PathDetailView> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      backgroundColor: const Color(0xFFFFFFFF),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: const Color(0xFFFFFFFF),
+        leading: IconButton(
+          onPressed: () {/*Navigator.pop(context);*/},
+          icon: const Icon(Icons.arrow_back_ios),
+          color: Colors.black,
+        ),
+      ),
+      body: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+        children: [routeInfo(title: '소요시간', subtitle: '경로 상세'),
+        Container(width:346,height: 3,color: const Color(0xFFF2F2F2),),
+        const SizedBox(height:20),
+        SingleChildScrollView(physics: const BouncingScrollPhysics(),
+        child: SizedBox(width: 100,
+          child: const CandyTimeLine(
+                  children: [
+                    CandyIndicator(
+                      child: Text(
+                        '출발',
+                        style: TextStyle(
+                          color: Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      title: Text('집'),
+                    ),
+                    CandyIndicator(
+                      child: Icon(
+                        Icons.directions_run,
+                        color: Colors.white,
+                      ),
+                      title: Text('도보 20분'),
+                      subTitle: Text('12km'),
+                    ),
+                    CandyIndicator(
+                      child: Icon(
+                        Icons.directions_bus,
+                        color: Colors.white,
+                      ),
+                      title: Text('마석역'),
+                      subTitle: Text('경춘선'),
+                    ),
+                    CandyIndicator(
+                      child: Text(
+                        '도착',
+                        style: TextStyle(
+                          color: Color(0xFFFFFFFF),
+                        ),
+                      ),
+                      title: Text('광운대역'),
+                      subTitle: Text('1호선'),
+                    ),
+                  ],
+                  connector: CandyConnector(height: 80,),
+                ),
+        ),),
+        const SizedBox(height:40),
+        CandyButton(
+              width: 346,
+              child: const Text(
+                '경로 추가',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () => Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const HomeView(),
+                ),
+              ),
+            )
+        ],
+      )),
+    );
   }
 }

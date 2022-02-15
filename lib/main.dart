@@ -26,6 +26,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       // 현재 다크모드 디자인이 없음
+      // showSemanticsDebugger:true,
       themeMode: ThemeMode.light,
       routes: {
         "/": (_) => const SplashView(),

@@ -15,9 +15,16 @@ class _SelectPathViewState extends State<SelectPathView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          elevation: 0,
-          title: Text('출근 경로', style: TextStyle(color: Colors.black)),
-          backgroundColor: const Color(0xFFFCE8D8)),
+        centerTitle: true,
+        elevation: 0,
+        title: Text('출근 경로', style: TextStyle(color: Colors.black)),
+        backgroundColor: const Color(0xFFFCE8D8),
+        leading: IconButton(
+          onPressed: () {/*Navigator.pop(context);*/},
+          icon: const Icon(Icons.arrow_back_ios),
+          color: Colors.black,
+        ),
+      ),
       backgroundColor: const Color(0xFFFCE8D8),
       body: Center(
         child: Column(
@@ -68,17 +75,11 @@ class _SelectPathViewState extends State<SelectPathView> {
                 child: Column(
                   children: [
                     routeInfo(title: '소요시간', subtitle: '경로 상세'),
-                    SizedBox(height: 5),
                     routeInfo(title: '소요시간', subtitle: '경로 상세'),
-                    SizedBox(height: 5),
                     routeInfo(title: '소요시간', subtitle: '경로 상세'),
-                    SizedBox(height: 5),
                     routeInfo(title: '소요시간', subtitle: '경로 상세'),
-                    SizedBox(height: 5),
                     routeInfo(title: '소요시간', subtitle: '경로 상세'),
-                    SizedBox(height: 5),
                     routeInfo(title: '소요시간', subtitle: '경로 상세'),
-                    SizedBox(height: 5),
                   ],
                 ),
               ),
@@ -112,17 +113,24 @@ Widget routeInfo({
   required String title,
   required String subtitle,
 }) =>
-    Container(
+    SizedBox(
       width: 346,
       height: 83,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(24),
-      ),
       child: Center(
-        child: ListTile(
-          title: Text(title),
-          subtitle: Text(subtitle),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: ListTile(
+                title: Text(title),
+                subtitle: Text(subtitle),
+              ),
+            ),
+          ],
         ),
       ),
     );

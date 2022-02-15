@@ -14,6 +14,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFCE8D8),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
         child: Column(
@@ -73,12 +74,11 @@ class _HomeViewState extends State<HomeView> {
                 ),
                 Container(
                   width: 100,
+                  height: 100,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: Image(
-                    image: AssetImage(""),
-                  ),
+                  child: Image.asset("assets/dog.png"),
                 ),
               ],
             ),
@@ -87,43 +87,81 @@ class _HomeViewState extends State<HomeView> {
             ///
             ///
             /// 날씨 이모티콘
+
             Container(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
                     child: Stack(
-                      children: [
+                      children: const [
                         Text("현위치: 서초구"),
-                        Positioned(
-                          left: 0,
-                          right: 0,
-                          height: 175,
-                          child: Container(
-                            height: 175,
-                            width: 175,
-                            child: Image(
-                              image: AssetImage(""),
-                            ),
-                          ),
-                        ),
+                        // Positioned(
+                        //   left: 0,
+                        //   right: 0,
+                        //   height: 175,
+                        //   child: Container(
+                        //     height: 175,
+                        //     width: 175,
+                        //     child: Image.asset("assets/sunny.png"),
+
+                        //   ),
+                        // ),
                       ],
                     ),
                   ),
                 ],
               ),
             ),
+            Container(
+              width: 200,
+              height: 200,
+              child: Image.asset("assets/sunny.png"),
+            ),
 
             ///
             ///
             ///
             /// 하단 날씨위젯
-            SizedBox(height: 50),
+            SizedBox(height: 10),
             Container(
+              child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  weatherTile(
+                      title: '현재',
+                      color: const Color(0xFFFFAE9A),
+                      imagePath: 'assets/mostly_sunny.png',
+                      temper: '온도'),
+                      weatherTile(
+                      title: '+1시간',
+                      color: const Color(0xFFFFAE9A),
+                      imagePath: 'assets/partly_cloudy.png',
+                      temper: '온도'),
+                      weatherTile(
+                      title: '+2시간',
+                      color: const Color(0xFFFFAE9A),
+                      imagePath: 'assets/cloudy.png',
+                      temper: '온도'),
+                      weatherTile(
+                      title: '+3시간',
+                      color: const Color(0xFFFFAE9A),
+                      imagePath: 'assets/rainy.png',
+                      temper: '온도'),
+                      weatherTile(
+                      title: '+4시간',
+                      color: const Color(0xFFFFAE9A),
+                      imagePath: 'assets/stormy.png',
+                      temper: '온도'),
+                      weatherTile(
+                      title: '+5시간',
+                      color: const Color(0xFFFFAE9A),
+                      imagePath: 'assets/snowy.png',
+                      temper: '온도'),
+                ],
+              ),
               height: 100,
-              color: CandyColors.candyPink,
             ),
-            SizedBox(height: 50),
+            SizedBox(height: 10),
 
             ///
             ///
@@ -164,3 +202,30 @@ class _HomeViewState extends State<HomeView> {
     );
   }
 }
+
+Widget weatherTile(
+        {required String title,
+        required Color color,
+        required String temper,
+        required String imagePath}) =>
+    Container(
+      width: 55,
+      height: 80,
+      margin: const EdgeInsets.fromLTRB(4, 0, 4, 0),
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(15),
+      ),
+      child: Column(mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(title),
+          Container(
+            width: 30,
+            height: 30,
+            padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
+            child: Image.asset(imagePath),
+          ),
+          Text(temper),
+        ],
+      ),
+    );
