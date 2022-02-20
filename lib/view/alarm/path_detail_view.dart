@@ -1,4 +1,4 @@
-import 'package:app/view/main/home_view.dart';
+import 'package:app/view/alarm/time_setting_view.dart';
 import 'package:cotten_candy_ui/cotten_candy_ui.dart';
 import 'package:flutter/material.dart';
 import 'select_path_view.dart';
@@ -39,25 +39,27 @@ class _PathDetailViewState extends State<PathDetailView> {
                   SizedBox(
                     width: 15,
                     height: 15,
-                    child: Image.asset('assets/transport/walk.png'),
+                    child: Image.asset('assets/icons/transport/walk.png'),
                   ),
                   Text('도보 > '),
                   SizedBox(
                     width: 15,
                     height: 15,
-                    child: Image.asset('assets/transport/bus-normal.png'),
+                    child: Image.asset('assets/icons/transport/bus-normal.png'),
                   ),
                   Text('버스 > '),
                   SizedBox(
                     width: 15,
                     height: 15,
-                    child: Image.asset('assets/transport/gyeongchun.png'),
+                    child: Image.asset(
+                        'assets/icons/transport/subway-gyeongchun.png'),
                   ),
                   Text('지하철 > '),
                   SizedBox(
                     width: 15,
                     height: 15,
-                    child: Image.asset('assets/transport/1-line.png'),
+                    child:
+                        Image.asset('assets/icons/transport/subway-1-line.png'),
                   ),
                   Text('지하철'),
                 ],
@@ -71,7 +73,7 @@ class _PathDetailViewState extends State<PathDetailView> {
           SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: SizedBox(
-              width: 100,
+              width: 150,
               child: const CandyTimeLine(
                 children: [
                   CandyIndicator(
@@ -130,7 +132,7 @@ class _PathDetailViewState extends State<PathDetailView> {
             onPressed: () => Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => const HomeView(),
+                builder: (context) => const TimeSettingView(),
               ),
             ),
           )

@@ -76,7 +76,7 @@ class _HomeViewState extends State<HomeView> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(100),
                   ),
-                  child: Image.asset("assets/dog.png"),
+                  child: Image.asset("assets/images/dog.png"),
                 ),
               ],
             ),
@@ -101,7 +101,7 @@ class _HomeViewState extends State<HomeView> {
             Container(
               width: 200,
               height: 200,
-              child: Image.asset("assets/weather/sunny.png"),
+              child: Image.asset("assets/icons/weather/weather-sunny.png"),
             ),
 
             ///
@@ -115,32 +115,34 @@ class _HomeViewState extends State<HomeView> {
                   weatherTile(
                       title: '현재',
                       color: const Color(0xFFFFAE9A),
-                      imagePath: 'assets/weather/mostly_sunny.png',
+                      imagePath:
+                          'assets/icons/weather/weather-mostly_sunny.png',
                       temper: '온도'),
                   weatherTile(
                       title: '+1시간',
                       color: const Color(0xFFFFAE9A),
-                      imagePath: 'assets/weather/partly_cloudy.png',
+                      imagePath:
+                          'assets/icons/weather/weather-partly_cloudy.png',
                       temper: '온도'),
                   weatherTile(
                       title: '+2시간',
                       color: const Color(0xFFFFAE9A),
-                      imagePath: 'assets/weather/cloudy.png',
+                      imagePath: 'assets/icons/weather/weather-cloudy.png',
                       temper: '온도'),
                   weatherTile(
                       title: '+3시간',
                       color: const Color(0xFFFFAE9A),
-                      imagePath: 'assets/weather/rainy.png',
+                      imagePath: 'assets/icons/weather/weather-rainy.png',
                       temper: '온도'),
                   weatherTile(
                       title: '+4시간',
                       color: const Color(0xFFFFAE9A),
-                      imagePath: 'assets/weather/stormy.png',
+                      imagePath: 'assets/icons/weather/weather-stormy.png',
                       temper: '온도'),
                   weatherTile(
                       title: '+5시간',
                       color: const Color(0xFFFFAE9A),
-                      imagePath: 'assets/weather/snowy.png',
+                      imagePath: 'assets/icons/weather/weather-snowy.png',
                       temper: '온도'),
                 ],
               ),
@@ -170,28 +172,29 @@ class _HomeViewState extends State<HomeView> {
                               SizedBox(
                                 width: 15,
                                 height: 15,
-                                child: Image.asset('assets/transport/walk.png'),
+                                child: Image.asset(
+                                    'assets/icons/transport/walk.png'),
                               ),
                               Text('도보 > '),
                               SizedBox(
                                 width: 15,
                                 height: 15,
                                 child: Image.asset(
-                                    'assets/transport/bus-normal.png'),
+                                    'assets/icons/transport/bus-normal.png'),
                               ),
                               Text('버스 > '),
                               SizedBox(
                                 width: 15,
                                 height: 15,
                                 child: Image.asset(
-                                    'assets/transport/gyeongchun.png'),
+                                    'assets/icons/transport/subway-gyeongchun.png'),
                               ),
                               Text('지하철 > '),
                               SizedBox(
                                 width: 15,
                                 height: 15,
-                                child:
-                                    Image.asset('assets/transport/1-line.png'),
+                                child: Image.asset(
+                                    'assets/icons/transport/subway-1-line.png'),
                               ),
                               Text('지하철'),
                             ],
@@ -204,66 +207,21 @@ class _HomeViewState extends State<HomeView> {
                                 width: 15,
                                 height: 15,
                                 child: Image.asset(
-                                    'assets/transport/bus-town.png'),
+                                    'assets/icons/transport/bus-town.png'),
                               ),
                               Text('버스 > '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset('assets/transport/walk.png'),
-                              ),
-                              Text('도보 > '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child:
-                                    Image.asset('assets/transport/2-line.png'),
-                              ),
-                              Text('지하철')
-                            ],
-                          )),
-                      routeInfo(
-                          title: Text('소요시간'),
-                          subtitle: Row(
-                            children: [
                               SizedBox(
                                 width: 15,
                                 height: 15,
                                 child: Image.asset(
-                                    'assets/transport/bus-metro.png'),
-                              ),
-                              Text('버스 > '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child:
-                                    Image.asset('assets/transport/3-line.png'),
-                              ),
-                              Text('지하철')
-                            ],
-                          )),
-                      routeInfo(
-                          title: Text('소요시간'),
-                          subtitle: Row(
-                            children: [
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset('assets/transport/walk.png'),
+                                    'assets/icons/transport/walk.png'),
                               ),
                               Text('도보 > '),
                               SizedBox(
                                 width: 15,
                                 height: 15,
                                 child: Image.asset(
-                                    'assets/transport/bus-trunk.png'),
-                              ),
-                              Text('버스 > '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/transport/gyeongchun.png'),
+                                    'assets/icons/transport/subway-2-line.png'),
                               ),
                               Text('지하철')
                             ],
@@ -275,15 +233,62 @@ class _HomeViewState extends State<HomeView> {
                               SizedBox(
                                 width: 15,
                                 height: 15,
-                                child:
-                                    Image.asset('assets/transport/jungang.png'),
+                                child: Image.asset(
+                                    'assets/icons/transport/bus-metro.png'),
+                              ),
+                              Text('버스 > '),
+                              SizedBox(
+                                width: 15,
+                                height: 15,
+                                child: Image.asset(
+                                    'assets/icons/transport/subway-3-line.png'),
+                              ),
+                              Text('지하철')
+                            ],
+                          )),
+                      routeInfo(
+                          title: Text('소요시간'),
+                          subtitle: Row(
+                            children: [
+                              SizedBox(
+                                width: 15,
+                                height: 15,
+                                child: Image.asset(
+                                    'assets/icons/transport/walk.png'),
+                              ),
+                              Text('도보 > '),
+                              SizedBox(
+                                width: 15,
+                                height: 15,
+                                child: Image.asset(
+                                    'assets/icons/transport/bus-trunk.png'),
+                              ),
+                              Text('버스 > '),
+                              SizedBox(
+                                width: 15,
+                                height: 15,
+                                child: Image.asset(
+                                    'assets/icons/transport/subway-gyeongchun.png'),
+                              ),
+                              Text('지하철')
+                            ],
+                          )),
+                      routeInfo(
+                          title: Text('소요시간'),
+                          subtitle: Row(
+                            children: [
+                              SizedBox(
+                                width: 15,
+                                height: 15,
+                                child: Image.asset(
+                                    'assets/icons/transport/subway-jungang.png'),
                               ),
                               Text('지하철 > '),
                               SizedBox(
                                 width: 15,
                                 height: 15,
                                 child: Image.asset(
-                                    'assets/transport/bus-airport.png'),
+                                    'assets/icons/transport/bus-airport.png'),
                               ),
                               Text('버스'),
                             ],
@@ -295,15 +300,15 @@ class _HomeViewState extends State<HomeView> {
                               SizedBox(
                                 width: 15,
                                 height: 15,
-                                child:
-                                    Image.asset('assets/transport/6-line.png'),
+                                child: Image.asset(
+                                    'assets/icons/transport/subway-6-line.png'),
                               ),
                               Text('지하철 > '),
                               SizedBox(
                                 width: 15,
                                 height: 15,
-                                child:
-                                    Image.asset('assets/transport/bus-etc.png'),
+                                child: Image.asset(
+                                    'assets/icons/transport/bus-etc.png'),
                               ),
                               Text('버스'),
                             ],

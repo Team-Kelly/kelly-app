@@ -81,27 +81,29 @@ class _SelectPathViewState extends State<SelectPathView> {
                             SizedBox(
                               width: 15,
                               height: 15,
-                              child: Image.asset('assets/transport/walk.png'),
+                              child: Image.asset(
+                                  'assets/icons/transport/walk.png'),
                             ),
                             Text('도보 > '),
                             SizedBox(
                               width: 15,
                               height: 15,
                               child: Image.asset(
-                                  'assets/transport/bus-normal.png'),
+                                  'assets/icons/transport/bus-normal.png'),
                             ),
                             Text('버스 > '),
                             SizedBox(
                               width: 15,
                               height: 15,
                               child: Image.asset(
-                                  'assets/transport/gyeongchun.png'),
+                                  'assets/icons/transport/subway-gyeongchun.png'),
                             ),
                             Text('지하철 > '),
                             SizedBox(
                               width: 15,
                               height: 15,
-                              child: Image.asset('assets/transport/1-line.png'),
+                              child: Image.asset(
+                                  'assets/icons/transport/subway-1-line.png'),
                             ),
                             Text('지하철'),
                           ],
@@ -113,65 +115,22 @@ class _SelectPathViewState extends State<SelectPathView> {
                             SizedBox(
                               width: 15,
                               height: 15,
-                              child:
-                                  Image.asset('assets/transport/bus-town.png'),
-                            ),
-                            Text('버스 > '),
-                            SizedBox(
-                              width: 15,
-                              height: 15,
-                              child: Image.asset('assets/transport/walk.png'),
-                            ),
-                            Text('도보 > '),
-                            SizedBox(
-                              width: 15,
-                              height: 15,
-                              child: Image.asset('assets/transport/2-line.png'),
-                            ),
-                            Text('지하철')
-                          ],
-                        )),
-                    routeInfo(
-                        title: Text('소요시간'),
-                        subtitle: Row(
-                          children: [
-                            SizedBox(
-                              width: 15,
-                              height: 15,
-                              child:
-                                  Image.asset('assets/transport/bus-metro.png'),
-                            ),
-                            Text('버스 > '),
-                            SizedBox(
-                              width: 15,
-                              height: 15,
-                              child: Image.asset('assets/transport/3-line.png'),
-                            ),
-                            Text('지하철')
-                          ],
-                        )),
-                    routeInfo(
-                        title: Text('소요시간'),
-                        subtitle: Row(
-                          children: [
-                            SizedBox(
-                              width: 15,
-                              height: 15,
-                              child: Image.asset('assets/transport/walk.png'),
-                            ),
-                            Text('도보 > '),
-                            SizedBox(
-                              width: 15,
-                              height: 15,
-                              child:
-                                  Image.asset('assets/transport/bus-trunk.png'),
+                              child: Image.asset(
+                                  'assets/icons/transport/bus-town.png'),
                             ),
                             Text('버스 > '),
                             SizedBox(
                               width: 15,
                               height: 15,
                               child: Image.asset(
-                                  'assets/transport/gyeongchun.png'),
+                                  'assets/icons/transport/walk.png'),
+                            ),
+                            Text('도보 > '),
+                            SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: Image.asset(
+                                  'assets/icons/transport/subway-2-line.png'),
                             ),
                             Text('지하철')
                           ],
@@ -183,15 +142,62 @@ class _SelectPathViewState extends State<SelectPathView> {
                             SizedBox(
                               width: 15,
                               height: 15,
-                              child:
-                                  Image.asset('assets/transport/jungang.png'),
+                              child: Image.asset(
+                                  'assets/icons/transport/bus-metro.png'),
+                            ),
+                            Text('버스 > '),
+                            SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: Image.asset(
+                                  'assets/icons/transport/subway-3-line.png'),
+                            ),
+                            Text('지하철')
+                          ],
+                        )),
+                    routeInfo(
+                        title: Text('소요시간'),
+                        subtitle: Row(
+                          children: [
+                            SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: Image.asset(
+                                  'assets/icons/transport/walk.png'),
+                            ),
+                            Text('도보 > '),
+                            SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: Image.asset(
+                                  'assets/icons/transport/bus-trunk.png'),
+                            ),
+                            Text('버스 > '),
+                            SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: Image.asset(
+                                  'assets/icons/transport/subway-gyeongchun.png'),
+                            ),
+                            Text('지하철')
+                          ],
+                        )),
+                    routeInfo(
+                        title: Text('소요시간'),
+                        subtitle: Row(
+                          children: [
+                            SizedBox(
+                              width: 15,
+                              height: 15,
+                              child: Image.asset(
+                                  'assets/icons/transport/subway-jungang.png'),
                             ),
                             Text('지하철 > '),
                             SizedBox(
                               width: 15,
                               height: 15,
                               child: Image.asset(
-                                  'assets/transport/bus-airport.png'),
+                                  'assets/icons/transport/bus-airport.png'),
                             ),
                             Text('버스'),
                           ],
@@ -203,14 +209,15 @@ class _SelectPathViewState extends State<SelectPathView> {
                             SizedBox(
                               width: 15,
                               height: 15,
-                              child: Image.asset('assets/transport/6-line.png'),
+                              child: Image.asset(
+                                  'assets/icons/transport/subway-6-line.png'),
                             ),
                             Text('지하철 > '),
                             SizedBox(
                               width: 15,
                               height: 15,
-                              child:
-                                  Image.asset('assets/transport/bus-etc.png'),
+                              child: Image.asset(
+                                  'assets/icons/transport/bus-etc.png'),
                             ),
                             Text('버스'),
                           ],
