@@ -56,7 +56,14 @@ packages:
       name: cotten_candy_ui
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.1.5"
+    version: "0.1.6"
+  cotton_candy_ui:
+    dependency: "direct main"
+    description:
+      name: cotton_candy_ui
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.10"
   cupertino_icons:
     dependency: "direct main"
     description:

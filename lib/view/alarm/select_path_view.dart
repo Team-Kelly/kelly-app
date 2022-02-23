@@ -1,5 +1,6 @@
+import 'package:app/view/alarm/select_destination_view.dart';
 import 'package:app/view/alarm/path_detail_view.dart';
-import 'package:app/view/main/home_view.dart';
+// import 'package:app/view/main/home_view.dart';
 import 'package:cotten_candy_ui/cotten_candy_ui.dart';
 import 'package:flutter/material.dart';
 
@@ -20,7 +21,12 @@ class _SelectPathViewState extends State<SelectPathView> {
         title: Text('출근 경로', style: TextStyle(color: Colors.black)),
         backgroundColor: const Color(0xFFFCE8D8),
         leading: IconButton(
-          onPressed: () {/*Navigator.pop(context);*/},
+          onPressed: () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SelectDestionationView(),
+            ),
+          ),
           icon: const Icon(Icons.arrow_back_ios),
           color: Colors.black,
         ),
@@ -75,7 +81,11 @@ class _SelectPathViewState extends State<SelectPathView> {
                 child: Column(
                   children: [
                     routeInfo(
-                        title: Text('소요시간'),
+                        title: Text(
+                          '소요시간',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w800),
+                        ),
                         subtitle: Row(
                           children: [
                             SizedBox(
@@ -109,7 +119,11 @@ class _SelectPathViewState extends State<SelectPathView> {
                           ],
                         )),
                     routeInfo(
-                        title: Text('소요시간'),
+                        title: Text(
+                          '소요시간',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w800),
+                        ),
                         subtitle: Row(
                           children: [
                             SizedBox(
@@ -136,7 +150,11 @@ class _SelectPathViewState extends State<SelectPathView> {
                           ],
                         )),
                     routeInfo(
-                        title: Text('소요시간'),
+                        title: Text(
+                          '소요시간',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w800),
+                        ),
                         subtitle: Row(
                           children: [
                             SizedBox(
@@ -156,7 +174,11 @@ class _SelectPathViewState extends State<SelectPathView> {
                           ],
                         )),
                     routeInfo(
-                        title: Text('소요시간'),
+                        title: Text(
+                          '소요시간',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w800),
+                        ),
                         subtitle: Row(
                           children: [
                             SizedBox(
@@ -183,7 +205,11 @@ class _SelectPathViewState extends State<SelectPathView> {
                           ],
                         )),
                     routeInfo(
-                        title: Text('소요시간'),
+                        title: Text(
+                          '소요시간',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w800),
+                        ),
                         subtitle: Row(
                           children: [
                             SizedBox(
@@ -203,7 +229,11 @@ class _SelectPathViewState extends State<SelectPathView> {
                           ],
                         )),
                     routeInfo(
-                        title: Text('소요시간'),
+                        title: Text(
+                          '소요시간',
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.w800),
+                        ),
                         subtitle: Row(
                           children: [
                             SizedBox(

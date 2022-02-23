@@ -23,17 +23,25 @@ class _PathDetailViewState extends State<PathDetailView> {
           style: TextStyle(color: Colors.black),
         ),
         leading: IconButton(
-          onPressed: () {/*Navigator.pop(context);*/},
+          onPressed: () => Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SelectPathView(),
+            ),
+          ),
           icon: const Icon(Icons.arrow_back_ios),
           color: Colors.black,
         ),
       ),
       body: Center(
           child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           routeInfo(
-              title: Text('소요시간'),
+              title: Text(
+                '소요시간',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+              ),
               subtitle: Row(
                 children: [
                   SizedBox(
@@ -65,16 +73,15 @@ class _PathDetailViewState extends State<PathDetailView> {
                 ],
               )),
           Container(
-            width: 346,
+            width: MediaQuery.of(context).size.width - 60,
             height: 3,
             color: const Color(0xFFF2F2F2),
           ),
-          const SizedBox(height: 20),
-          SingleChildScrollView(
-            physics: const BouncingScrollPhysics(),
-            child: SizedBox(
-              width: 150,
-              child: const CandyTimeLine(
+          Container(
+            padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
+            child: SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: CandyTimeLine(
                 children: [
                   CandyIndicator(
                     child: Text(
