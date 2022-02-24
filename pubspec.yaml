@@ -30,13 +30,12 @@ dependencies:
 
   # UI 리소스
   # https://pub.dev/packages/cotton_candy_ui
-  cotton_candy_ui: ^0.1.10
+  cotton_candy_ui: ^0.1.11
 
   flutter:
     sdk: flutter
 
   cupertino_icons: ^1.0.2
-  cotten_candy_ui: ^0.1.6
 
 dev_dependencies:
   flutter_test:

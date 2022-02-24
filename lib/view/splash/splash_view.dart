@@ -1,4 +1,4 @@
-import 'package:cotten_candy_ui/cotten_candy_ui.dart';
+import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

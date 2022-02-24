@@ -1,7 +1,6 @@
 import 'package:app/view/alarm/select_destination_view.dart';
 import 'package:app/view/alarm/path_detail_view.dart';
-// import 'package:app/view/main/home_view.dart';
-import 'package:cotten_candy_ui/cotten_candy_ui.dart';
+import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/material.dart';
 
 class SelectPathView extends StatefulWidget {

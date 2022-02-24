@@ -1,6 +1,6 @@
 import 'package:app/view/alarm/select_path_view.dart';
 import 'package:flutter/material.dart';
-import 'package:cotten_candy_ui/cotten_candy_ui.dart';
+import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 
 class SelectDestionationView extends StatefulWidget {
   const SelectDestionationView({Key? key}) : super(key: key);
