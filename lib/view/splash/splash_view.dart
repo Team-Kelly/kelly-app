@@ -1,5 +1,5 @@
-import 'package:cotton_candy_ui/cotton_candy_ui.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:app/provider/personal_info_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 class SplashView extends StatefulWidget {
@@ -19,12 +19,12 @@ class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFCE8D8),
+      backgroundColor: const Color(0xFFFCE8D8),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+          children: const [
             Image(
               image: AssetImage("assets/images/splash.png"),
               fit: BoxFit.fitWidth,
@@ -36,7 +36,13 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> runner() async {
-    await Future.delayed(Duration(milliseconds: 3000));
-    await Navigator.pushReplacementNamed(context, "/alarm");
+    PersonalInfo personalInfo =
+        Provider.of<PersonalInfo>(context, listen: false);
+    await Future.delayed(const Duration(milliseconds: 3000));
+    if (personalInfo.isFirst) {
+      await Navigator.pushReplacementNamed(context, "/alarm");
+    } else {
+      await Navigator.pushReplacementNamed(context, "/home");
+    }
   }
 }

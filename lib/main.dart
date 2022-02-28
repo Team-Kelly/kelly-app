@@ -1,14 +1,16 @@
+import 'package:app/provider/alarm_info_provider.dart';
 import 'package:app/view/alarm/assign_alarm_view.dart';
-import 'package:app/view/main/home_view.dart';
 import 'package:app/view/splash/splash_view.dart';
-import 'package:flutter/material.dart';
+import 'package:app/view/main/home_view.dart';
+import 'provider/personal_info_provider.dart';
 import 'package:provider/provider.dart';
-import 'provider/temp_provider.dart';
+import 'package:flutter/material.dart';
 
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider<Temp>(create: (context) => Temp()),
+      ChangeNotifierProvider<PersonalInfo>(create: (context) => PersonalInfo()),
+      ChangeNotifierProvider<AlarmInfo>(create: (context) => AlarmInfo()),
     ],
     child: const MyApp(),
   ));
@@ -24,14 +26,20 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      // 현재 다크모드 디자인이 없음
-      // showSemanticsDebugger:true,
-      themeMode: ThemeMode.light,
-      routes: {
-        "/": (_) => const SplashView(),
-        "/home": (_) => const HomeView(),
-        "/alarm": (_) => const AssignAlarmView(),
+    return Consumer2<PersonalInfo, AlarmInfo>(
+      builder: (context, personalInfo, alarmInfo, child) {
+        personalInfo.loadinfo();
+        // alarmInfo.loadinfo();
+        return MaterialApp(
+          // 현재 다크모드 디자인이 없음
+          // showSemanticsDebugger:true,
+          themeMode: ThemeMode.light,
+          routes: {
+            "/": (_) => const SplashView(),
+            "/home": (_) => const HomeView(),
+            "/alarm": (_) => const AssignAlarmView(),
+          },
+        );
       },
     );
   }
