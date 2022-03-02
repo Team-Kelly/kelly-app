@@ -44,7 +44,7 @@ Future getWeather() async {
   );
 
   if (response.statusCode == 200) {
-    Map<String, dynamic>result = jsonDecode(utf8.decode(response.bodyBytes));
+    Map<String, dynamic> result = jsonDecode(utf8.decode(response.bodyBytes));
     print(result['skyStatusDetail']);
     print(response.statusCode);
     // return Result(routes: jsonDecode(response.body));
@@ -57,7 +57,6 @@ class Result {
   late List routes;
   Result({required this.routes});
 }
-
 
 // class PathNodeList {
 //   late List nodes;
@@ -109,7 +108,7 @@ class Result {
 //   late int duration;
 
 //   DurationTime({required this.duration});
-  
+
 //   factory DurationTime.fromJson(Map<String, dynamic> json) {
 //     return DurationTime(duration: json['durationTime']);
 //   }

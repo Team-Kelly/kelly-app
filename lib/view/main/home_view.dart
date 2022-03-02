@@ -1,3 +1,4 @@
+import 'package:app/util/weatherDO.dart';
 import 'package:app/view/alarm/select_path_view.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/cupertino.dart';
@@ -11,6 +12,23 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  late WeatherDO weather;
+  bool isLoading = false;
+  Future<void> getlist() async {
+    isLoading = false;
+    weather = await WeatherDTO.getData(37.6576769, 127.3007637);
+    isLoading = true;
+    setState(() {
+      weather = weather;
+    });
+  }
+
+  @override
+  void initState() {
+    getlist();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,42 +149,54 @@ class _HomeViewState extends State<HomeView> {
                               color: const Color(0xFFFFAE9A),
                               imagePath:
                                   'assets/icons/weather/weather-mostly_sunny.png',
-                              temper: '온도'),
+                              temper: (isLoading)
+                                  ? weather.temp[0].toString() + '℃'
+                                  : '...'),
                           weatherTile(
                               context: context,
                               title: '+1시간',
                               color: const Color(0xFFFFAE9A),
                               imagePath:
                                   'assets/icons/weather/weather-partly_cloudy.png',
-                              temper: '온도'),
+                              temper: (isLoading)
+                                  ? weather.temp[1].toString() + '℃'
+                                  : '...'),
                           weatherTile(
                               context: context,
                               title: '+2시간',
                               color: const Color(0xFFFFAE9A),
                               imagePath:
                                   'assets/icons/weather/weather-cloudy.png',
-                              temper: '온도'),
+                              temper: (isLoading)
+                                  ? weather.temp[2].toString() + '℃'
+                                  : '...'),
                           weatherTile(
                               context: context,
                               title: '+3시간',
                               color: const Color(0xFFFFAE9A),
                               imagePath:
                                   'assets/icons/weather/weather-rainy.png',
-                              temper: '온도'),
+                              temper: (isLoading)
+                                  ? weather.temp[3].toString() + '℃'
+                                  : '...'),
                           weatherTile(
                               context: context,
                               title: '+4시간',
                               color: const Color(0xFFFFAE9A),
                               imagePath:
                                   'assets/icons/weather/weather-stormy.png',
-                              temper: '온도'),
+                              temper: (isLoading)
+                                  ? weather.temp[4].toString() + '℃'
+                                  : '...'),
                           weatherTile(
                               context: context,
                               title: '+5시간',
                               color: const Color(0xFFFFAE9A),
                               imagePath:
                                   'assets/icons/weather/weather-snowy.png',
-                              temper: '온도'),
+                              temper: (isLoading)
+                                  ? weather.temp[5].toString() + '℃'
+                                  : '...'),
                         ],
                       ),
                       height: 100,
