@@ -1,4 +1,4 @@
-import 'package:app/temp/temp.dart';
+import 'package:app/util/temp.dart';
 import 'package:app/view/alarm/select_destination_view.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/material.dart';
@@ -62,22 +62,22 @@ class _AssignAlarmViewState extends State<AssignAlarmView> {
               ],
             ),
             CandyButton(
-              child: const Text('나의 시작길 입력하기',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w800,
-                  )),
-              onPressed: () { Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SelectDestionationView(),
-                ),
-              );
-              // getRoutes();
-              getWeather();
-              }
-            )
+                child: const Text('나의 시작길 입력하기',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w800,
+                    )),
+                onPressed: () {
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SelectDestionationView(),
+                    ),
+                  );
+                  // getRoutes();
+                  getWeather();
+                })
           ],
         ),
       ),

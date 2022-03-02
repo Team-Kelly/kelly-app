@@ -20,12 +20,7 @@ class _SelectPathViewState extends State<SelectPathView> {
         title: Text('출근 경로', style: TextStyle(color: Colors.black)),
         backgroundColor: const Color(0xFFFCE8D8),
         leading: IconButton(
-          onPressed: () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const SelectDestionationView(),
-            ),
-          ),
+          onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios),
           color: Colors.black,
         ),
@@ -266,7 +261,7 @@ class _SelectPathViewState extends State<SelectPathView> {
                 ),
               ),
               buttonColor: const Color(0xFFFECFC3),
-              onPressed: () => Navigator.pushReplacement(
+              onPressed: () => Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const PathDetailView(),

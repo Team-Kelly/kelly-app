@@ -47,12 +47,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
         backgroundColor: Colors.white,
         centerTitle: true,
         leading: IconButton(
-          onPressed: () => Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const PathDetailView(),
-            ),
-          ),
+          onPressed: () => Navigator.pop(context),
           icon: const Icon(Icons.arrow_back_ios),
           color: Colors.black,
         ),
@@ -155,7 +150,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                   hourScrollController: hourScrollController,
                   minuteScrollController: minuteScrollController,
                   ampmScrollController: ampmScrollController,
-                  width: 346,
+                  width: MediaQuery.of(context).size.width - 60,
                   onChanged: (hour, minute) {},
                   highlightColor: const Color(0xFFFFBB3C),
                 ),
@@ -168,7 +163,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                           timeSet(0, 2, 60);
                         },
                         color: const Color(0xFFF4F4F4),
-                        width: 50,
+                        width: 45,
                         height: 25),
                     timeSetButton(
                         child: const Text('4시'),
@@ -176,7 +171,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                           timeSet(0, 4, 60);
                         },
                         color: const Color(0xFFF4F4F4),
-                        width: 50,
+                        width: 45,
                         height: 25),
                     timeSetButton(
                         child: const Text('6시'),
@@ -184,7 +179,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                           timeSet(0, 6, 60);
                         },
                         color: const Color(0xFFF4F4F4),
-                        width: 50,
+                        width: 45,
                         height: 25),
                     timeSetButton(
                         child: const Text('8시'),
@@ -192,7 +187,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                           timeSet(0, 8, 60);
                         },
                         color: const Color(0xFFF4F4F4),
-                        width: 50,
+                        width: 45,
                         height: 25),
                     timeSetButton(
                         child: const Text('10시'),
@@ -200,7 +195,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                           timeSet(0, 10, 60);
                         },
                         color: const Color(0xFFF4F4F4),
-                        width: 50,
+                        width: 45,
                         height: 25),
                     timeSetButton(
                         child: const Text('12시'),
@@ -208,7 +203,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                           timeSet(1, 0, 60);
                         },
                         color: const Color(0xFFF4F4F4),
-                        width: 50,
+                        width: 45,
                         height: 25),
                   ],
                 ),

@@ -52,7 +52,7 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
                     ),
                   ),
                   buttonColor: const Color(0xFFFECFC3),
-                  onPressed: () => Navigator.pushReplacement(
+                  onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => const SelectPathView(),
