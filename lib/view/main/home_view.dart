@@ -150,7 +150,7 @@ class _HomeViewState extends State<HomeView> {
                               imagePath:
                                   'assets/icons/weather/weather-mostly_sunny.png',
                               temper: (isLoading)
-                                  ? weather.temp[0].toString() + '℃'
+                                  ? weather.result[0]['temp'].toString() + '℃'
                                   : '...'),
                           weatherTile(
                               context: context,
@@ -159,7 +159,7 @@ class _HomeViewState extends State<HomeView> {
                               imagePath:
                                   'assets/icons/weather/weather-partly_cloudy.png',
                               temper: (isLoading)
-                                  ? weather.temp[1].toString() + '℃'
+                                  ? weather.result[1]['temp'].toString() + '℃'
                                   : '...'),
                           weatherTile(
                               context: context,
@@ -168,7 +168,7 @@ class _HomeViewState extends State<HomeView> {
                               imagePath:
                                   'assets/icons/weather/weather-cloudy.png',
                               temper: (isLoading)
-                                  ? weather.temp[2].toString() + '℃'
+                                  ? weather.result[2]['temp'].toString() + '℃'
                                   : '...'),
                           weatherTile(
                               context: context,
@@ -177,7 +177,7 @@ class _HomeViewState extends State<HomeView> {
                               imagePath:
                                   'assets/icons/weather/weather-rainy.png',
                               temper: (isLoading)
-                                  ? weather.temp[3].toString() + '℃'
+                                  ? weather.result[3]['temp'].toString() + '℃'
                                   : '...'),
                           weatherTile(
                               context: context,
@@ -186,7 +186,7 @@ class _HomeViewState extends State<HomeView> {
                               imagePath:
                                   'assets/icons/weather/weather-stormy.png',
                               temper: (isLoading)
-                                  ? weather.temp[4].toString() + '℃'
+                                  ? weather.result[4]['temp'].toString() + '℃'
                                   : '...'),
                           weatherTile(
                               context: context,
@@ -195,7 +195,7 @@ class _HomeViewState extends State<HomeView> {
                               imagePath:
                                   'assets/icons/weather/weather-snowy.png',
                               temper: (isLoading)
-                                  ? weather.temp[5].toString() + '℃'
+                                  ? weather.result[5]['temp'].toString() + '℃'
                                   : '...'),
                         ],
                       ),
