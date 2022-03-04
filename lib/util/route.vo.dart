@@ -32,8 +32,8 @@ abstract class PathNode {
   }
 }
 
-class pathNodeBus extends PathNode {
-  pathNodeBus({
+class PathNodeBus extends PathNode {
+  PathNodeBus({
     required String name,
     required String startStationName,
     required String endStationName,
@@ -62,8 +62,8 @@ class pathNodeBus extends PathNode {
   }
 }
 
-class pathNodeSubway extends PathNode {
-  pathNodeSubway({
+class PathNodeSubway extends PathNode {
+  PathNodeSubway({
     required String name,
     required String startStationName,
     required String endStationName,
@@ -88,8 +88,8 @@ class pathNodeSubway extends PathNode {
   }
 }
 
-class pathNodeWalk extends PathNode {
-  pathNodeWalk({
+class PathNodeWalk extends PathNode {
+  PathNodeWalk({
     required this.walkMeter,
   }) : super(
             name: 'none',

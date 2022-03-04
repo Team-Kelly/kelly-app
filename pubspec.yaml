@@ -30,7 +30,7 @@ dependencies:
 
   # UI 리소스
   # https://pub.dev/packages/cotton_candy_ui
-  cotton_candy_ui: ^0.1.11
+  cotton_candy_ui: ^0.1.13
 
   flutter:
     sdk: flutter

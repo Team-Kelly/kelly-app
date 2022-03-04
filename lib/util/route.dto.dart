@@ -37,7 +37,7 @@ class RouteDTO {
           switch (p['transportation']) {
             case "subway":
               pathNodes.add(
-                pathNodeSubway(
+                PathNodeSubway(
                   direction: p['direction'],
                   lineId: p['lineId'],
                   startStationId: p['startStationId'],
@@ -50,7 +50,7 @@ class RouteDTO {
               break;
             case "bus":
               pathNodes.add(
-                pathNodeBus(
+                PathNodeBus(
                   busId: p['busId'],
                   busType: p['busType'],
                   busTypeDetail: p['busTypeDetail'],
@@ -65,7 +65,7 @@ class RouteDTO {
               break;
 
             case "walk":
-              pathNodes.add(pathNodeWalk(walkMeter: p['walkMeter']));
+              pathNodes.add(PathNodeWalk(walkMeter: p['walkMeter']));
               break;
           }
         }

@@ -1,7 +1,9 @@
-import 'package:app/util/weather.vo.dart';
+import 'package:app/view/alarm/select_destination_view.dart';
 import 'package:app/view/alarm/select_path_view.dart';
+import 'package:cotton_candy_ui/cotton_candy_ui.dart';
+import 'package:app/util/weather.vo.dart';
+import 'package:app/util/weather.dto.dart';
 import 'package:flutter/material.dart';
-import '../../util/weather.dto.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -214,6 +216,7 @@ class _HomeViewState extends State<HomeView> {
                       child: SingleChildScrollView(
                         physics: const BouncingScrollPhysics(),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             routeInfo(
                                 title: Text('소요시간'),
@@ -363,6 +366,24 @@ class _HomeViewState extends State<HomeView> {
                                     Text('버스'),
                                   ],
                                 )),
+                            CandyButton(
+                              width: 72,
+                              height: 72,
+                              borderRadius: 72,
+                              buttonColor: Color(0xFF858D8D),
+                              child: const Icon(
+                                Icons.add,
+                                color: Colors.white,
+                                size: 32,
+                              ),
+                              onPressed: () => Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SelectDestionationView(),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),

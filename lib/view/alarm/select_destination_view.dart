@@ -48,24 +48,48 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
                   ],
                 ),
 
-                // TODO: CandyTextField 그림자 적용
-                // TODO: CandyTextField height값 안먹음
-                // TODO: labelText -> Text 위젯으로 받도록 수정
-                // TODO: labelText 가 XD와 같지 않음
-                // TODO: 전체적으로 텍스트가 볼드가 안먹음
+                // TODO: CandyTextField 그림자 적용             -> cotton_candy_ui 수정으로 해결
+                // TODO: CandyTextField height값 안먹음         -> cotton_candy_ui 수정으로 해결
+                // TODO: labelText -> Text 위젯으로 받도록 수정 -> hintText와 hintStyle로 대체
+                // TODO: labelText 가 XD와 같지 않음            -> prefixIcon, hintStyle 설정으로 조정 가능
+                // TODO: 전체적으로 텍스트가 볼드가 안 먹음     -> hintStyle 설정으로 조정 가능
 
                 SizedBox(height: 35),
 
                 CandyTextField(
                   width: MediaQuery.of(context).size.width - 60,
+                  height: 83,
                   onChanged: (value) {},
-                  labelText: '출발',
+                  prefixIcon: const Text(
+                  '출발',
+                  style: TextStyle(
+                      color: CandyColors.candyPink,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800),
+                ),
+                hintText: '내용을 입력해주세요!',
+                hintStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20,),
+                  elevation: 2,
                 ),
                 SizedBox(height: 10),
                 CandyTextField(
                   width: MediaQuery.of(context).size.width - 60,
+                  height: 83,
                   onChanged: (value) {},
-                  labelText: '도착',
+                  prefixIcon: const Text(
+                  '도착',
+                  style: TextStyle(
+                      color: CandyColors.candyPink,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800),
+                ),
+                hintText: '내용을 입력해주세요!',
+                hintStyle: const TextStyle(
+                    color: Colors.grey,
+                    fontSize: 20,),
+                  elevation: 2,
                 ),
                 const SizedBox(height: 200),
                 CandyButton(

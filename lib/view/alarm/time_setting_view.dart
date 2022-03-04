@@ -59,11 +59,11 @@ class _TimeSettingViewState extends State<TimeSettingView> {
               onPressed: () {
                 Navigator.pushAndRemoveUntil(
                   context,
-                  MaterialPageRoute(builder: (context) => HomeView()),
+                  MaterialPageRoute(builder: (context) => const HomeView()),
                   (route) => false,
                 );
               },
-              child: Text(
+              child: const Text(
                 '저장',
                 style: TextStyle(color: Colors.black),
               ),
@@ -158,60 +158,25 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                   highlightColor: const Color(0xFFFFBB3C),
                 ),
 
-                // TODO: 너비가 왜 이모양으로 조절하는건지..?
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    timeSetButton(
-                        child: const Text('2시'),
+                // TODO: 너비가 왜 이모양으로 조절하는건지..?(바꾸긴 했는데 마음에 드시는지.....?)
+
+                Builder(builder: (context) {
+                  List<Widget> buttons = [];
+                  for (int i = 2; i <= 12; i += 2) {
+                    buttons.add(timeSetButton(
+                        child: Text(i.toString() + '시'),
                         onPressed: () {
-                          timeSet(0, 2, 60);
+                          timeSet(0, i, 60);
                         },
                         color: const Color(0xFFF4F4F4),
-                        width: 45,
-                        height: 25),
-                    timeSetButton(
-                        child: const Text('4시'),
-                        onPressed: () {
-                          timeSet(0, 4, 60);
-                        },
-                        color: const Color(0xFFF4F4F4),
-                        width: 45,
-                        height: 25),
-                    timeSetButton(
-                        child: const Text('6시'),
-                        onPressed: () {
-                          timeSet(0, 6, 60);
-                        },
-                        color: const Color(0xFFF4F4F4),
-                        width: 45,
-                        height: 25),
-                    timeSetButton(
-                        child: const Text('8시'),
-                        onPressed: () {
-                          timeSet(0, 8, 60);
-                        },
-                        color: const Color(0xFFF4F4F4),
-                        width: 45,
-                        height: 25),
-                    timeSetButton(
-                        child: const Text('10시'),
-                        onPressed: () {
-                          timeSet(0, 10, 60);
-                        },
-                        color: const Color(0xFFF4F4F4),
-                        width: 45,
-                        height: 25),
-                    timeSetButton(
-                        child: const Text('12시'),
-                        onPressed: () {
-                          timeSet(1, 0, 60);
-                        },
-                        color: const Color(0xFFF4F4F4),
-                        width: 45,
-                        height: 25),
-                  ],
-                ),
+                        width: (MediaQuery.of(context).size.width - 110) / 6,
+                        height: 25,
+                        margin: const EdgeInsets.fromLTRB(4, 0, 4, 0)));
+                  }
+                  return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: buttons);
+                }),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -250,15 +215,15 @@ class _TimeSettingViewState extends State<TimeSettingView> {
   }
 }
 
-Widget timeSetButton({
-  required Widget child,
-  required void Function()? onPressed,
-  required Color color,
-  required double width,
-  required double height,
-}) =>
+Widget timeSetButton(
+        {required Widget child,
+        required void Function()? onPressed,
+        required Color color,
+        required double width,
+        required double height,
+        EdgeInsetsGeometry? margin}) =>
     Container(
-      margin: EdgeInsets.fromLTRB(4, 10, 4, 10),
+      margin: margin,
       child: CandyButton(
         borderRadius: 5,
         width: width,
