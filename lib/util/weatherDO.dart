@@ -12,8 +12,7 @@ class WeatherDO {
   // late List<dynamic> weatherStatusCode;
   // late List<dynamic> weatherStatusDetail;
 
-  WeatherDO(
-      {required this.result
+  WeatherDO({required this.result
       // required this.rainProb,
       // required this.rainStatusCode,
       // required this.rainStatusDetail,
@@ -37,8 +36,7 @@ class WeatherDTO {
 
     if (response.statusCode == 200) {
       // Map<String, dynamic> result = jsonDecode(utf8.decode(response.bodyBytes));
-      return WeatherDO(
-        result: jsonDecode(utf8.decode(response.bodyBytes))
+      return WeatherDO(result: jsonDecode(utf8.decode(response.bodyBytes))
           // rainProb: result['rainProb'],
           // rainStatusCode: result['rainStatusCode'],
           // rainStatusDetail: result['rainStatusDetail'],
