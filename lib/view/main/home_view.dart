@@ -1,8 +1,7 @@
-import 'package:app/util/weatherDO.dart';
+import 'package:app/util/weather.vo.dart';
 import 'package:app/view/alarm/select_path_view.dart';
-import 'package:cotton_candy_ui/cotton_candy_ui.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import '../../util/weather.dto.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -12,11 +11,12 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  late WeatherDO weather;
+  late WeatherVO weather;
   bool isLoading = false;
   Future<void> getlist() async {
     isLoading = false;
-    weather = await WeatherDTO.getData(37.6576769, 127.3007637);
+    weather =
+        await WeatherDTO.get(latitude: 37.6576769, longitude: 127.3007637);
     isLoading = true;
     setState(() {
       weather = weather;
