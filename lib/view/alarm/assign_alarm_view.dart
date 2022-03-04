@@ -1,3 +1,4 @@
+import 'package:app/util/route.dto.dart';
 import 'package:app/view/alarm/select_destination_view.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/material.dart';
@@ -74,8 +75,14 @@ class _AssignAlarmViewState extends State<AssignAlarmView> {
                       builder: (context) => const SelectDestionationView(),
                     ),
                   );
-                  // getRoutes();
-                  // getWeather();
+
+                  // RouteDTO.get(
+                  //   startX: 127.2864968,
+                  //   startY: 37.6561733,
+                  //   endX: 127.0979449,
+                  //   endY: 37.5132612,
+                  //   transportationType: TransportationType.all,
+                  // );
                 })
           ],
         ),
