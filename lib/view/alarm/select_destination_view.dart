@@ -22,20 +22,46 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(height: 200),
-                Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-                  Text('시작이 반이다\n',
+
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(width: 6),
+                        Icon(Icons.circle,
+                            size: 7, color: CandyColors.candyPink),
+                        SizedBox(width: 49),
+                        Icon(Icons.circle,
+                            size: 7, color: CandyColors.candyPink),
+                      ],
+                    ),
+                    Text(
+                      '시작이 반이다',
+                      textAlign: TextAlign.start,
                       style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width * 2 / 39,
+                          fontSize: 20,
                           height: 1.5,
                           fontWeight: FontWeight.w800,
-                          color: CandyColors.candyPink)),
-                ]),
+                          color: CandyColors.candyPink),
+                    ),
+                  ],
+                ),
+
+                // TODO: CandyTextField 그림자 적용
+                // TODO: CandyTextField height값 안먹음
+                // TODO: labelText -> Text 위젯으로 받도록 수정
+                // TODO: labelText 가 XD와 같지 않음
+                // TODO: 전체적으로 텍스트가 볼드가 안먹음
+
+                SizedBox(height: 35),
+
                 CandyTextField(
                   width: MediaQuery.of(context).size.width - 60,
                   onChanged: (value) {},
                   labelText: '출발',
                 ),
-                SizedBox(height: MediaQuery.of(context).size.height / 40),
+                SizedBox(height: 10),
                 CandyTextField(
                   width: MediaQuery.of(context).size.width - 60,
                   onChanged: (value) {},

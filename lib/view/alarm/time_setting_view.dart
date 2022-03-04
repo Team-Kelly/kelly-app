@@ -56,12 +56,13 @@ class _TimeSettingViewState extends State<TimeSettingView> {
           TextButton(
             onPressed: () {},
             child: TextButton(
-              onPressed: () => Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const HomeView(),
-                ),
-              ),
+              onPressed: () {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => HomeView()),
+                  (route) => false,
+                );
+              },
               child: Text(
                 '저장',
                 style: TextStyle(color: Colors.black),
@@ -80,18 +81,20 @@ class _TimeSettingViewState extends State<TimeSettingView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 RichText(
-                  text: const TextSpan(children: [
-                    TextSpan(
-                        text: '오전 ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFFFFBB3C))),
-                    TextSpan(
-                        text: '출근길 빗길 조심하세요!',
-                        style: TextStyle(
-                            fontWeight: FontWeight.w800, color: Colors.black))
-                  ]),
-                )
+                  text: const TextSpan(
+                    children: [
+                      TextSpan(
+                          text: '오전 ',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800,
+                              color: Color(0xFFFFBB3C))),
+                      TextSpan(
+                          text: '출근길 빗길 조심하세요!',
+                          style: TextStyle(
+                              fontWeight: FontWeight.w800, color: Colors.black))
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
@@ -150,10 +153,12 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                   hourScrollController: hourScrollController,
                   minuteScrollController: minuteScrollController,
                   ampmScrollController: ampmScrollController,
-                  width: MediaQuery.of(context).size.width - 60,
+                  width: MediaQuery.of(context).size.width - 75,
                   onChanged: (hour, minute) {},
                   highlightColor: const Color(0xFFFFBB3C),
                 ),
+
+                // TODO: 너비가 왜 이모양으로 조절하는건지..?
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -245,19 +250,21 @@ class _TimeSettingViewState extends State<TimeSettingView> {
   }
 }
 
-Widget timeSetButton(
-        {required Widget child,
-        required void Function()? onPressed,
-        required Color color,
-        required double width,
-        required double height}) =>
+Widget timeSetButton({
+  required Widget child,
+  required void Function()? onPressed,
+  required Color color,
+  required double width,
+  required double height,
+}) =>
     Container(
-        margin: EdgeInsets.fromLTRB(4, 10, 4, 10),
-        child: CandyButton(
-          borderRadius: 5,
-          width: width,
-          height: height,
-          buttonColor: color,
-          child: child,
-          onPressed: onPressed,
-        ));
+      margin: EdgeInsets.fromLTRB(4, 10, 4, 10),
+      child: CandyButton(
+        borderRadius: 5,
+        width: width,
+        height: height,
+        buttonColor: color,
+        child: child,
+        onPressed: onPressed,
+      ),
+    );

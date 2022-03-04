@@ -28,118 +28,130 @@ class _PathDetailViewState extends State<PathDetailView> {
           color: Colors.black,
         ),
       ),
-      body: Center(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          routeInfo(
-              title: Text(
-                '소요시간',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
-              ),
-              subtitle: Row(
-                children: [
-                  SizedBox(
-                    width: 15,
-                    height: 15,
-                    child: Image.asset('assets/icons/transport/walk.png'),
-                  ),
-                  Text('도보 > '),
-                  SizedBox(
-                    width: 15,
-                    height: 15,
-                    child: Image.asset('assets/icons/transport/bus-normal.png'),
-                  ),
-                  Text('버스 > '),
-                  SizedBox(
-                    width: 15,
-                    height: 15,
-                    child: Image.asset(
-                        'assets/icons/transport/subway-gyeongchun.png'),
-                  ),
-                  Text('지하철 > '),
-                  SizedBox(
-                    width: 15,
-                    height: 15,
-                    child:
-                        Image.asset('assets/icons/transport/subway-1-line.png'),
-                  ),
-                  Text('지하철'),
-                ],
-              )),
-          Container(
-            width: MediaQuery.of(context).size.width - 60,
-            height: 3,
-            color: const Color(0xFFF2F2F2),
-          ),
-          Container(
-            padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: CandyTimeLine(
-                children: [
-                  CandyIndicator(
-                    child: Text(
-                      '출발',
-                      style: TextStyle(
-                        color: Color(0xFFFFFFFF),
-                        fontWeight: FontWeight.w800,
+      body: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 52),
+        child: Center(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            routeInfo(
+                title: Text(
+                  '소요시간',
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+                ),
+                subtitle: Row(
+                  children: [
+                    SizedBox(
+                      width: 15,
+                      height: 15,
+                      child: Image.asset('assets/icons/transport/walk.png'),
+                    ),
+                    Text('도보 > '),
+                    SizedBox(
+                      width: 15,
+                      height: 15,
+                      child:
+                          Image.asset('assets/icons/transport/bus-normal.png'),
+                    ),
+                    Text('버스 > '),
+                    SizedBox(
+                      width: 15,
+                      height: 15,
+                      child: Image.asset(
+                          'assets/icons/transport/subway-gyeongchun.png'),
+                    ),
+                    Text('지하철 > '),
+                    SizedBox(
+                      width: 15,
+                      height: 15,
+                      child: Image.asset(
+                          'assets/icons/transport/subway-1-line.png'),
+                    ),
+                    Text('지하철'),
+                  ],
+                )),
+            Container(
+              width: MediaQuery.of(context).size.width - 60,
+              height: 3,
+              color: const Color(0xFFF2F2F2),
+            ),
+            Container(
+              padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
+              child: SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                child: CandyTimeLine(
+                  children: [
+                    CandyIndicator(
+                      child: Text(
+                        '출발',
+                        style: TextStyle(
+                          color: Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
+                      title: Text('집'),
                     ),
-                    title: Text('집'),
-                  ),
-                  CandyIndicator(
-                    child: Icon(
-                      Icons.directions_run,
-                      color: Colors.white,
-                    ),
-                    title: Text('도보 20분'),
-                    subTitle: Text('12km'),
-                  ),
-                  CandyIndicator(
-                    child: Icon(
-                      Icons.directions_bus,
-                      color: Colors.white,
-                    ),
-                    title: Text('마석역'),
-                    subTitle: Text('경춘선'),
-                  ),
-                  CandyIndicator(
-                    child: Text(
-                      '도착',
-                      style: TextStyle(
-                        color: Color(0xFFFFFFFF),
+                    CandyIndicator(
+                      child: Icon(
+                        Icons.directions_run,
+                        color: Colors.white,
                       ),
+                      title: Text('도보 20분'),
+                      subTitle: Text('12km'),
                     ),
-                    title: Text('광운대역'),
-                    subTitle: Text('1호선'),
+                    CandyIndicator(
+                      child: Icon(
+                        Icons.directions_bus,
+                        color: Colors.white,
+                      ),
+                      title: Text('마석역'),
+                      subTitle: Text('경춘선'),
+                    ),
+                    CandyIndicator(
+                      child: Text(
+                        '도착',
+                        style: TextStyle(
+                          color: Color(0xFFFFFFFF),
+                        ),
+                      ),
+                      title: Text('광운대역'),
+                      subTitle: Text('1호선'),
+                    ),
+                  ],
+                  connector: CandyConnector(
+                    height: 80,
                   ),
-                ],
-                connector: CandyConnector(
-                  height: 80,
                 ),
               ),
             ),
-          ),
-          const SizedBox(height: 40),
-          CandyButton(
-            width: 346,
-            child: const Text(
-              '경로 추가',
-              style: TextStyle(
-                fontSize: 20,
-                color: Colors.white,
+            const SizedBox(height: 40),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  CandyButton(
+                    height: 55,
+                    width: 346,
+                    child: const Text(
+                      '경로 추가',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                      ),
+                    ),
+                    onPressed: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const TimeSettingView(),
+                      ),
+                    ),
+                  ),
+                ],
               ),
-            ),
-            onPressed: () => Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const TimeSettingView(),
-              ),
-            ),
-          )
-        ],
-      )),
+            )
+          ],
+        )),
+      ),
     );
   }
 }

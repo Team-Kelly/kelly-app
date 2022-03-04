@@ -39,40 +39,40 @@ class _HomeViewState extends State<HomeView> {
             ///
             /// 상단 노티바
             ///
-            Container(
-              height: 50,
-              color: Colors.white,
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  // TODO: 추후 필요한 경우, styled text 패키지 추가
-                  // https://pub.dev/packages/styled_text
-                  children: [
-                    RichText(
-                      text: const TextSpan(children: [
-                        TextSpan(
-                            text: '오전 ',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                color: Color(0xFFFFBB3C))),
-                        TextSpan(
-                            text: '출근길 빗길 조심하세요!',
-                            style: TextStyle(
-                                fontWeight: FontWeight.w800,
-                                color: Colors.black))
-                      ]),
-                    )
-                  ],
-                ),
-              ),
-            ),
+            // Container(
+            //   height: 50,
+            //   color: Colors.white,
+            //   child: Padding(
+            //     padding: const EdgeInsets.all(15.0),
+            //     child: Row(
+            //       crossAxisAlignment: CrossAxisAlignment.center,
+            //       mainAxisAlignment: MainAxisAlignment.start,
+            //       // TODO: 추후 필요한 경우, styled text 패키지 추가
+            //       // https://pub.dev/packages/styled_text
+            //       children: [
+            //         RichText(
+            //           text: const TextSpan(children: [
+            //             TextSpan(
+            //                 text: '오전 ',
+            //                 style: TextStyle(
+            //                     fontWeight: FontWeight.w800,
+            //                     color: Color(0xFFFFBB3C))),
+            //             TextSpan(
+            //                 text: '출근길 빗길 조심하세요!',
+            //                 style: TextStyle(
+            //                     fontWeight: FontWeight.w800,
+            //                     color: Colors.black))
+            //           ]),
+            //         )
+            //       ],
+            //     ),
+            //   ),
+            // ),
             Container(
               width: MediaQuery.of(context).size.width,
               height: MediaQuery.of(context).size.height - 90,
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(30, 0, 30, 15),
+                padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
@@ -211,163 +211,159 @@ class _HomeViewState extends State<HomeView> {
                       style: TextStyle(fontSize: 20),
                     ),
                     Expanded(
-                      child: SizedBox(
-                        height: 450,
-                        // color: Colors.blue,
-                        child: SingleChildScrollView(
-                          physics: const BouncingScrollPhysics(),
-                          child: Column(
-                            children: [
-                              routeInfo(
-                                  title: Text('소요시간'),
-                                  subtitle: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/walk.png'),
-                                      ),
-                                      Text('도보 > '),
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/bus-normal.png'),
-                                      ),
-                                      Text('버스 > '),
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/subway-gyeongchun.png'),
-                                      ),
-                                      Text('지하철 > '),
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/subway-1-line.png'),
-                                      ),
-                                      Text('지하철'),
-                                    ],
-                                  )),
-                              routeInfo(
-                                  title: Text('소요시간'),
-                                  subtitle: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/bus-town.png'),
-                                      ),
-                                      Text('버스 > '),
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/walk.png'),
-                                      ),
-                                      Text('도보 > '),
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/subway-2-line.png'),
-                                      ),
-                                      Text('지하철')
-                                    ],
-                                  )),
-                              routeInfo(
-                                  title: Text('소요시간'),
-                                  subtitle: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/bus-metro.png'),
-                                      ),
-                                      Text('버스 > '),
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/subway-3-line.png'),
-                                      ),
-                                      Text('지하철')
-                                    ],
-                                  )),
-                              routeInfo(
-                                  title: Text('소요시간'),
-                                  subtitle: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/walk.png'),
-                                      ),
-                                      Text('도보 > '),
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/bus-trunk.png'),
-                                      ),
-                                      Text('버스 > '),
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/subway-gyeongchun.png'),
-                                      ),
-                                      Text('지하철')
-                                    ],
-                                  )),
-                              routeInfo(
-                                  title: Text('소요시간'),
-                                  subtitle: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/subway-jungang.png'),
-                                      ),
-                                      Text('지하철 > '),
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/bus-airport.png'),
-                                      ),
-                                      Text('버스'),
-                                    ],
-                                  )),
-                              routeInfo(
-                                  title: Text('소요시간'),
-                                  subtitle: Row(
-                                    children: [
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/subway-6-line.png'),
-                                      ),
-                                      Text('지하철 > '),
-                                      SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                        child: Image.asset(
-                                            'assets/icons/transport/bus-etc.png'),
-                                      ),
-                                      Text('버스'),
-                                    ],
-                                  )),
-                            ],
-                          ),
+                      child: SingleChildScrollView(
+                        physics: const BouncingScrollPhysics(),
+                        child: Column(
+                          children: [
+                            routeInfo(
+                                title: Text('소요시간'),
+                                subtitle: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/walk.png'),
+                                    ),
+                                    Text('도보 ➔ '),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/bus-normal.png'),
+                                    ),
+                                    Text('버스 ➔ '),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/subway-gyeongchun.png'),
+                                    ),
+                                    Text('지하철 ➔ '),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/subway-1-line.png'),
+                                    ),
+                                    Text('지하철'),
+                                  ],
+                                )),
+                            routeInfo(
+                                title: Text('소요시간'),
+                                subtitle: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/bus-town.png'),
+                                    ),
+                                    Text('버스 ➔ '),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/walk.png'),
+                                    ),
+                                    Text('도보 ➔ '),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/subway-2-line.png'),
+                                    ),
+                                    Text('지하철')
+                                  ],
+                                )),
+                            routeInfo(
+                                title: Text('소요시간'),
+                                subtitle: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/bus-metro.png'),
+                                    ),
+                                    Text('버스 ➔ '),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/subway-3-line.png'),
+                                    ),
+                                    Text('지하철')
+                                  ],
+                                )),
+                            routeInfo(
+                                title: Text('소요시간'),
+                                subtitle: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/walk.png'),
+                                    ),
+                                    Text('도보 ➔ '),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/bus-trunk.png'),
+                                    ),
+                                    Text('버스 ➔ '),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/subway-gyeongchun.png'),
+                                    ),
+                                    Text('지하철')
+                                  ],
+                                )),
+                            routeInfo(
+                                title: Text('소요시간'),
+                                subtitle: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/subway-jungang.png'),
+                                    ),
+                                    Text('지하철 ➔ '),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/bus-airport.png'),
+                                    ),
+                                    Text('버스'),
+                                  ],
+                                )),
+                            routeInfo(
+                                title: Text('소요시간'),
+                                subtitle: Row(
+                                  children: [
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/subway-6-line.png'),
+                                    ),
+                                    Text('지하철 ➔ '),
+                                    SizedBox(
+                                      width: 15,
+                                      height: 15,
+                                      child: Image.asset(
+                                          'assets/icons/transport/bus-etc.png'),
+                                    ),
+                                    Text('버스'),
+                                  ],
+                                )),
+                          ],
                         ),
                       ),
                     ),
