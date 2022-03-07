@@ -32,6 +32,10 @@ dependencies:
   # https://pub.dev/packages/cotton_candy_ui
   cotton_candy_ui: ^0.1.13
 
+  # X, Y좌표를 위도, 경도로 변환
+  # https://pub.dev/packages/proj4dart
+  proj4dart: ^2.0.0
+
   flutter:
     sdk: flutter
 

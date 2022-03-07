@@ -1,6 +1,4 @@
 PODS:
-  - cotton_candy_ui (0.0.1):
-    - Flutter
   - Flutter (1.0.0)
   - flutter_local_notifications (0.0.1):
     - Flutter
@@ -10,15 +8,12 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
-  - cotton_candy_ui (from `.symlinks/plugins/cotton_candy_ui/ios`)
   - Flutter (from `Flutter`)
   - flutter_local_notifications (from `.symlinks/plugins/flutter_local_notifications/ios`)
   - flutter_tts (from `.symlinks/plugins/flutter_tts/ios`)
   - shared_preferences_ios (from `.symlinks/plugins/shared_preferences_ios/ios`)
 
 EXTERNAL SOURCES:
-  cotton_candy_ui:
-    :path: ".symlinks/plugins/cotton_candy_ui/ios"
   Flutter:
     :path: Flutter
   flutter_local_notifications:
@@ -29,7 +24,6 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/shared_preferences_ios/ios"
 
 SPEC CHECKSUMS:
-  cotton_candy_ui: f688ba7c511764848548f3fce6dc2b22e962cd42
   Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
   flutter_local_notifications: 0c0b1ae97e741e1521e4c1629a459d04b9aec743
   flutter_tts: 0f492aab6accf87059b72354fcb4ba934304771d
