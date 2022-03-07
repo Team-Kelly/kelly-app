@@ -1,16 +1,55 @@
-import 'package:app/view/alarm/select_destination_view.dart';
+import 'package:app/util/route.dto.dart';
+import 'package:app/util/route.vo.dart';
 import 'package:app/view/alarm/path_detail_view.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/material.dart';
 
+class Coordinate {
+  Coordinate({
+    required this.latitude,
+    required this.longitude,
+  });
+
+  final double latitude;
+  final double longitude;
+}
+
 class SelectPathView extends StatefulWidget {
-  const SelectPathView({Key? key}) : super(key: key);
+  final String startAddress;
+  final String endAddress;
+
+  final Coordinate startPoint;
+  final Coordinate endPoint;
+
+  const SelectPathView({
+    Key? key,
+    required this.startAddress,
+    required this.endAddress,
+    required this.startPoint,
+    required this.endPoint,
+  }) : super(key: key);
 
   @override
   _SelectPathViewState createState() => _SelectPathViewState();
 }
 
 class _SelectPathViewState extends State<SelectPathView> {
+  @override
+  void initState() {
+    getPathWidgets(
+      startPoint: widget.startPoint,
+      endPoint: widget.endPoint,
+      transportationType: TransportationType.all,
+    ).then((value) {
+      pathResults = value;
+      setState(() {});
+    });
+
+    super.initState();
+  }
+
+  List<Widget> pathResults = [];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +77,7 @@ class _SelectPathViewState extends State<SelectPathView> {
                 child: Row(
                   children: [
                     SizedBox(width: 60, child: Center(child: Text('출발'))),
-                    Text('영진그린필 아파트'),
+                    Text(widget.startAddress),
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -53,7 +92,7 @@ class _SelectPathViewState extends State<SelectPathView> {
                 child: Row(
                   children: [
                     SizedBox(width: 60, child: Center(child: Text('도착'))),
-                    Text('광운대학교'),
+                    Text(widget.endAddress),
                   ],
                 ),
                 decoration: BoxDecoration(
@@ -69,10 +108,37 @@ class _SelectPathViewState extends State<SelectPathView> {
               ),
               const SizedBox(height: 10),
               CandyRadioButton(
+                width: 90,
                 selectedButtonColor: const Color(0xFFFECEC0),
                 selectedTextColor: Colors.black,
                 radioComponents: const ['최단경로', '지하철', '버스'],
-                onChanged: (value) {},
+                onChanged: (value) {
+                  pathResults.clear();
+                  setState(() {});
+
+                  late TransportationType trType;
+
+                  switch (value) {
+                    case "지하철":
+                      trType = TransportationType.subway;
+                      break;
+                    case "버스":
+                      trType = TransportationType.bus;
+                      break;
+                    default:
+                      trType = TransportationType.all;
+                      break;
+                  }
+
+                  getPathWidgets(
+                    startPoint: widget.startPoint,
+                    endPoint: widget.endPoint,
+                    transportationType: trType,
+                  ).then((value) {
+                    pathResults = value;
+                    setState(() {});
+                  });
+                },
               ),
               const SizedBox(height: 10),
               const Divider(
@@ -86,180 +152,7 @@ class _SelectPathViewState extends State<SelectPathView> {
                 child: SingleChildScrollView(
                   physics: const BouncingScrollPhysics(),
                   child: Column(
-                    children: [
-                      routeInfo(
-                          title: Text(
-                            '소요시간',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w800),
-                          ),
-                          subtitle: Row(
-                            children: [
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/walk.png'),
-                              ),
-                              Text('도보 ➔ '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/bus-normal.png'),
-                              ),
-                              Text('버스 ➔ '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/subway-gyeongchun.png'),
-                              ),
-                              Text('지하철 ➔ '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/subway-1-line.png'),
-                              ),
-                              Text('지하철'),
-                            ],
-                          )),
-                      routeInfo(
-                          title: Text(
-                            '소요시간',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w800),
-                          ),
-                          subtitle: Row(
-                            children: [
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/bus-town.png'),
-                              ),
-                              Text('버스 ➔ '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/walk.png'),
-                              ),
-                              Text('도보 ➔ '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/subway-2-line.png'),
-                              ),
-                              Text('지하철')
-                            ],
-                          )),
-                      routeInfo(
-                          title: Text(
-                            '소요시간',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w800),
-                          ),
-                          subtitle: Row(
-                            children: [
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/bus-metro.png'),
-                              ),
-                              Text('버스 ➔ '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/subway-3-line.png'),
-                              ),
-                              Text('지하철')
-                            ],
-                          )),
-                      routeInfo(
-                          title: Text(
-                            '소요시간',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w800),
-                          ),
-                          subtitle: Row(
-                            children: [
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/walk.png'),
-                              ),
-                              Text('도보 ➔ '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/bus-trunk.png'),
-                              ),
-                              Text('버스 ➔ '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/subway-gyeongchun.png'),
-                              ),
-                              Text('지하철')
-                            ],
-                          )),
-                      routeInfo(
-                          title: Text(
-                            '소요시간',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w800),
-                          ),
-                          subtitle: Row(
-                            children: [
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/subway-jungang.png'),
-                              ),
-                              Text('지하철 ➔ '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/bus-airport.png'),
-                              ),
-                              Text('버스'),
-                            ],
-                          )),
-                      routeInfo(
-                          title: Text(
-                            '소요시간',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w800),
-                          ),
-                          subtitle: Row(
-                            children: [
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/subway-6-line.png'),
-                              ),
-                              Text('지하철 ➔ '),
-                              SizedBox(
-                                width: 15,
-                                height: 15,
-                                child: Image.asset(
-                                    'assets/icons/transport/bus-etc.png'),
-                              ),
-                              Text('버스'),
-                            ],
-                          )),
-                    ],
+                    children: pathResults,
                   ),
                 ),
               ),
@@ -296,6 +189,88 @@ class _SelectPathViewState extends State<SelectPathView> {
   }
 }
 
+Future<List<Widget>> getPathWidgets({
+  required Coordinate startPoint,
+  required Coordinate endPoint,
+  required TransportationType transportationType,
+}) async {
+  List<Widget> pathResults = [];
+  List<PathNodeList> result = await RouteDTO.get(
+    startX: startPoint.longitude,
+    startY: startPoint.latitude,
+    endX: endPoint.longitude,
+    endY: endPoint.latitude,
+    transportationType: transportationType,
+  );
+
+  for (PathNodeList v in result) {
+    List<Widget> subtitle = [];
+
+    for (PathNode n in v.transportation) {
+      if (n is PathNodeBus) {
+        PathNodeBus nn = n;
+        subtitle.add(
+          SizedBox(
+            width: 15,
+            height: 15,
+            child: Image.asset('assets/icons/transport/bus-normal.png'),
+          ),
+        );
+        subtitle.add(Text('${nn.name} ➔ '));
+      } else if (n is PathNodeSubway) {
+        PathNodeSubway nn = n;
+        subtitle.add(
+          SizedBox(
+            width: 15,
+            height: 15,
+            child: Image.asset('assets/icons/transport/subway-1-line.png'),
+          ),
+        );
+        subtitle.add(Text('${nn.name} ➔ '));
+      } else if (n is PathNodeWalk) {
+        PathNodeWalk nn = n;
+        subtitle.add(
+          SizedBox(
+            width: 15,
+            height: 15,
+            child: Image.asset('assets/icons/transport/walk.png'),
+          ),
+        );
+        subtitle.add(Text('도보 ➔ '));
+      } else {}
+    }
+
+    pathResults.add(
+      routeInfo(
+        title: Text(
+          minuteToHour(v.durationTime),
+          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+        ),
+        subtitle: Container(
+          height: 20,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: subtitle,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+  return pathResults;
+}
+
+String minuteToHour(int durationTime) {
+  int hour = durationTime ~/ 60;
+  int minute = durationTime % 60;
+  String result = hour.toString() + '시간 ' + minute.toString() + '분';
+  return result;
+}
+
 Widget routeInfo({
   required Widget title,
   required Widget subtitle,
@@ -303,21 +278,29 @@ Widget routeInfo({
     SizedBox(
       width: 346,
       height: 83,
-      child: Center(
-        child: Column(
-          children: [
-            Container(
-              padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: ListTile(
-                title: title,
-                subtitle: subtitle,
-              ),
+      child: Container(
+        margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(15),
+          boxShadow: const [
+            BoxShadow(
+              color: Color.fromRGBO(0, 0, 0, 0.07),
+              offset: Offset(3, 3),
+              blurRadius: 10,
             ),
           ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              title,
+              subtitle,
+            ],
+          ),
         ),
       ),
     );
