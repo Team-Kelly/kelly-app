@@ -1,4 +1,5 @@
 import 'package:app/provider/personal_info_provider.dart';
+import 'package:app/util/preference_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
@@ -13,6 +14,10 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
+
+    // shared pref. 초기화/로드
+    PreferenceManager.instance.init();
+
     runner();
   }
 
