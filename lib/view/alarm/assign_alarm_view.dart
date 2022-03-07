@@ -1,4 +1,3 @@
-import 'package:app/util/route.dto.dart';
 import 'package:app/view/alarm/select_destination_view.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/material.dart';
@@ -62,28 +61,29 @@ class _AssignAlarmViewState extends State<AssignAlarmView> {
               ],
             ),
             CandyButton(
-                child: const Text('나의 시작길 입력하기',
-                    style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w800,
-                    )),
-                onPressed: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const SelectDestionationView(),
-                    ),
-                  );
+              child: const Text('나의 시작길 입력하기',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.white,
+                    fontWeight: FontWeight.w800,
+                  )),
+              onPressed: () {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SelectDestionationView(),
+                  ),
+                );
 
-                  // RouteDTO.get(
-                  //   startX: 127.2864968,
-                  //   startY: 37.6561733,
-                  //   endX: 127.0979449,
-                  //   endY: 37.5132612,
-                  //   transportationType: TransportationType.all,
-                  // );
-                })
+                // RouteDTO.get(
+                //   startX: 127.2864968,
+                //   startY: 37.6561733,
+                //   endX: 127.0979449,
+                //   endY: 37.5132612,
+                //   transportationType: TransportationType.all,
+                // );
+              },
+            ),
           ],
         ),
       ),

@@ -1,4 +1,3 @@
-import 'package:app/view/alarm/path_detail_view.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:app/view/main/home_view.dart';
 import 'package:flutter/cupertino.dart';
@@ -99,7 +98,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             child: Column(
               children: [
                 Container(
@@ -171,7 +170,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                         color: const Color(0xFFF4F4F4),
                         width: (MediaQuery.of(context).size.width - 110) / 6,
                         height: 25,
-                        margin: const EdgeInsets.fromLTRB(4, 0, 4, 0)));
+                        margin: const EdgeInsets.fromLTRB(3, 0, 3, 0)));
                   }
                   return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -202,6 +201,8 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                   ],
                 ),
                 CandyDayOfTheWeek(
+                  width: 25,
+                  height: 25,
                   onChanged: (value) {},
                   borderWidth: 1.2,
                   selectedColor: const Color(0xFFFFBB3C),
