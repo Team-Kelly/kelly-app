@@ -56,7 +56,7 @@ class _SelectPathViewState extends State<SelectPathView> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        title: Text('출근 경로', style: TextStyle(color: Colors.black)),
+        title: const Text('출근 경로', style: TextStyle(color: Colors.black)),
         backgroundColor: const Color(0xFFFCE8D8),
         leading: IconButton(
           onPressed: () => Navigator.pop(context),
@@ -76,7 +76,7 @@ class _SelectPathViewState extends State<SelectPathView> {
                 height: 47,
                 child: Row(
                   children: [
-                    SizedBox(width: 60, child: Center(child: Text('출발'))),
+                    const SizedBox(width: 60, child: Center(child: Text('출발'))),
                     Text(widget.startAddress),
                   ],
                 ),
@@ -91,7 +91,7 @@ class _SelectPathViewState extends State<SelectPathView> {
                 height: 47,
                 child: Row(
                   children: [
-                    SizedBox(width: 60, child: Center(child: Text('도착'))),
+                    const SizedBox(width: 60, child: Center(child: Text('도착'))),
                     Text(widget.endAddress),
                   ],
                 ),
@@ -211,9 +211,8 @@ Future<List<Widget>> getPathWidgets({
         PathNodeBus nn = n;
         subtitle.add(
           SizedBox(
-            width: 15,
-            height: 15,
-            child: Image.asset('assets/icons/transport/bus-normal.png'),
+            width: 15, height: 15, child: busType(nn),
+            //Image.asset('assets/icons/transport/bus-normal.png'),
           ),
         );
         subtitle.add(Text('${nn.name} ➔ '));
@@ -223,7 +222,8 @@ Future<List<Widget>> getPathWidgets({
           SizedBox(
             width: 15,
             height: 15,
-            child: Image.asset('assets/icons/transport/subway-1-line.png'),
+            child: subwayType(nn),
+            // Image.asset('assets/icons/transport/subway-1-line.png'),
           ),
         );
         subtitle.add(Text('${nn.name} ➔ '));
@@ -267,8 +267,88 @@ Future<List<Widget>> getPathWidgets({
 String minuteToHour(int durationTime) {
   int hour = durationTime ~/ 60;
   int minute = durationTime % 60;
-  String result = hour.toString() + '시간 ' + minute.toString() + '분';
-  return result;
+  if (hour > 0) {
+    String result = hour.toString() + '시간 ' + minute.toString() + '분';
+    return result;
+  } else {
+    String result = minute.toString() + '분';
+    return result;
+  }
+}
+
+Image busType(PathNodeBus pathNodeBus) {
+  if (pathNodeBus.busTypeDetail.trim() == '좌석' ||
+      pathNodeBus.busTypeDetail.trim() == '직행좌석' ||
+      pathNodeBus.busTypeDetail.trim() == '경기도 시외형버스' ||
+      pathNodeBus.busTypeDetail.trim() == '광역' ||
+      pathNodeBus.busTypeDetail.trim() == '급행') {
+    return Image.asset('assets/icons/transport/bus-metro.png');
+  } else if (pathNodeBus.busTypeDetail.trim() == '일반' ||
+      pathNodeBus.busTypeDetail.trim() == '지선') {
+    return Image.asset('assets/icons/transport/bus-normal.png');
+  } else if (pathNodeBus.busTypeDetail.trim() == '마을버스' ||
+      pathNodeBus.busTypeDetail.trim() == '순환버스') {
+    return Image.asset('assets/icons/transport/bus-town.png');
+  } else if (pathNodeBus.busTypeDetail.trim() == '공항버스') {
+    return Image.asset('assets/icons/transport/bus-airport.png');
+  } else if (pathNodeBus.busTypeDetail.trim() == '간선') {
+    return Image.asset('assets/icons/transport/bus-trunk.png');
+  } else {
+    return Image.asset('assets/icons/transport/bus-etc.png');
+  }
+}
+
+Image subwayType(PathNodeSubway pathNodeSubway) {
+  // 분당선은 수인선과 통합되어 현재는 수인 분당선만 존재
+  // 인천공항선은 정식 명칭이 수도권 자기부상열차
+  switch (pathNodeSubway.name.trim()) {
+    case '수도권 1호선':
+      return Image.asset('assets/icons/transport/subway-1-line.png');
+    case '수도권 2호선':
+      return Image.asset('assets/icons/transport/subway-2-line.png');
+    case '수도권 3호선':
+      return Image.asset('assets/icons/transport/subway-3-line.png');
+    case '수도권 4호선':
+      return Image.asset('assets/icons/transport/subway-4-line.png');
+    case '수도권 5호선':
+      return Image.asset('assets/icons/transport/subway-5-line.png');
+    case '수도권 6호선':
+      return Image.asset('assets/icons/transport/subway-6-line.png');
+    case '수도권 7호선':
+      return Image.asset('assets/icons/transport/subway-7-line.png');
+    case '수도권 8호선':
+      return Image.asset('assets/icons/transport/subway-8-line.png');
+    case '수도권 9호선':
+      return Image.asset('assets/icons/transport/subway-9-line.png');
+    case '수도권 경춘선':
+      return Image.asset('assets/icons/transport/subway-gyeongchun.png');
+    case '수도권 경강선':
+      return Image.asset('assets/icons/transport/subway-gyeonggang.png');
+    case '수도권 공항철도':
+      return Image.asset('assets/icons/transport/subway-airport.png');
+    case '수도권 에버라인':
+      return Image.asset('assets/icons/transport/subway-yongin.png');
+    case '수도권 신분당선':
+      return Image.asset('assets/icons/transport/subway-shinbundang.png');
+    case '수도권 수인.분당선':
+      return Image.asset('assets/icons/transport/subway-suin.png');
+    case '수도권 의정부경전철':
+      return Image.asset('assets/icons/transport/subway-uijeongbu.png');
+    case '수도권 자기부상열차':
+      return Image.asset('assets/icons/transport/subway-incheon-airport.png');
+    case '수도권 우이신설경전철':
+      return Image.asset('assets/icons/transport/subway-ui-sinseol.png');
+    case '수도권 김포골드라인':
+      return Image.asset('assets/icons/transport/subway-gimpo.png');
+    case '인천 1호선':
+      return Image.asset('assets/icons/transport/subway-1-incheon.png');
+    case '인천 2호선':
+      return Image.asset('assets/icons/transport/subway-2-incheon.png');
+    case '경의중앙선':
+      return Image.asset('assets/icons/transport/subway-jungang.png');
+    default:
+      return Image.asset('assets/icons/transport/subway-seohae.png');
+  }
 }
 
 Widget routeInfo({

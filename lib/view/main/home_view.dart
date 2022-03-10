@@ -34,7 +34,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFCE8D8),
+      backgroundColor: const Color(0xFFFCE8D8),
       body: SafeArea(
         child: Column(
           children: [
@@ -134,7 +134,7 @@ class _HomeViewState extends State<HomeView> {
                       width: 200,
                       height: 200,
                       child:
-                          Image.asset("assets/icons/weather/weather-sunny.png"),
+                          weatherType(weather.result[0]['weatherStatusCode']),
                     ),
 
                     ///
@@ -142,65 +142,87 @@ class _HomeViewState extends State<HomeView> {
                     ///
                     SizedBox(height: 10),
                     Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          weatherTile(
+                      child: Builder(
+                        builder: (_) {
+                          List<Widget> result = [];
+                          for (int i = 0; i < 6; i++) {
+                            result.add(weatherTile(
                               context: context,
-                              title: '현재',
+                              title:
+                                  (i == 0) ? '현재' : '+' + i.toString() + '시간',
                               color: const Color(0xFFFFAE9A),
-                              imagePath:
-                                  'assets/icons/weather/weather-mostly_sunny.png',
                               temper: (isLoading)
                                   ? weather.result[0]['temp'].toString() + '℃'
-                                  : '...'),
-                          weatherTile(
-                              context: context,
-                              title: '+1시간',
-                              color: const Color(0xFFFFAE9A),
-                              imagePath:
-                                  'assets/icons/weather/weather-partly_cloudy.png',
-                              temper: (isLoading)
-                                  ? weather.result[1]['temp'].toString() + '℃'
-                                  : '...'),
-                          weatherTile(
-                              context: context,
-                              title: '+2시간',
-                              color: const Color(0xFFFFAE9A),
-                              imagePath:
-                                  'assets/icons/weather/weather-cloudy.png',
-                              temper: (isLoading)
-                                  ? weather.result[2]['temp'].toString() + '℃'
-                                  : '...'),
-                          weatherTile(
-                              context: context,
-                              title: '+3시간',
-                              color: const Color(0xFFFFAE9A),
-                              imagePath:
-                                  'assets/icons/weather/weather-rainy.png',
-                              temper: (isLoading)
-                                  ? weather.result[3]['temp'].toString() + '℃'
-                                  : '...'),
-                          weatherTile(
-                              context: context,
-                              title: '+4시간',
-                              color: const Color(0xFFFFAE9A),
-                              imagePath:
-                                  'assets/icons/weather/weather-stormy.png',
-                              temper: (isLoading)
-                                  ? weather.result[4]['temp'].toString() + '℃'
-                                  : '...'),
-                          weatherTile(
-                              context: context,
-                              title: '+5시간',
-                              color: const Color(0xFFFFAE9A),
-                              imagePath:
-                                  'assets/icons/weather/weather-snowy.png',
-                              temper: (isLoading)
-                                  ? weather.result[5]['temp'].toString() + '℃'
-                                  : '...'),
-                        ],
+                                  : '...',
+                              icon: weatherType(
+                                  weather.result[0]['weatherStatusCode']),
+                            ));
+                          }
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: result,
+                          );
+                        },
                       ),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.center,
+                      //   children: [
+                      //     weatherTile(
+                      //         context: context,
+                      //         title: '현재',
+                      //         color: const Color(0xFFFFAE9A),
+                      //         icon: weatherType(
+                      //             weather.result[0]['weatherStatusCode']),
+                      //         temper: (isLoading)
+                      //             ? weather.result[0]['temp'].toString() + '℃'
+                      //             : '...'),
+                      //     weatherTile(
+                      //         context: context,
+                      //         title: '+1시간',
+                      //         color: const Color(0xFFFFAE9A),
+                      //         icon: weatherType(
+                      //             weather.result[1]['weatherStatusCode']),
+                      //         temper: (isLoading)
+                      //             ? weather.result[1]['temp'].toString() + '℃'
+                      //             : '...'),
+                      //     weatherTile(
+                      //         context: context,
+                      //         title: '+2시간',
+                      //         color: const Color(0xFFFFAE9A),
+                      //         icon: weatherType(
+                      //             weather.result[2]['weatherStatusCode']),
+                      //         temper: (isLoading)
+                      //             ? weather.result[2]['temp'].toString() + '℃'
+                      //             : '...'),
+                      //     weatherTile(
+                      //         context: context,
+                      //         title: '+3시간',
+                      //         color: const Color(0xFFFFAE9A),
+                      //         icon: weatherType(
+                      //             weather.result[3]['weatherStatusCode']),
+                      //         temper: (isLoading)
+                      //             ? weather.result[3]['temp'].toString() + '℃'
+                      //             : '...'),
+                      //     weatherTile(
+                      //         context: context,
+                      //         title: '+4시간',
+                      //         color: const Color(0xFFFFAE9A),
+                      //         icon: weatherType(
+                      //             weather.result[4]['weatherStatusCode']),
+                      //         temper: (isLoading)
+                      //             ? weather.result[4]['temp'].toString() + '℃'
+                      //             : '...'),
+                      //     weatherTile(
+                      //         context: context,
+                      //         title: '+5시간',
+                      //         color: const Color(0xFFFFAE9A),
+                      //         icon: weatherType(
+                      //             weather.result[5]['weatherStatusCode']),
+                      //         temper: (isLoading)
+                      //             ? weather.result[5]['temp'].toString() + '℃'
+                      //             : '...'),
+                      //   ],
+                      // ),
                       height: 100,
                     ),
                     SizedBox(height: 10),
@@ -397,6 +419,25 @@ class _HomeViewState extends State<HomeView> {
       ),
     );
   }
+
+  Image weatherType(int weatherStatusCode) {
+    switch (weatherStatusCode) {
+      case 1:
+        return Image.asset('assets/icons/weather/weather-mostly-sunny.png');
+      case 2:
+        return Image.asset('assets/icons/weather/weather-partly_cloudy.png');
+      case 3:
+        return Image.asset('assets/icons/weather/weather-rainy.png');
+      case 4:
+        return Image.asset('assets/icons/weather/weather-stromy.png');
+      case 5:
+        return Image.asset('assets/icons/weather/weather-snowy.png');
+      case 6:
+        return Image.asset('assets/icons/weather/weather-cloudy.png');
+      default:
+        return Image.asset('assets/icons/weather/weather-sunny.png');
+    }
+  }
 }
 
 Widget weatherTile(
@@ -404,7 +445,9 @@ Widget weatherTile(
         required String title,
         required Color color,
         required String temper,
-        required String imagePath}) =>
+        required Image icon
+        // String imagePath
+        }) =>
     Container(
       width: (MediaQuery.of(context).size.width - 60) * 0.14,
       height: 80,
@@ -421,7 +464,7 @@ Widget weatherTile(
             width: 30,
             height: 30,
             padding: const EdgeInsets.fromLTRB(0, 2, 0, 2),
-            child: Image.asset(imagePath),
+            child: icon,
           ),
           Text(temper),
         ],

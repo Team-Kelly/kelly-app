@@ -156,9 +156,6 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                   onChanged: (hour, minute) {},
                   highlightColor: const Color(0xFFFFBB3C),
                 ),
-
-                // TODO: 너비가 왜 이모양으로 조절하는건지..?(바꾸긴 했는데 마음에 드시는지.....?)
-
                 Builder(builder: (context) {
                   List<Widget> buttons = [];
                   for (int i = 2; i <= 12; i += 2) {

@@ -14,7 +14,7 @@ dependencies:
 
   # 로컬 노티
   # https://pub.dev/packages/flutter_local_notifications
-  flutter_local_notifications: ^9.2.0
+  flutter_local_notifications: ^9.4.0
 
   # 상태 저장
   # https://pub.dev/packages/shared_preferences
@@ -30,11 +30,15 @@ dependencies:
 
   # UI 리소스
   # https://pub.dev/packages/cotton_candy_ui
-  cotton_candy_ui: ^0.1.13
+  cotton_candy_ui: ^0.1.15
 
   # X, Y좌표를 위도, 경도로 변환
   # https://pub.dev/packages/proj4dart
   proj4dart: ^2.0.0
+
+  # 백그라운드 동작 및 현재위치 측정
+  # https://pub.dev/packages/background_locator
+  background_locator: ^1.6.12
 
   flutter:
     sdk: flutter
