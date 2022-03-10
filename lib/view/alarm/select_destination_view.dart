@@ -4,8 +4,11 @@ import 'package:app/util/coordinates.dto.dart';
 import 'package:app/util/coordinates.vo.dart';
 import 'package:app/view/alarm/select_path_view.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proj4dart/proj4dart.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
+
+import '../../util/utils.dart';
 
 class SelectDestionationView extends StatefulWidget {
   const SelectDestionationView({Key? key}) : super(key: key);
@@ -71,7 +74,7 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
                     ),
                   ],
                 ),
-                SizedBox(height: 35),
+                const SizedBox(height: 35),
                 CandyTextField(
                   width: MediaQuery.of(context).size.width - 60,
                   height: 83,
@@ -94,7 +97,7 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
                   ),
                   elevation: 2,
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 CandyTextField(
                   width: MediaQuery.of(context).size.width - 60,
                   height: 83,
@@ -119,20 +122,21 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
                 ),
                 const SizedBox(height: 200),
                 CandyButton(
-                    width: MediaQuery.of(context).size.width - 60,
-                    child: const Text(
-                      '나의 시작길 입력하기',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Colors.white,
-                      ),
+                  width: MediaQuery.of(context).size.width - 60,
+                  child: const Text(
+                    '나의 시작길 입력하기',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
                     ),
-                    buttonColor: CandyColors.candyPink,
-                    onPressed: (startKeyword!.isNotEmpty &&
-                            endKeyword!.isNotEmpty &&
-                            !isWorking)
-                        ? work
-                        : null),
+                  ),
+                  buttonColor: CandyColors.candyPink,
+                  onPressed: (startKeyword!.isNotEmpty &&
+                          endKeyword!.isNotEmpty &&
+                          !isWorking)
+                      ? work
+                      : null,
+                ),
               ],
             ),
           ),
@@ -148,6 +152,7 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
     try {
       startAddress = await AddressDTO.get(keyword: startKeyword);
       endAddress = await AddressDTO.get(keyword: endKeyword);
+
       startCoordinates = await CoordinatesDTO.get(
           admCd: startAddress.jusoList[0].admCd,
           rnMgtSn: startAddress.jusoList[0].rnMgtSn,
@@ -160,6 +165,11 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
           udrtYn: endAddress.jusoList[0].udrtYn,
           buldMnnm: endAddress.jusoList[0].buldMnnm,
           buldSlno: endAddress.jusoList[0].buldSlno);
+
+      if (endCoordinates.jusoList[0].entX.isEmpty ||
+          endCoordinates.jusoList[0].entY.isEmpty) {
+        throw "도착 주소가 올바르지 않습니다";
+      }
 
       startPoint = transform(
           startCoordinates.jusoList[0].entX, startCoordinates.jusoList[0].entY);
@@ -184,6 +194,7 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
       isWorking = false;
       setState(() {});
     } catch (err) {
+      makeToast(msg: err.toString());
       isWorking = false;
       setState(() {});
     }

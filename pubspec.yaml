@@ -40,6 +40,11 @@ dependencies:
   # https://pub.dev/packages/background_locator
   background_locator: ^1.6.12
 
+  # 토스트 메시지
+  # https://pub.dev/packages/fluttertoast
+  fluttertoast: ^8.0.9
+  
+
   flutter:
     sdk: flutter
 
@@ -55,6 +60,8 @@ flutter:
   uses-material-design: true
 
   assets:
+    - assets/icons/transport/subway/
+    - assets/icons/transport/bus/
     - assets/icons/transport/
     - assets/icons/weather/
     - assets/images/
