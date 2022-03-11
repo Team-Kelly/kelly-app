@@ -137,12 +137,14 @@ class _HomeViewState extends State<HomeView> {
                       child:
                           weatherStatus(weather.result[0]['weatherStatusCode']),
                     ),
-                    Text(
-                      (isLoading)
-                          ? weather.result[0]['temp'].toString() + '℃'
-                          : '...',
-                      style: const TextStyle(
-                          fontSize: 40, fontWeight: FontWeight.w800),
+                    Center(
+                      child: Text(
+                        (isLoading)
+                            ? weather.result[0]['temp'].toString() + '℃'
+                            : '...',
+                        style: const TextStyle(height:2,
+                            fontSize: 40, fontWeight: FontWeight.w800),
+                      ),
                     ),
 
                     ///

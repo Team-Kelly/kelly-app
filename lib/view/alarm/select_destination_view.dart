@@ -7,8 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:proj4dart/proj4dart.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
-
-import '../../util/utils.dart';
+import 'package:app/util/utils.dart';
 
 class SelectDestionationView extends StatefulWidget {
   const SelectDestionationView({Key? key}) : super(key: key);

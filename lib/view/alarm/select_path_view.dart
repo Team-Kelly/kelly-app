@@ -1,9 +1,8 @@
 import 'package:app/util/route.dto.dart';
 import 'package:app/util/route.vo.dart';
-import 'package:app/util/%08utils.dart';
+import 'package:app/util/utils.dart';
 import 'package:app/view/alarm/path_detail_view.dart';
 import 'package:app/view/alarm/widgets/route_info_list.dart';
-
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,6 +37,8 @@ class SelectPathView extends StatefulWidget {
 }
 
 class _SelectPathViewState extends State<SelectPathView> {
+  List<dynamic> pathResults = [];
+  late PathNodeList selectedRoute;
   @override
   void initState() {
     getPathWidgets(
@@ -51,8 +52,6 @@ class _SelectPathViewState extends State<SelectPathView> {
 
     super.initState();
   }
-
-  List<RouteInfoItem> pathResults = [];
 
   @override
   Widget build(BuildContext context) {
@@ -159,6 +158,12 @@ class _SelectPathViewState extends State<SelectPathView> {
                 height: 430,
                 child: RouteInfoList(
                   routeInfos: [...pathResults],
+                  onChanged: (value){
+                    setState(() {
+                      selectedRoute = value;
+                    });
+                    print(selectedRoute);
+                  },
                 ),
               ),
               Expanded(
@@ -175,16 +180,17 @@ class _SelectPathViewState extends State<SelectPathView> {
                           color: Colors.white,
                         ),
                       ),
-                      buttonColor: const Color(0xFFFECFC3),
-                      onPressed: () => Navigator.push(
+                      buttonColor: (selectedRoute != null)?CandyColors.candyPink:const Color(0xFFFECFC3),
+                      onPressed: () => (selectedRoute != null)?Navigator.push(
                         context,
                         MaterialPageRoute(
                           builder: (context) => PathDetailView(
                             startAddress: widget.startAddress,
                             endAddress: widget.endAddress,
+                            selectedRoute: selectedRoute,
                           ),
                         ),
-                      ),
+                      ):null,
                     ),
                   ],
                 ),
@@ -198,7 +204,7 @@ class _SelectPathViewState extends State<SelectPathView> {
 
   List<bool> isSelected = [];
 
-  Future<List<RouteInfoItem>> getPathWidgets({
+  Future<List<dynamic>> getPathWidgets({
     required Coordinate startPoint,
     required Coordinate endPoint,
     required TransportationType transportationType,
@@ -210,69 +216,6 @@ class _SelectPathViewState extends State<SelectPathView> {
       endY: endPoint.latitude,
       transportationType: transportationType,
     );
-
-    for (PathNodeList v in result) {
-      List<Widget> subtitle = [];
-
-      for (PathNode n in v.transportation) {
-        if (n is PathNodeBus) {
-          PathNodeBus nn = n;
-          subtitle.add(
-            SizedBox(
-              width: 15,
-              height: 15,
-              child: busType(nn.busType),
-            ),
-          );
-          subtitle.add(Text(' ${nn.name}',
-              style: const TextStyle(color: Color(0xFF707071), fontSize: 12)));
-        } else if (n is PathNodeSubway) {
-          PathNodeSubway nn = n;
-          subtitle.add(
-            SizedBox(
-              width: 15,
-              height: 15,
-              child: subwayType(nn.lineId),
-            ),
-          );
-          subtitle.add(Text(' ${nn.name}',
-              style: const TextStyle(color: Color(0xFF707071), fontSize: 12)));
-        } else if (n is PathNodeWalk) {
-          PathNodeWalk nn = n;
-          subtitle.add(
-            SizedBox(
-              width: 15,
-              height: 15,
-              child: Image.asset('assets/icons/transport/walk.png'),
-            ),
-          );
-          subtitle.add(const Text(
-            ' 도보',
-            style: TextStyle(color: Color(0xFF707071), fontSize: 12),
-          ));
-        } else {}
-
-        subtitle.add(const Text(
-          ' ➔ ',
-          style: TextStyle(color: Color(0xFF707071), fontSize: 12),
-        ));
-      }
-      subtitle.removeLast();
-
-      isSelected.add(false);
-
-      pathResults.add(
-        RouteInfoItem(
-          title: Text(
-            minuteToHour(v.durationTime),
-            style: const TextStyle(
-                fontSize: 22, fontWeight: FontWeight.w800, color: Colors.black),
-          ),
-          subTitle: subtitle,
-        ),
-      );
-    }
-
-    return pathResults;
+    return result;
   }
 }
