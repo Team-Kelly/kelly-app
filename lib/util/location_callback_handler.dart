@@ -14,16 +14,14 @@ class LocationCallbackHandler {
   }
 
   static Future<void> callback(LocationDto locationDto) async {
-    print("-=-=-=-=-=-=-= callback -=-=-=-=-=-=-=-=-=");
     FlutterTts tts = FlutterTts();
     tts.speak('위치가 변경되었습니다.');
     await LocationServiceRepository.callback(locationDto);
   }
 
-  // static Future<void> notificationCallback() async {
-  //   print("-=-=-=-=-=-=-= noti -=-=-=-=-=-=-=-=-=");
-  //   print('***notificationCallback');
-  // }
+  static Future<void> notificationCallback() async {
+    print('***notificationCallback');
+  }
 
   void alarmTimer() {
     int nowHour = TimeOfDay.now().hour;

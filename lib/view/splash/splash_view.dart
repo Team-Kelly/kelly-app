@@ -141,15 +141,14 @@ class _SplashViewState extends State<SplashView> {
         interval: 5,
         distanceFilter: 0,
         client: LocationClient.google,
-        // androidNotificationSettings: AndroidNotificationSettings(
-        //   notificationChannelName: 'Location tracking',
-        //   notificationTitle: 'Start Location Tracking',
-        //   notificationMsg: 'Track location in background',
-        //   notificationBigMsg:
-        //       'Background location is on to keep the app up-tp-date with your location. This is required for main features to work properly when the app is not running.',
-        //   notificationIconColor: Colors.grey,
-        //   notificationTapCallback: LocationCallbackHandler.notificationCallback,
-        // ),
+        androidNotificationSettings: AndroidNotificationSettings(
+          notificationChannelName: '시작이반이다',
+          notificationTitle: '시작이반이다',
+          notificationMsg: '백그라운드 실행 중',
+          notificationBigMsg: '백그라운드 실행 중입니다. TTS 알림을 받기 위해서 동작합니다.',
+          notificationIconColor: Colors.grey,
+          notificationTapCallback: LocationCallbackHandler.notificationCallback,
+        ),
       ),
     );
   }
