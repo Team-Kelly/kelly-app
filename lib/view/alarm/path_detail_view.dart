@@ -87,7 +87,7 @@ class _PathDetailViewState extends State<PathDetailView> {
                       title: Text(
                         node.startStationName,
                         style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w800),
+                            fontSize: 15, fontWeight: FontWeight.w900),
                       ),
                       subTitle: Text(
                         node.name,
@@ -104,7 +104,7 @@ class _PathDetailViewState extends State<PathDetailView> {
                       title: Text(
                         node.startStationName,
                         style: const TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w800),
+                            fontSize: 15, fontWeight: FontWeight.w900),
                       ),
                       subTitle: Text(
                         node.name,
@@ -121,7 +121,7 @@ class _PathDetailViewState extends State<PathDetailView> {
                       title: const Text(
                         '도보',
                         style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.w800),
+                            fontSize: 15, fontWeight: FontWeight.w900),
                       ),
                       subTitle: Text(
                         node.walkMeter.toString() + 'm',

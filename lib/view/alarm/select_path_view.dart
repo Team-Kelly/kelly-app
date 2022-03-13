@@ -193,7 +193,7 @@ class _SelectPathViewState extends State<SelectPathView> {
     }
 
     try {
-      pathResults = await getPathWidgets(
+      pathResults = await getPathNodeLists(
         startPoint: widget.startPoint,
         endPoint: widget.endPoint,
         transportationType: trType,
@@ -204,7 +204,7 @@ class _SelectPathViewState extends State<SelectPathView> {
     setState(() {});
   }
 
-  Future<List<PathNodeList>> getPathWidgets({
+  Future<List<PathNodeList>> getPathNodeLists({
     required Coordinate startPoint,
     required Coordinate endPoint,
     required TransportationType transportationType,

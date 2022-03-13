@@ -21,7 +21,7 @@ class PreferenceManager {
     debugPrint("$LOG init.");
     _isInit = true;
     _prefs = await SharedPreferences.getInstance();
-    _loadAlarmFromPrefs();
+    await _loadAlarmFromPrefs();
     debugPrint("$LOG AlarmList: ${readAlarm()}");
     debugPrint("$LOG init done.");
   }
@@ -95,11 +95,11 @@ class PreferenceManager {
 
   ///
   /// ### DELETE ALL
-  void deleteAllAlarm() {
+  Future<void> deleteAllAlarm() async {
     checkInit();
     debugPrint("$LOG Delete all start");
 
-    resetPrefs();
+    await resetPrefs();
     _alarmList.clear();
 
     debugPrint("$LOG Delete all done");
@@ -113,13 +113,13 @@ class PreferenceManager {
 
   /// ### Reset Preferences
   ///  - shared preferences 값 초기화
-  resetPrefs() async {
+  Future<void> resetPrefs() async {
     checkInit();
     debugPrint("$LOG Reset start");
     await _prefs.remove("alarmNames");
     await _prefs.remove("alarmTimes");
     await _prefs.remove("alarmDOTWs");
-    await _prefs.remove("pathNodeList");
+    await _prefs.remove("pathNodeLists");
     _alarmList.clear();
     debugPrint("$LOG Reset done.");
   }
@@ -140,8 +140,10 @@ class PreferenceManager {
     debugPrint("$LOG $alarmDOTWs");
     debugPrint("$LOG $pathNodeLists");
 
-    // 시간 검사
-    if (alarmTimes.length != alarmDOTWs.length) {
+    // 데이터 무결성 검사
+    if (alarmTimes.length != alarmDOTWs.length &&
+        alarmTimes.length != alarmNames.length &&
+        alarmTimes.length != pathNodeLists.length) {
       throw Exception("$LOG prefs. data was corrupted\nPlease reset prefs.");
     }
 
@@ -152,8 +154,9 @@ class PreferenceManager {
     for (int i = 0; i < alarmTimes.length; i++) {
       // DOTW -> List<bool>
       List<bool> alarmDOTW = [];
+
       for (String e in alarmDOTWs[i].split(",")) {
-        alarmDOTW.add(e == "true");
+        alarmDOTW.add(e.trim() == "true");
       }
 
       // pathNodeLists -> PathNodeList
@@ -182,7 +185,7 @@ class PreferenceManager {
     List<String> pathNodeLists = [];
 
     for (Alarm i in alarmList) {
-      alarmTimes.add(i.alarmName.toString());
+      alarmNames.add(i.alarmName.toString());
       alarmTimes.add(i.alarmTime.toString());
       alarmDOTWs.add(i.alarmDOTW
           .toString()

@@ -1,5 +1,3 @@
-import 'dart:isolate';
-
 import 'dart:ui';
 
 import 'package:app/provider/personal_info_provider.dart';
@@ -8,6 +6,17 @@ import 'package:app/util/utils.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
+
+import 'package:app/util/location_callback_handler.dart';
+import 'package:app/util/location_service_repository.dart';
+import 'package:background_locator/background_locator.dart';
+import 'package:background_locator/settings/android_settings.dart';
+import 'package:background_locator/settings/ios_settings.dart';
+import 'package:background_locator/settings/locator_settings.dart';
+
+import 'dart:isolate';
+import 'package:background_locator/location_dto.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
 import 'package:location/location.dart' as location;
 
@@ -19,6 +28,10 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
+  ReceivePort port = ReceivePort();
+
+  late bool isBackgroudServiceRunning;
+  late LocationDto lastLocation;
 
   @override
   void initState() {
@@ -51,7 +64,6 @@ class _SplashViewState extends State<SplashView> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,12 +84,8 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> runner() async {
-    // shared pref. 초기화/로드
-    await PreferenceManager.instance.init();
-    await checkLocationOn();
-
+    // 위치 권한
     bool isLocationGranted = false;
-
     while (!isLocationGranted) {
       isLocationGranted = await getStatuses();
       if (!isLocationGranted) {
@@ -86,14 +94,82 @@ class _SplashViewState extends State<SplashView> {
       await Future.delayed(const Duration(milliseconds: 2000));
     }
 
-    PersonalInfo personalInfo =
-        Provider.of<PersonalInfo>(context, listen: false);
+    await checkLocationOn();
 
-    // await Future.delayed(const Duration(milliseconds: 3000));
-    if (personalInfo.isFirst) {
+    // 백그라운드 로케이터 / TTS
+    if (IsolateNameServer.lookupPortByName(
+            LocationServiceRepository.isolateName) !=
+        null) {
+      IsolateNameServer.removePortNameMapping(
+          LocationServiceRepository.isolateName);
+    }
+
+    print('======================111=======================');
+
+    IsolateNameServer.registerPortWithName(
+        port.sendPort, LocationServiceRepository.isolateName);
+    print('======================222=======================');
+    port.listen(
+      (dynamic data) async {},
+    );
+    print('======================333=======================');
+
+    // shared pref. 초기화/로드
+    try {
+      await PreferenceManager.instance.init();
+    } catch (err) {
+      makeToast(msg: "알람 정보가 손상되어 초기화합니다");
+      await PreferenceManager.instance.deleteAllAlarm();
+    }
+
+    print('======================444=======================');
+
+    await initPlatformState();
+
+    print('======================555=======================');
+    await _startLocator();
+
+    print('======================666=======================');
+    if (PreferenceManager.instance.readAlarm().isEmpty) {
       await Navigator.pushReplacementNamed(context, "/alarm");
     } else {
       await Navigator.pushReplacementNamed(context, "/home");
     }
+  }
+
+  Future<void> initPlatformState() async {
+    await BackgroundLocator.initialize();
+    final _isRunning = await BackgroundLocator.isServiceRunning();
+    setState(() {
+      isBackgroudServiceRunning = _isRunning;
+    });
+  }
+
+  Future<void> _startLocator() async {
+    Map<String, dynamic> data = {'countInit': 1};
+    return await BackgroundLocator.registerLocationUpdate(
+      LocationCallbackHandler.callback,
+      initCallback: LocationCallbackHandler.initCallback,
+      initDataCallback: data,
+      disposeCallback: LocationCallbackHandler.disposeCallback,
+      iosSettings: const IOSSettings(
+          accuracy: LocationAccuracy.NAVIGATION, distanceFilter: 0),
+      autoStop: false,
+      androidSettings: const AndroidSettings(
+        accuracy: LocationAccuracy.NAVIGATION,
+        interval: 5,
+        distanceFilter: 0,
+        client: LocationClient.google,
+        androidNotificationSettings: AndroidNotificationSettings(
+          notificationChannelName: 'Location tracking',
+          notificationTitle: 'Start Location Tracking',
+          notificationMsg: 'Track location in background',
+          notificationBigMsg:
+              'Background location is on to keep the app up-tp-date with your location. This is required for main features to work properly when the app is not running.',
+          notificationIconColor: Colors.grey,
+          notificationTapCallback: LocationCallbackHandler.notificationCallback,
+        ),
+      ),
+    );
   }
 }

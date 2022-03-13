@@ -3,7 +3,7 @@ import 'package:app/view/alarm/widgets/route_info.dart';
 import 'package:flutter/material.dart';
 
 class RouteInfoList extends StatefulWidget {
-  final List<dynamic> routeInfos;
+  final List<PathNodeList> routeInfos;
   final Function(PathNodeList)? onChanged;
 
   const RouteInfoList(

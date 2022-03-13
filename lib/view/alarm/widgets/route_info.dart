@@ -9,9 +9,11 @@ class RouteInfo extends StatefulWidget {
     Key? key,
     required this.nodeList,
     required this.isEnable,
+    this.title,
     this.onPressed,
   }) : super(key: key);
 
+  final String? title;
   final bool isEnable;
   final PathNodeList nodeList;
   final Function(PathNodeList)? onPressed;
@@ -59,7 +61,7 @@ class _RouteInfoState extends State<RouteInfo> {
           ' 도보',
           style: TextStyle(color: Color(0xFF707071), fontSize: 12),
         ));
-      } else {}
+      }
       subtitle.add(const Text(
         ' ➔ ',
         style: TextStyle(color: Color(0xFF707071), fontSize: 12),
@@ -77,9 +79,7 @@ class _RouteInfoState extends State<RouteInfo> {
   Widget build(BuildContext context) {
     return CupertinoButton(
       pressedOpacity: 1,
-      padding: widget.isEnable
-          ? const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0)
-          : const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.all(4.0),
       onPressed: () {
         if (widget.onPressed != null) {
           widget.onPressed!(widget.nodeList);
@@ -89,6 +89,7 @@ class _RouteInfoState extends State<RouteInfo> {
         width: 346,
         height: 83,
         child: Container(
+          padding: widget.isEnable ? EdgeInsets.all(0) : EdgeInsets.all(4.0),
           margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
           decoration: BoxDecoration(
             color: widget.isEnable ? const Color(0xFFFFF8F8) : Colors.white,
@@ -110,8 +111,9 @@ class _RouteInfoState extends State<RouteInfo> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                // title
                 Text(
-                  minuteToHour(widget.nodeList.durationTime),
+                  widget.title ?? minuteToHour(widget.nodeList.durationTime),
                   style: const TextStyle(
                       fontSize: 22,
                       fontWeight: FontWeight.w800,

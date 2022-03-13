@@ -31,7 +31,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
 
   int selectedHour = DateTime.now().hour;
   int selectedMinute = DateTime.now().minute;
-  List<bool> selectedDotw = [];
+  List<bool> selectedDotw = [true, true, true, true, true, true, true];
 
   @override
   void initState() {
@@ -242,12 +242,19 @@ class _TimeSettingViewState extends State<TimeSettingView> {
 
   Future<bool> saveAlarm() {
     // 알람 저장
-    prefs.createAlarm(
-      name: "${widget.startKeyword} ➔ ${widget.endKeyword}",
-      dotw: selectedDotw,
-      pathNodeList: widget.pathNodeList,
-      time: DateTime(0, 0, 0, selectedHour, selectedMinute),
-    );
+    try {
+      prefs.createAlarm(
+        name: "${widget.startKeyword} ➔ ${widget.endKeyword}",
+        dotw: selectedDotw,
+        pathNodeList: widget.pathNodeList,
+        time: DateTime(0, 0, 0, selectedHour, selectedMinute),
+      );
+    } catch (err) {
+      print(err);
+      makeToast(msg: "알람 생성 실패");
+      return Future.value(false);
+    }
+
     return Future.value(true);
   }
 
