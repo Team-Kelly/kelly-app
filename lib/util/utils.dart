@@ -59,10 +59,14 @@ Image subwayType(String lineId) {
   // }
 }
 
-makeToast({required String msg}) => Fluttertoast.showToast(
+makeToast({
+  required String msg,
+  ToastGravity gravity = ToastGravity.BOTTOM,
+}) =>
+    Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,
-      gravity: ToastGravity.BOTTOM,
+      gravity: gravity,
       backgroundColor: Colors.black.withAlpha(127),
       textColor: Colors.white,
       fontSize: 16.0,
