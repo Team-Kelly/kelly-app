@@ -12,13 +12,14 @@ class RouteInfoPlus extends StatefulWidget {
     required this.isEnable,
     required this.alarm,
     this.onPressed,
+    this.onTimePressed,
   }) : super(key: key);
 
   final Alarm alarm;
   final bool isEnable;
   final PathNodeList nodeList;
   final Function(PathNodeList)? onPressed;
-  // final VoidCallback? onPressed;
+  final VoidCallback? onTimePressed;
 
   @override
   State<RouteInfoPlus> createState() => _RouteInfoPlusState();
@@ -108,49 +109,58 @@ class _RouteInfoPlusState extends State<RouteInfoPlus> {
           ),
           child: Row(
             children: [
-              Container(
-                padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
-                width: 120,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text:
-                                widget.alarm.alarmTime.hour >= 12 ? "pm" : "am",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w900,
+              CupertinoButton(
+                padding: EdgeInsets.all(0.0),
+                onPressed: () {
+                  if (widget.onTimePressed != null) {
+                    widget.onTimePressed!();
+                  }
+                },
+                child: Container(
+                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+                  width: 120,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      RichText(
+                        text: TextSpan(
+                          children: [
+                            TextSpan(
+                              text: widget.alarm.alarmTime.hour >= 12
+                                  ? "pm"
+                                  : "am",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 14,
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
-                          ),
-                          TextSpan(
-                            text:
-                                "${widget.alarm.alarmTime.hour > 12 ? widget.alarm.alarmTime.hour - 12 : widget.alarm.alarmTime.hour}:${widget.alarm.alarmTime.minute > 10 ? widget.alarm.alarmTime.minute : "0" + widget.alarm.alarmTime.minute.toString()}",
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.w900,
+                            TextSpan(
+                              text:
+                                  "${widget.alarm.alarmTime.hour > 12 ? widget.alarm.alarmTime.hour - 12 : widget.alarm.alarmTime.hour}:${widget.alarm.alarmTime.minute > 10 ? widget.alarm.alarmTime.minute : "0" + widget.alarm.alarmTime.minute.toString()}",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                      child: Text(
-                        dotwName(widget.alarm.alarmDOTW),
-                        style: TextStyle(
-                          color: CandyColors.candyPink,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12,
+                          ],
                         ),
                       ),
-                    )
-                  ],
+                      SizedBox(
+                        height: 15,
+                        child: Text(
+                          dotwName(widget.alarm.alarmDOTW),
+                          style: TextStyle(
+                            color: CandyColors.candyPink,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 12,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               ),
               Expanded(

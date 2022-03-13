@@ -58,7 +58,7 @@ class RouteDTO {
                 lineId: p['lineId'],
                 startStationId: p['startStationId'],
                 endStationName: p['endStationName'],
-                name: p['lineName'], // TODO: 통일
+                name: p['lineName'],
                 startStationName: p['startStationName'],
                 stationCnt: p['stationCnt'],
               ),
@@ -73,7 +73,7 @@ class RouteDTO {
                 cityCode: p['cityCode'],
                 startStationId: p['startStationId'],
                 endStationName: p['endStationName'],
-                name: p['busName'], // TODO: 통일
+                name: p['busName'],
                 startStationName: p['startStationName'],
                 stationCnt: p['stationCnt'],
               ),

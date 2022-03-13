@@ -9,6 +9,7 @@ import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:app/util/weather.vo.dart';
 import 'package:app/util/weather.dto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:proj4dart/proj4dart.dart';
 
 import 'package:http/http.dart' as http;
@@ -25,36 +26,18 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   WeatherVO? weather;
-  bool isLoading = false;
   PreferenceManager prefs = PreferenceManager.instance;
   List<PathNodeList> pathResults = [];
   List<Alarm> alarms = [];
   late Point currentPoint;
   WeatherMentionVO? wment;
 
-  Future<void> getlist() async {
-    //
-    //////////////////////////////////////////////////////////////////////////////////////
-    // 알람 정보 읽어오는 곳
-    alarms = prefs.readAlarm();
-    isLoading = false;
-
-    // TODO: 위경도값 가져오기
-    currentPoint = Point(x: 37.6576769, y: 127.3007637);
-
-    weather = await WeatherDTO.get(
-        latitude: currentPoint.x, longitude: currentPoint.y);
-    isLoading = true;
-    weather = weather;
-
-    wment = await WeatherMentionDTO.get(location: currentPoint);
-
-    setState(() {});
-  }
-
   @override
   void initState() {
-    getlist();
+    getList();
+    getAlarmList();
+
+    runner();
     super.initState();
   }
 
@@ -125,7 +108,7 @@ class _HomeViewState extends State<HomeView> {
                         child: Padding(
                           padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
                           child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               ///
                               /// 상단 안내문구
@@ -136,7 +119,7 @@ class _HomeViewState extends State<HomeView> {
                                   Expanded(
                                     child: Column(
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.stretch,
                                       children: [
                                         Text(
                                           "안녕하세요 🥰",
@@ -181,8 +164,8 @@ class _HomeViewState extends State<HomeView> {
                               //     ],
                               //   ),
                               // ),
-                              SizedBox(height: 30),
-                              Container(
+                              const SizedBox(height: 30),
+                              SizedBox(
                                 width: 150,
                                 height: 150,
                                 child: weatherStatus(
@@ -190,10 +173,7 @@ class _HomeViewState extends State<HomeView> {
                               ),
                               Center(
                                 child: Text(
-                                  (isLoading)
-                                      ? weather!.result[0]['temp'].toString() +
-                                          '℃'
-                                      : '...',
+                                  weather!.result[0]['temp'].toString() + '℃',
                                   style: const TextStyle(
                                       height: 2,
                                       fontSize: 40,
@@ -217,11 +197,9 @@ class _HomeViewState extends State<HomeView> {
                                             : '+' + i.toString() + '시간',
                                         color: WeatherColors.tileColors[weather!
                                             .result[0]['weatherStatusCode']],
-                                        temper: (isLoading)
-                                            ? weather!.result[0]['temp']
-                                                    .toString() +
-                                                '℃'
-                                            : '...',
+                                        temper: weather!.result[0]['temp']
+                                                .toString() +
+                                            '℃',
                                         icon: weatherStatus(weather!.result[0]
                                             ['weatherStatusCode']),
                                       ));
@@ -253,11 +231,46 @@ class _HomeViewState extends State<HomeView> {
                                 child: ListView(
                                   physics: const BouncingScrollPhysics(),
                                   children: [
-                                    for (Alarm item in alarms)
+                                    for (int i = 0; i < alarms.length; i++)
                                       RouteInfoPlus(
-                                        alarm: item,
-                                        nodeList: item.pathNodeList,
+                                        alarm: alarms[i],
+                                        nodeList: alarms[i].pathNodeList,
                                         isEnable: false,
+                                        onTimePressed: () {
+                                          showDialog(
+                                            context: context,
+                                            builder: (context) => AlertDialog(
+                                              title: Text("알람 삭제"),
+                                              content: Text(
+                                                "정말 '${alarms[i].alarmName}' 알람을 삭제하시겠습니까?",
+                                              ),
+                                              actions: [
+                                                TextButton(
+                                                  onPressed: () {
+                                                    prefs.deleteAlarm(index: i);
+                                                    getAlarmList();
+                                                    Navigator.pop(context);
+                                                    setState(() {});
+                                                  },
+                                                  child: Text(
+                                                    "삭제",
+                                                    style: TextStyle(
+                                                      color:
+                                                          CandyColors.candyPink,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                                TextButton(
+                                                  onPressed: () =>
+                                                      Navigator.pop(context),
+                                                  child: Text("취소"),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
                                       ),
                                     Column(
                                       children: [
@@ -272,15 +285,13 @@ class _HomeViewState extends State<HomeView> {
                                             size: 32,
                                           ),
                                           onPressed: () {
-                                            WeatherMentionDTO.get(
-                                                location: currentPoint);
-                                            // Navigator.push(
-                                            //   context,
-                                            //   MaterialPageRoute(
-                                            //     builder: (context) =>
-                                            //         const SelectDestionationView(),
-                                            //   ),
-                                            // );
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) =>
+                                                    const SelectDestionationView(),
+                                              ),
+                                            );
                                           },
                                         ),
                                       ],
@@ -296,6 +307,75 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
     );
+  }
+
+  bool isTTSRunning = false;
+  Future<void> runner() async {
+    // TODO: 여기가 계속 반복하는 코드여서 이 부분을 백그라운드 서비스에 넣으면 될 듯!
+    FlutterTts tts = FlutterTts();
+    while (true) {
+      PreferenceManager prefs = PreferenceManager.instance;
+      List<Alarm> alarms = prefs.readAlarm();
+      int weekday = DateTime.now().weekday;
+      weekday = weekday == 7 ? 0 : weekday;
+
+      for (Alarm item in alarms) {
+        if (item.alarmDOTW[weekday]) {
+          DateTime now = DateTime.now();
+
+          if (now.hour == item.alarmTime.hour &&
+              now.minute == item.alarmTime.minute) {
+            //  알람 동작
+            if (!isTTSRunning) {
+              isTTSRunning = true;
+
+              int hour = DateTime.now().hour;
+              hour = hour > 12 ? hour - 12 : hour;
+
+              WeatherMentionVO mention =
+                  await WeatherMentionDTO.get(location: currentPoint);
+
+              // TTS 멘트
+              await tts.speak(mention.prop[0]);
+              await Future.delayed(
+                  Duration(milliseconds: mention.prop[0].length * 150));
+              await tts.speak("현재 시간은 $hour시 ${DateTime.now().minute}분입니다.");
+              await Future.delayed(Duration(milliseconds: 3000));
+
+              await tts.speak(mention.prop[0]);
+              await Future.delayed(
+                  Duration(milliseconds: mention.prop[0].length * 150));
+              await tts.speak("현재 시간은 $hour시 ${DateTime.now().minute}분입니다.");
+              await Future.delayed(Duration(seconds: 60));
+              // 두 번만 울리게 임의 수정
+
+              isTTSRunning = false;
+            }
+          }
+        }
+      }
+
+      await Future.delayed(Duration(milliseconds: 5000));
+    }
+  }
+
+  Future<void> getAlarmList() async {
+    // 알람 정보 읽어오는 곳
+    alarms = prefs.readAlarm();
+  }
+
+  Future<void> getList() async {
+    // TODO: 위경도값 가져오기
+    currentPoint = Point(x: 37.6576769, y: 127.3007637);
+
+    weather = await WeatherDTO.get(
+        latitude: currentPoint.x, longitude: currentPoint.y);
+
+    weather = weather;
+
+    wment = await WeatherMentionDTO.get(location: currentPoint);
+
+    setState(() {});
   }
 
   Image weatherStatus(int weatherStatusCode) {
