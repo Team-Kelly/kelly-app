@@ -1,15 +1,12 @@
-import 'dart:async';
+import 'package:background_locator/location_dto.dart';
 import 'dart:isolate';
+import 'dart:async';
 import 'dart:ui';
 
-import 'package:background_locator/location_dto.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'noti.dart';
 
 class LocationServiceRepository {
-  FlutterTts tts = FlutterTts();
-  static final LocationServiceRepository _instance =
-      LocationServiceRepository._();
+  static final LocationServiceRepository _instance = LocationServiceRepository._();
 
   LocationServiceRepository._();
 
@@ -19,20 +16,18 @@ class LocationServiceRepository {
 
   static const String isolateName = 'LocatorIsolate';
 
-  Future<void> init(Map<dynamic, dynamic> params) async {
-    final SendPort? send = IsolateNameServer.lookupPortByName(isolateName);
-    send?.send(null);
+  static Future<void> init(Map<dynamic, dynamic> params) async {
+    final SendPort send = IsolateNameServer.lookupPortByName(isolateName) as SendPort;
+    send.send(null);
   }
 
-  Future<void> dispose() async {
-    final SendPort? send = IsolateNameServer.lookupPortByName(isolateName);
-    send?.send(null);
+  static Future<void> dispose() async {
+    final SendPort send = IsolateNameServer.lookupPortByName(isolateName) as SendPort;
+    send.send(null);
   }
 
-  Future<void> callback(LocationDto locationDto) async {
-    print('\nlocation in dart: ${locationDto.toString()}\n');
-    // await setLogPosition(_count, locationDto);
-    final SendPort? send = IsolateNameServer.lookupPortByName(isolateName);
-    send?.send(locationDto);
+  static Future<void> callback(LocationDto locationDto) async {
+    final SendPort send = IsolateNameServer.lookupPortByName(isolateName) as SendPort;
+    send.send(locationDto);
   }
 }

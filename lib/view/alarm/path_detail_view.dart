@@ -3,7 +3,6 @@ import 'package:app/view/alarm/time_setting_view.dart';
 import 'package:app/view/alarm/widgets/route_info.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/material.dart';
-import 'select_path_view.dart';
 
 class PathDetailView extends StatefulWidget {
   final PathNodeList selectedRoute;
@@ -87,12 +86,12 @@ class _PathDetailViewState extends State<PathDetailView> {
                       ),
                       title: Text(
                         node.startStationName,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w800),
                       ),
                       subTitle: Text(
                         node.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w700),
                       ),
                     ));
@@ -104,12 +103,12 @@ class _PathDetailViewState extends State<PathDetailView> {
                       ),
                       title: Text(
                         node.startStationName,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w800),
                       ),
                       subTitle: Text(
                         node.name,
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w700),
                       ),
                     ));
@@ -126,7 +125,7 @@ class _PathDetailViewState extends State<PathDetailView> {
                       ),
                       subTitle: Text(
                         node.walkMeter.toString() + 'm',
-                        style: TextStyle(
+                        style: const TextStyle(
                             fontSize: 12, fontWeight: FontWeight.w700),
                       ),
                     ));

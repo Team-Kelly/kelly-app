@@ -96,7 +96,7 @@ class _HomeViewState extends State<HomeView> {
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
+                            children: const [
                               Text(
                                 "아무개님🥰",
                                 style: TextStyle(color: Colors.black),
@@ -139,7 +139,7 @@ class _HomeViewState extends State<HomeView> {
                         ],
                       ),
                     ),
-                    Container(
+                    SizedBox(
                       width: 180,
                       height: 180,
                       child:
@@ -160,8 +160,8 @@ class _HomeViewState extends State<HomeView> {
                     ///
                     /// 하단 날씨위젯
                     ///
-                    SizedBox(height: 10),
-                    Container(
+                    const SizedBox(height: 10),
+                    SizedBox(
                       child: Builder(
                         builder: (_) {
                           List<Widget> result = [];
@@ -186,12 +186,12 @@ class _HomeViewState extends State<HomeView> {
                       ),
                       height: 100,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
 
                     ///
                     /// MY 리스트
                     ///
-                    Text(
+                    const Text(
                       "MY 리스트\n",
                       style: TextStyle(fontSize: 20),
                     ),
@@ -361,7 +361,7 @@ class _HomeViewState extends State<HomeView> {
                               width: 72,
                               height: 72,
                               borderRadius: 72,
-                              buttonColor: Color(0xFF858D8D),
+                              buttonColor: const Color(0xFF858D8D),
                               child: const Icon(
                                 Icons.add,
                                 color: Colors.white,
@@ -376,7 +376,7 @@ class _HomeViewState extends State<HomeView> {
                               ),
                             ),
                             CandyButton(
-                                child: Text("test"),
+                                child: const Text("test"),
                                 onPressed: () {
                                   List<Alarm> alarms = prefs.readAlarm();
 

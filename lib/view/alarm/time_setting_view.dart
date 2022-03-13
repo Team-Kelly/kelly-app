@@ -1,13 +1,9 @@
 import 'package:app/util/preference_manager.dart';
 import 'package:app/util/utils.dart';
-import 'package:app/view/alarm/select_path_view.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:app/view/main/home_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-import '../../util/route.dto.dart';
 import '../../util/route.vo.dart';
 
 class TimeSettingView extends StatefulWidget {
@@ -100,7 +96,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.fromLTRB(20, 0, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
             height: 50,
             color: const Color(0xFFF5F5F5),
             child: Row(
@@ -213,7 +209,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                           fontWeight: FontWeight.w700,
                           color: Colors.black),
                     ),
-                    Flexible(
+                    const Flexible(
                       fit: FlexFit.tight,
                       child: SizedBox(),
                     ),

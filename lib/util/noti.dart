@@ -43,7 +43,7 @@ class Noti {
         const NotificationDetails(
             android: AndroidNotificationDetails(
               'ChannelID',
-              'ChannelName',
+              '출근길 알림',
               importance: Importance.max,
               priority: Priority.max,
               playSound: true,

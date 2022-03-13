@@ -3,21 +3,13 @@ import 'dart:isolate';
 import 'dart:ui';
 
 import 'package:app/provider/personal_info_provider.dart';
-import 'package:app/util/location_callback_handler.dart';
 import 'package:app/util/preference_manager.dart';
 import 'package:app/util/utils.dart';
-import 'package:background_locator/background_locator.dart';
-import 'package:background_locator/location_dto.dart';
-import 'package:background_locator/settings/android_settings.dart';
-import 'package:background_locator/settings/ios_settings.dart';
-import 'package:background_locator/settings/locator_settings.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:location/location.dart' as location;
-
-import '../../util/location_service_repository.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -27,20 +19,11 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  ReceivePort port = ReceivePort();
-
-  late bool isRunning;
-  late LocationDto lastLocation;
 
   @override
   void initState() {
     runner();
-
     super.initState();
-  }
-
-  Future<void> initPlatformState() async {
-    await BackgroundLocator.initialize();
   }
 
   Future<bool> checkLocationOn() async {
@@ -68,22 +51,6 @@ class _SplashViewState extends State<SplashView> {
     }
   }
 
-  void startLocationService() {
-    BackgroundLocator.registerLocationUpdate(LocationCallbackHandler.callback,
-        initCallback: LocationCallbackHandler.initCallback,
-        initDataCallback: {},
-        disposeCallback: LocationCallbackHandler.disposeCallback,
-        autoStop: false,
-        iosSettings: const IOSSettings(
-            accuracy: LocationAccuracy.NAVIGATION, distanceFilter: 0),
-        androidSettings: const AndroidSettings(
-          accuracy: LocationAccuracy.NAVIGATION,
-          interval: 5,
-          distanceFilter: 0,
-        ));
-
-    print('start');
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -107,12 +74,7 @@ class _SplashViewState extends State<SplashView> {
   Future<void> runner() async {
     // shared pref. 초기화/로드
     await PreferenceManager.instance.init();
-
-    IsolateNameServer.registerPortWithName(
-        port.sendPort, LocationServiceRepository.isolateName);
-    port.listen((dynamic data) {
-      print('datadatadatadatadatadatadatadatadatadatadata');
-    });
+    await checkLocationOn();
 
     bool isLocationGranted = false;
 
@@ -123,10 +85,6 @@ class _SplashViewState extends State<SplashView> {
       }
       await Future.delayed(const Duration(milliseconds: 2000));
     }
-
-    await checkLocationOn();
-    await initPlatformState();
-    startLocationService();
 
     PersonalInfo personalInfo =
         Provider.of<PersonalInfo>(context, listen: false);

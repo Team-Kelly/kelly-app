@@ -1,28 +1,31 @@
-import 'dart:async';
-
 import 'package:background_locator/location_dto.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'location_service_repository.dart';
+import 'dart:async';
 
 class LocationCallbackHandler {
   static Future<void> initCallback(Map<dynamic, dynamic> params) async {
-    LocationServiceRepository myLocationCallbackRepository =
-        LocationServiceRepository();
-    await myLocationCallbackRepository.init(params);
+    await LocationServiceRepository.init(params);
   }
 
   static Future<void> disposeCallback() async {
-    LocationServiceRepository myLocationCallbackRepository =
-        LocationServiceRepository();
-    await myLocationCallbackRepository.dispose();
+    await LocationServiceRepository.dispose();
   }
 
   static Future<void> callback(LocationDto locationDto) async {
-    LocationServiceRepository myLocationCallbackRepository =
-        LocationServiceRepository();
-    await myLocationCallbackRepository.callback(locationDto);
+    FlutterTts tts = FlutterTts();
+    tts.speak('위치가 변경되었습니다.');
+    print('callback');
+    await LocationServiceRepository.callback(locationDto);
   }
 
-  // static Future<void> notificationCallback() async {
-  //   print('***notificationCallback');
-  // }
+  static Future<void> notificationCallback() async {
+    print('***notificationCallback');
+  }
+
+  void alarmTimer(){
+    int nowHour = TimeOfDay.now().hour;
+    int nowminute = TimeOfDay.now().minute;
+  }
 }
