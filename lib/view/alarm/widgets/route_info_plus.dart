@@ -189,6 +189,12 @@ class _RouteInfoPlusState extends State<RouteInfoPlus> {
     } else if (dotw.toString() ==
         [false, true, true, true, true, true, false].toString()) {
       return "주중";
+    } else if (dotw.toString() ==
+        [true, true, true, true, true, true, true].toString()) {
+      return "매일";
+    } else if (dotw.toString() ==
+        [false, false, false, false, false, false, false].toString()) {
+      return "없음";
     } else {
       String res =
           "${dotw[0] ? '일,' : ''}${dotw[1] ? '월,' : ''}${dotw[2] ? '화,' : ''}${dotw[3] ? '수,' : ''}${dotw[4] ? '목,' : ''}${dotw[5] ? '금,' : ''}${dotw[6] ? '토,' : ''}";
