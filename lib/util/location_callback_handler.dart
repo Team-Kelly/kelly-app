@@ -6,7 +6,6 @@ import 'dart:async';
 
 class LocationCallbackHandler {
   static Future<void> initCallback(Map<dynamic, dynamic> params) async {
-    print("-=-=-=-=-=-=-= init locator -=-=-=-=-=-=-=-=-=");
     await LocationServiceRepository.init(params);
   }
 
@@ -18,14 +17,13 @@ class LocationCallbackHandler {
     print("-=-=-=-=-=-=-= callback -=-=-=-=-=-=-=-=-=");
     FlutterTts tts = FlutterTts();
     tts.speak('위치가 변경되었습니다.');
-    print('callback');
     await LocationServiceRepository.callback(locationDto);
   }
 
-  static Future<void> notificationCallback() async {
-    print("-=-=-=-=-=-=-= noti -=-=-=-=-=-=-=-=-=");
-    print('***notificationCallback');
-  }
+  // static Future<void> notificationCallback() async {
+  //   print("-=-=-=-=-=-=-= noti -=-=-=-=-=-=-=-=-=");
+  //   print('***notificationCallback');
+  // }
 
   void alarmTimer() {
     int nowHour = TimeOfDay.now().hour;

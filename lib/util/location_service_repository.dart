@@ -3,7 +3,6 @@ import 'dart:isolate';
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:flutter_tts/flutter_tts.dart';
 
 class LocationServiceRepository {
   static final LocationServiceRepository _instance = LocationServiceRepository._();
