@@ -4,7 +4,6 @@ import 'package:app/util/utils.dart';
 import 'package:app/view/alarm/path_detail_view.dart';
 import 'package:app/view/alarm/widgets/route_info_list.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Coordinate {
@@ -20,7 +19,8 @@ class Coordinate {
 class SelectPathView extends StatefulWidget {
   final String startAddress;
   final String endAddress;
-
+  final String startKeyword;
+  final String endKeyword;
   final Coordinate startPoint;
   final Coordinate endPoint;
 
@@ -30,6 +30,8 @@ class SelectPathView extends StatefulWidget {
     required this.endAddress,
     required this.startPoint,
     required this.endPoint,
+    required this.startKeyword,
+    required this.endKeyword,
   }) : super(key: key);
 
   @override
@@ -37,18 +39,11 @@ class SelectPathView extends StatefulWidget {
 }
 
 class _SelectPathViewState extends State<SelectPathView> {
-  List<dynamic> pathResults = [];
-  late PathNodeList selectedRoute;
+  List<PathNodeList> pathResults = [];
+  PathNodeList? selectedRoute;
   @override
   void initState() {
-    getPathWidgets(
-      startPoint: widget.startPoint,
-      endPoint: widget.endPoint,
-      transportationType: TransportationType.all,
-    ).then((value) {
-      pathResults = value;
-      setState(() {});
-    });
+    updatePathListResults(TransportationType.all);
 
     super.initState();
   }
@@ -119,33 +114,7 @@ class _SelectPathViewState extends State<SelectPathView> {
                 selectedButtonColor: const Color(0xFFFECEC0),
                 selectedTextColor: Colors.black,
                 radioComponents: const ['최단경로', '지하철', '버스'],
-                onChanged: (value) {
-                  pathResults.clear();
-                  setState(() {});
-
-                  late TransportationType trType;
-
-                  switch (value) {
-                    case "지하철":
-                      trType = TransportationType.subway;
-                      break;
-                    case "버스":
-                      trType = TransportationType.bus;
-                      break;
-                    default:
-                      trType = TransportationType.all;
-                      break;
-                  }
-
-                  getPathWidgets(
-                    startPoint: widget.startPoint,
-                    endPoint: widget.endPoint,
-                    transportationType: trType,
-                  ).then((value) {
-                    pathResults = value;
-                    setState(() {});
-                  });
-                },
+                onChanged: updatePathListResults,
               ),
               const SizedBox(height: 10),
               const Divider(
@@ -158,11 +127,10 @@ class _SelectPathViewState extends State<SelectPathView> {
                 height: 430,
                 child: RouteInfoList(
                   routeInfos: [...pathResults],
-                  onChanged: (value){
+                  onChanged: (value) {
                     setState(() {
                       selectedRoute = value;
                     });
-                    print(selectedRoute);
                   },
                 ),
               ),
@@ -180,17 +148,21 @@ class _SelectPathViewState extends State<SelectPathView> {
                           color: Colors.white,
                         ),
                       ),
-                      buttonColor: (selectedRoute != null)?CandyColors.candyPink:const Color(0xFFFECFC3),
-                      onPressed: () => (selectedRoute != null)?Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => PathDetailView(
-                            startAddress: widget.startAddress,
-                            endAddress: widget.endAddress,
-                            selectedRoute: selectedRoute,
-                          ),
-                        ),
-                      ):null,
+                      buttonColor: (selectedRoute != null)
+                          ? CandyColors.candyPink
+                          : const Color(0xFFFECFC3),
+                      onPressed: () => (selectedRoute != null)
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PathDetailView(
+                                  startKeyword: widget.startKeyword,
+                                  endKeyword: widget.endKeyword,
+                                  selectedRoute: selectedRoute!,
+                                ),
+                              ),
+                            )
+                          : null,
                     ),
                   ],
                 ),
@@ -202,9 +174,37 @@ class _SelectPathViewState extends State<SelectPathView> {
     );
   }
 
-  List<bool> isSelected = [];
+  Future<void> updatePathListResults(value) async {
+    pathResults.clear();
+    setState(() {});
 
-  Future<List<dynamic>> getPathWidgets({
+    late TransportationType trType;
+
+    switch (value) {
+      case "지하철":
+        trType = TransportationType.subway;
+        break;
+      case "버스":
+        trType = TransportationType.bus;
+        break;
+      default:
+        trType = TransportationType.all;
+        break;
+    }
+
+    try {
+      pathResults = await getPathWidgets(
+        startPoint: widget.startPoint,
+        endPoint: widget.endPoint,
+        transportationType: trType,
+      );
+    } catch (err) {
+      makeToast(msg: "경로 검색 결과가 없습니다");
+    }
+    setState(() {});
+  }
+
+  Future<List<PathNodeList>> getPathWidgets({
     required Coordinate startPoint,
     required Coordinate endPoint,
     required TransportationType transportationType,

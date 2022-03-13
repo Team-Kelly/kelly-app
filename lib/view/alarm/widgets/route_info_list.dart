@@ -5,20 +5,17 @@ import 'package:flutter/material.dart';
 class RouteInfoList extends StatefulWidget {
   final List<dynamic> routeInfos;
   final Function(PathNodeList)? onChanged;
-  
-  const RouteInfoList({
-    Key? key,
-    required this.routeInfos,
-    required this.onChanged
 
-  }) : super(key: key);
+  const RouteInfoList(
+      {Key? key, required this.routeInfos, required this.onChanged})
+      : super(key: key);
 
   @override
   State<RouteInfoList> createState() => _RouteInfoListState();
 }
 
 class _RouteInfoListState extends State<RouteInfoList> {
-  int? selectedIndex = 0;
+  int? selectedIndex;
   @override
   Widget build(BuildContext context) {
     return Builder(builder: (_) {

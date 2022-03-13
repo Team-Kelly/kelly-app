@@ -7,14 +7,15 @@ import 'select_path_view.dart';
 
 class PathDetailView extends StatefulWidget {
   final PathNodeList selectedRoute;
-  final String startAddress;
-  final String endAddress;
-  const PathDetailView(
-      {required this.startAddress,
-      required this.endAddress,
-      required this.selectedRoute,
-      Key? key})
-      : super(key: key);
+  final String startKeyword;
+  final String endKeyword;
+
+  const PathDetailView({
+    required this.selectedRoute,
+    required this.startKeyword,
+    required this.endKeyword,
+    Key? key,
+  }) : super(key: key);
 
   @override
   _PathDetailViewState createState() => _PathDetailViewState();
@@ -33,25 +34,25 @@ class _PathDetailViewState extends State<PathDetailView> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             SizedBox(
-                width: MediaQuery.of(context).size.width / 3,
+                // width: MediaQuery.of(context).size.width / 3,
                 child: Text(
-                  widget.startAddress,
-                  style: const TextStyle(color: Colors.black),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                )),
+              widget.startKeyword,
+              style: const TextStyle(color: Colors.black),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            )),
             const Text(
-              ' > ',
+              ' ➔ ',
               style: TextStyle(color: Colors.black),
             ),
             SizedBox(
-                width: MediaQuery.of(context).size.width / 3,
+                // width: MediaQuery.of(context).size.width / 3,
                 child: Text(
-                  widget.endAddress,
-                  style: const TextStyle(color: Colors.black),
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 1,
-                )),
+              widget.endKeyword,
+              style: const TextStyle(color: Colors.black),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+            )),
           ],
         ),
         leading: IconButton(
@@ -74,9 +75,6 @@ class _PathDetailViewState extends State<PathDetailView> {
             ),
             Container(
               padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
-              // child:
-              // SingleChildScrollView(
-              //   physics: const BouncingScrollPhysics(),
               child: Builder(builder: (_) {
                 List<CandyIndicator> nodes = [];
 
@@ -87,8 +85,16 @@ class _PathDetailViewState extends State<PathDetailView> {
                         Icons.directions_bus,
                         color: Colors.white,
                       ),
-                      title: Text(node.startStationName),
-                      subTitle: Text(node.name),
+                      title: Text(
+                        node.startStationName,
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w800),
+                      ),
+                      subTitle: Text(
+                        node.name,
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w700),
+                      ),
                     ));
                   } else if (node is PathNodeSubway) {
                     nodes.add(CandyIndicator(
@@ -96,8 +102,16 @@ class _PathDetailViewState extends State<PathDetailView> {
                         Icons.directions_subway,
                         color: Colors.white,
                       ),
-                      title: Text(node.startStationName),
-                      subTitle: Text(node.name),
+                      title: Text(
+                        node.startStationName,
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w800),
+                      ),
+                      subTitle: Text(
+                        node.name,
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w700),
+                      ),
                     ));
                   } else if (node is PathNodeWalk) {
                     nodes.add(CandyIndicator(
@@ -105,13 +119,22 @@ class _PathDetailViewState extends State<PathDetailView> {
                         Icons.directions_run,
                         color: Colors.white,
                       ),
-                      title: const Text('도보'),
-                      subTitle: Text(node.walkMeter.toString() + 'm'),
+                      title: const Text(
+                        '도보',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.w800),
+                      ),
+                      subTitle: Text(
+                        node.walkMeter.toString() + 'm',
+                        style: TextStyle(
+                            fontSize: 12, fontWeight: FontWeight.w700),
+                      ),
                     ));
                   } else {}
                 }
 
-                return Container(height: 500,
+                return SizedBox(
+                  height: MediaQuery.of(context).size.height / 2,
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: CandyTimeLine(
@@ -123,7 +146,6 @@ class _PathDetailViewState extends State<PathDetailView> {
                   ),
                 );
               }),
-              // ),
             ),
             const SizedBox(height: 40),
             Expanded(
@@ -143,7 +165,11 @@ class _PathDetailViewState extends State<PathDetailView> {
                     onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => const TimeSettingView(),
+                        builder: (context) => TimeSettingView(
+                          startKeyword: widget.startKeyword,
+                          endKeyword: widget.endKeyword,
+                          pathNodeList: widget.selectedRoute,
+                        ),
                       ),
                     ),
                   ),
@@ -156,55 +182,3 @@ class _PathDetailViewState extends State<PathDetailView> {
     );
   }
 }
-
-// Widget writeSubtitle(PathNodeList? nodes) {
-//     List<Widget> subtitle = [];
-//     for (PathNode node in nodes!.transportation) {
-//       if (node is PathNodeBus) {
-//         PathNodeBus nn = node;
-//         subtitle.add(
-//           SizedBox(
-//             width: 15,
-//             height: 15,
-//             child: busType(nn.busType),
-//           ),
-//         );
-//         subtitle.add(Text(' ${nn.name}',
-//             style: const TextStyle(color: Color(0xFF707071), fontSize: 12)));
-//       } else if (node is PathNodeSubway) {
-//         PathNodeSubway nn = node;
-//         subtitle.add(
-//           SizedBox(
-//             width: 15,
-//             height: 15,
-//             child: subwayType(nn.lineId),
-//           ),
-//         );
-//         subtitle.add(Text(' ${nn.name}',
-//             style: const TextStyle(color: Color(0xFF707071), fontSize: 12)));
-//       } else if (node is PathNodeWalk) {
-//         subtitle.add(
-//           SizedBox(
-//             width: 15,
-//             height: 15,
-//             child: Image.asset('assets/icons/transport/walk.png'),
-//           ),
-//         );
-//         subtitle.add(const Text(
-//           ' 도보',
-//           style: TextStyle(color: Color(0xFF707071), fontSize: 12),
-//         ));
-//       } else {}
-//       subtitle.add(const Text(
-//         ' ➔ ',
-//         style: TextStyle(color: Color(0xFF707071), fontSize: 12),
-//       ));
-//     }
-//     subtitle.removeLast();
-//     return
-//     Row(
-//       mainAxisAlignment: MainAxisAlignment.start,
-//       crossAxisAlignment: CrossAxisAlignment.center,
-//       children: subtitle,
-//     );
-//   }

@@ -17,8 +17,8 @@ class SelectDestionationView extends StatefulWidget {
 }
 
 class _SelectDestionationViewState extends State<SelectDestionationView> {
-  String? startKeyword = '';
-  String? endKeyword = '';
+  String startKeyword = '';
+  String endKeyword = '';
   late AddressVO startAddress;
   late AddressVO endAddress;
   late CoordinatesVO startCoordinates;
@@ -130,8 +130,8 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
                     ),
                   ),
                   buttonColor: CandyColors.candyPink,
-                  onPressed: (startKeyword!.isNotEmpty &&
-                          endKeyword!.isNotEmpty &&
+                  onPressed: (startKeyword.isNotEmpty &&
+                          endKeyword.isNotEmpty &&
                           !isWorking)
                       ? work
                       : null,
@@ -187,6 +187,8 @@ class _SelectDestionationViewState extends State<SelectDestionationView> {
             endPoint: Coordinate(
                 latitude: endPoint.toArray()[1],
                 longitude: endPoint.toArray()[0]),
+            startKeyword: startKeyword,
+            endKeyword: endKeyword,
           ),
         ),
       );

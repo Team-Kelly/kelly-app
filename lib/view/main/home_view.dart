@@ -1,3 +1,4 @@
+import 'package:app/util/preference_manager.dart';
 import 'package:app/view/alarm/select_destination_view.dart';
 import 'package:app/view/alarm/select_path_view.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
@@ -15,7 +16,14 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   late WeatherVO weather;
   bool isLoading = false;
+  PreferenceManager prefs = PreferenceManager.instance;
+
   Future<void> getlist() async {
+    //
+    //////////////////////////////////////////////////////////////////////////////////////
+    // 알람 정보 읽어오는 곳
+    List<Alarm> alarms = prefs.readAlarm();
+
     isLoading = false;
     weather =
         await WeatherDTO.get(latitude: 37.6576769, longitude: 127.3007637);
@@ -142,8 +150,10 @@ class _HomeViewState extends State<HomeView> {
                         (isLoading)
                             ? weather.result[0]['temp'].toString() + '℃'
                             : '...',
-                        style: const TextStyle(height:2,
-                            fontSize: 40, fontWeight: FontWeight.w800),
+                        style: const TextStyle(
+                            height: 2,
+                            fontSize: 40,
+                            fontWeight: FontWeight.w800),
                       ),
                     ),
 
@@ -364,7 +374,17 @@ class _HomeViewState extends State<HomeView> {
                                       const SelectDestionationView(),
                                 ),
                               ),
-                            )
+                            ),
+                            CandyButton(
+                                child: Text("test"),
+                                onPressed: () {
+                                  List<Alarm> alarms = prefs.readAlarm();
+
+                                  print(alarms[0].alarmDOTW);
+                                  print(alarms[0].alarmName);
+                                  print(alarms[0].alarmTime);
+                                  print(alarms[0].pathNodeList);
+                                })
                           ],
                         ),
                       ),

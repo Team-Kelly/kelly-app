@@ -5,79 +5,91 @@ import 'dart:convert';
 
 class RouteDTO {
   static Future<List<PathNodeList>> get({
-    required double startX,
-    required double startY,
-    required double endX,
-    required double endY,
-    required TransportationType transportationType,
+    double startX = 0,
+    double startY = 0,
+    double endX = 0,
+    double endY = 0,
+    String? raw,
+    TransportationType transportationType = TransportationType.all,
   }) async {
-    final http.Response response = await http.post(
-      Uri.parse('http://ssh.doky.space:8081/api/navi/route'),
-      headers: {"Content-Type": "application/json"},
-      body: json.encode(<String, dynamic>{
-        "startX": startX.toString(),
-        "startY": startY.toString(),
-        "endX": endX.toString(),
-        "endY": endY.toString(),
-        "option": transportationType.index.toString(),
-      }),
-    );
+    List<PathNodeList> pathNodeLists = [];
+    List<dynamic> raws = [];
 
-    if (response.statusCode == 200) {
-      List<PathNodeList> pathNodeLists = [];
+    // String 없는 경우, API 호출
+    if (raw == null) {
+      final http.Response response = await http.post(
+        Uri.parse('http://ssh.doky.space:8081/api/navi/route'),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode(<String, dynamic>{
+          "startX": startX.toString(),
+          "startY": startY.toString(),
+          "endX": endX.toString(),
+          "endY": endY.toString(),
+          "option": transportationType.index.toString(),
+        }),
+      );
 
-      List<dynamic> raws = jsonDecode(utf8.decode(response.bodyBytes));
+      if (response.statusCode == 200) {
+        raws = jsonDecode(utf8.decode(response.bodyBytes));
+      } else {
+        assert(false);
+        throw Exception('Fail to load data...${response.statusCode}');
+      }
+    } else {
+      // 없는 경우, raw 값 사용
 
-      for (dynamic o in raws) {
-        List<dynamic> rawPathNodes = o['pathNodeList'];
-        int durationTime = o['durationTime'];
-        List<PathNode> pathNodes = [];
+      // 배열인지 확인
+      assert(raw[0] == "[" && raw[raw.length - 1] == "]", "JSON 배열로 넣어야 합니다.");
 
-        for (Map<String, dynamic> p in rawPathNodes) {
-          switch (p['transportation']) {
-            case "subway":
-              pathNodes.add(
-                PathNodeSubway(
-                  direction: p['direction'],
-                  lineId: p['lineId'],
-                  startStationId: p['startStationId'],
-                  endStationName: p['endStationName'],
-                  name: p['lineName'], // TODO: 통일
-                  startStationName: p['startStationName'],
-                  stationCnt: p['stationCnt'],
-                ),
-              );
-              break;
-            case "bus":
-              pathNodes.add(
-                PathNodeBus(
-                  busId: p['busId'],
-                  busType: p['busType'],
-                  busTypeDetail: p['busTypeDetail'],
-                  cityCode: p['cityCode'],
-                  startStationId: p['startStationId'],
-                  endStationName: p['endStationName'],
-                  name: p['busName'], // TODO: 통일
-                  startStationName: p['startStationName'],
-                  stationCnt: p['stationCnt'],
-                ),
-              );
-              break;
+      raws = jsonDecode(raw);
+    }
 
-            case "walk":
-              pathNodes.add(PathNodeWalk(walkMeter: p['walkMeter']));
-              break;
-          }
+    for (dynamic o in raws) {
+      List<dynamic> rawPathNodes = o['pathNodeList'];
+      int durationTime = o['durationTime'];
+      List<PathNode> pathNodes = [];
+
+      for (Map<String, dynamic> p in rawPathNodes) {
+        switch (p['transportation']) {
+          case "subway":
+            pathNodes.add(
+              PathNodeSubway(
+                direction: p['direction'],
+                lineId: p['lineId'],
+                startStationId: p['startStationId'],
+                endStationName: p['endStationName'],
+                name: p['lineName'], // TODO: 통일
+                startStationName: p['startStationName'],
+                stationCnt: p['stationCnt'],
+              ),
+            );
+            break;
+          case "bus":
+            pathNodes.add(
+              PathNodeBus(
+                busId: p['busId'],
+                busType: p['busType'],
+                busTypeDetail: p['busTypeDetail'],
+                cityCode: p['cityCode'],
+                startStationId: p['startStationId'],
+                endStationName: p['endStationName'],
+                name: p['busName'], // TODO: 통일
+                startStationName: p['startStationName'],
+                stationCnt: p['stationCnt'],
+              ),
+            );
+            break;
+
+          case "walk":
+            pathNodes.add(PathNodeWalk(walkMeter: p['walkMeter']));
+            break;
         }
-
-        pathNodeLists.add(PathNodeList(
-            durationTime: durationTime, transportation: pathNodes));
       }
 
-      return pathNodeLists;
-    } else {
-      throw Exception('Fail to load data...${response.statusCode}');
+      pathNodeLists.add(
+          PathNodeList(durationTime: durationTime, transportation: pathNodes));
     }
+    return pathNodeLists;
   }
 }
 

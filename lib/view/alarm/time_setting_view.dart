@@ -1,10 +1,26 @@
+import 'package:app/util/preference_manager.dart';
+import 'package:app/util/utils.dart';
+import 'package:app/view/alarm/select_path_view.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:app/view/main/home_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../util/route.dto.dart';
+import '../../util/route.vo.dart';
 
 class TimeSettingView extends StatefulWidget {
-  const TimeSettingView({Key? key}) : super(key: key);
+  const TimeSettingView({
+    Key? key,
+    required this.startKeyword,
+    required this.endKeyword,
+    required this.pathNodeList,
+  }) : super(key: key);
+
+  final String startKeyword;
+  final String endKeyword;
+  final PathNodeList pathNodeList;
 
   @override
   _TimeSettingViewState createState() => _TimeSettingViewState();
@@ -15,6 +31,12 @@ class _TimeSettingViewState extends State<TimeSettingView> {
   late FixedExtentScrollController hourScrollController;
   late FixedExtentScrollController minuteScrollController;
   late FixedExtentScrollController ampmScrollController;
+  PreferenceManager prefs = PreferenceManager.instance;
+
+  int selectedHour = DateTime.now().hour;
+  int selectedMinute = DateTime.now().minute;
+  List<bool> selectedDotw = [];
+
   @override
   void initState() {
     hourScrollController = FixedExtentScrollController(
@@ -55,7 +77,12 @@ class _TimeSettingViewState extends State<TimeSettingView> {
           TextButton(
             onPressed: () {},
             child: TextButton(
-              onPressed: () {
+              onPressed: () async {
+                if (!(await saveAlarm())) {
+                  makeToast(msg: "알람설정 실패");
+                  return;
+                }
+
                 Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (context) => const HomeView()),
@@ -153,7 +180,10 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                   minuteScrollController: minuteScrollController,
                   ampmScrollController: ampmScrollController,
                   width: MediaQuery.of(context).size.width - 75,
-                  onChanged: (hour, minute) {},
+                  onChanged: (hour, minute) {
+                    selectedHour = hour;
+                    selectedMinute = minute;
+                  },
                   highlightColor: const Color(0xFFFFBB3C),
                 ),
                 Builder(builder: (context) {
@@ -200,10 +230,12 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                 CandyDayOfTheWeek(
                   width: 25,
                   height: 25,
-                  onChanged: (value) {},
+                  onChanged: (value) {
+                    selectedDotw = value;
+                  },
                   borderWidth: 1.2,
                   selectedColor: const Color(0xFFFFBB3C),
-                )
+                ),
               ],
             ),
           )
@@ -211,23 +243,34 @@ class _TimeSettingViewState extends State<TimeSettingView> {
       ),
     );
   }
-}
 
-Widget timeSetButton(
-        {required Widget child,
-        required void Function()? onPressed,
-        required Color color,
-        required double width,
-        required double height,
-        EdgeInsetsGeometry? margin}) =>
-    Container(
-      margin: margin,
-      child: CandyButton(
-        borderRadius: 5,
-        width: width,
-        height: height,
-        buttonColor: color,
-        child: child,
-        onPressed: onPressed,
-      ),
+  Future<bool> saveAlarm() {
+    // 알람 저장
+    prefs.createAlarm(
+      name: "${widget.startKeyword} ➔ ${widget.endKeyword}",
+      dotw: selectedDotw,
+      pathNodeList: widget.pathNodeList,
+      time: DateTime(0, 0, 0, selectedHour, selectedMinute),
     );
+    return Future.value(true);
+  }
+
+  Widget timeSetButton(
+          {required Widget child,
+          required void Function()? onPressed,
+          required Color color,
+          required double width,
+          required double height,
+          EdgeInsetsGeometry? margin}) =>
+      Container(
+        margin: margin,
+        child: CandyButton(
+          borderRadius: 5,
+          width: width,
+          height: height,
+          buttonColor: color,
+          child: child,
+          onPressed: onPressed,
+        ),
+      );
+}

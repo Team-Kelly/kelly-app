@@ -105,6 +105,9 @@ class _SplashViewState extends State<SplashView> {
   }
 
   Future<void> runner() async {
+    // shared pref. 초기화/로드
+    await PreferenceManager.instance.init();
+
     IsolateNameServer.registerPortWithName(
         port.sendPort, LocationServiceRepository.isolateName);
     port.listen((dynamic data) {

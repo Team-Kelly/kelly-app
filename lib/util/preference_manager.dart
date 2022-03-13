@@ -1,3 +1,5 @@
+import 'package:app/util/route.dto.dart';
+import 'package:app/util/route.vo.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,14 +34,17 @@ class PreferenceManager {
 
   /// ### CREATE
   Future<void> createAlarm({
+    required String name,
     required DateTime time,
     required List<bool> dotw,
+    required PathNodeList pathNodeList,
   }) async {
     checkInit();
 
     debugPrint("$LOG Create Start");
 
-    _alarmList.add(Alarm(time: time, dotw: dotw));
+    _alarmList.add(
+        Alarm(name: name, time: time, dotw: dotw, pathNodeList: pathNodeList));
     await _saveAlarmToPrefs(_alarmList);
 
     debugPrint("$LOG Create End");
@@ -53,7 +58,9 @@ class PreferenceManager {
   /// ### UPDATE
   Future<void> updateAlarm({
     required int index,
+    required String name,
     required DateTime time,
+    required PathNodeList pathNodeList,
     required List<bool> dotw,
   }) async {
     checkInit();
@@ -61,7 +68,8 @@ class PreferenceManager {
 
     if (_alarmList.length <= index) throw Exception("$LOG index out of range");
 
-    _alarmList[index] = Alarm(time: time, dotw: dotw);
+    _alarmList[index] =
+        Alarm(name: name, time: time, dotw: dotw, pathNodeList: pathNodeList);
 
     await _saveAlarmToPrefs(_alarmList);
 
@@ -108,61 +116,84 @@ class PreferenceManager {
   resetPrefs() async {
     checkInit();
     debugPrint("$LOG Reset start");
+    await _prefs.remove("alarmNames");
     await _prefs.remove("alarmTimes");
     await _prefs.remove("alarmDOTWs");
+    await _prefs.remove("pathNodeList");
     _alarmList.clear();
     debugPrint("$LOG Reset done.");
   }
 
   /// ### Load Alarm From Preferences
   ///  - shared preferences 데이터를 List<Alarm> 데이터로 변환 및 저장
-  List<Alarm> _loadAlarmFromPrefs() {
+  Future<List<Alarm>> _loadAlarmFromPrefs() async {
     checkInit();
     debugPrint("$LOG Load alarm from prefs start");
 
+    List<String> alarmNames = _prefs.getStringList("alarmNames") ?? [];
     List<String> alarmTimes = _prefs.getStringList("alarmTimes") ?? [];
     List<String> alarmDOTWs = _prefs.getStringList("alarmDOTWs") ?? [];
+    List<String> pathNodeLists = _prefs.getStringList("pathNodeLists") ?? [];
 
+    debugPrint("$LOG $alarmNames");
     debugPrint("$LOG $alarmTimes");
     debugPrint("$LOG $alarmDOTWs");
+    debugPrint("$LOG $pathNodeLists");
 
+    // 시간 검사
     if (alarmTimes.length != alarmDOTWs.length) {
       throw Exception("$LOG prefs. data was corrupted\nPlease reset prefs.");
     }
 
+    // 캐싱 데이터 초기화
     _alarmList.clear();
 
+    // 데이터 추가
     for (int i = 0; i < alarmTimes.length; i++) {
+      // DOTW -> List<bool>
       List<bool> alarmDOTW = [];
       for (String e in alarmDOTWs[i].split(",")) {
         alarmDOTW.add(e == "true");
       }
 
-      _alarmList
-          .add(Alarm(dotw: alarmDOTW, time: DateTime.parse(alarmTimes[i])));
+      // pathNodeLists -> PathNodeList
+      PathNodeList pathNodeList =
+          (await RouteDTO.get(raw: "[${pathNodeLists[i]}]"))[0];
+
+      _alarmList.add(Alarm(
+          name: alarmNames[i],
+          time: DateTime.parse(alarmTimes[i]),
+          dotw: alarmDOTW,
+          pathNodeList: pathNodeList));
     }
 
     debugPrint("$LOG Load alarm from prefs done.");
 
-    return [];
+    return _alarmList;
   }
 
   /// ### Save Alarm To Preferences
   ///  - List<Alarm>을 shared preferences에 변환 및 저장
   Future<void> _saveAlarmToPrefs(List<Alarm> alarmList) async {
     checkInit();
+    List<String> alarmNames = [];
     List<String> alarmTimes = [];
     List<String> alarmDOTWs = [];
+    List<String> pathNodeLists = [];
 
     for (Alarm i in alarmList) {
+      alarmTimes.add(i.alarmName.toString());
       alarmTimes.add(i.alarmTime.toString());
       alarmDOTWs.add(i.alarmDOTW
           .toString()
           .substring(1, i.alarmDOTW.toString().length - 1));
+      pathNodeLists.add(i.pathNodeList.toString());
     }
 
+    await _prefs.setStringList("alarmNames", alarmNames);
     await _prefs.setStringList("alarmTimes", alarmTimes);
     await _prefs.setStringList("alarmDOTWs", alarmDOTWs);
+    await _prefs.setStringList("pathNodeLists", pathNodeLists);
   }
 
   /// ### Check Init
@@ -186,22 +217,42 @@ class Alarm {
   /// `일,월,화,수,목,금,토` 순서
   List<bool> _alarmDOTW = [false, false, false, false, false, false, false];
 
-  Alarm({required DateTime time, required List<bool> dotw}) {
+  /// ### 저장된 경로
+  late PathNodeList _pathNodeList;
+
+  /// ### 알람 이름
+  String _alarmName = "";
+
+  Alarm({
+    required String name,
+    required DateTime time,
+    required List<bool> dotw,
+    required PathNodeList pathNodeList,
+  }) {
     alarmTime = time;
     alarmDOTW = dotw;
+    this.pathNodeList = pathNodeList;
+    alarmName = name;
   }
 
+  String get alarmName => _alarmName;
   DateTime get alarmTime => _alarmTime;
   List<bool> get alarmDOTW => _alarmDOTW;
+  PathNodeList get pathNodeList => _pathNodeList;
 
+  set alarmName(String inp) => _alarmName = inp;
   set alarmTime(DateTime inp) => _alarmTime = inp;
   set alarmDOTW(List<bool> inp) {
     if (inp.length != 7) throw Exception("dotw length must be 7.");
     _alarmDOTW = inp;
   }
 
+  set pathNodeList(PathNodeList inp) {
+    _pathNodeList = inp;
+  }
+
   @override
   String toString() {
-    return "{alarmTime: $alarmTime, alarmDOTW: $alarmDOTW}";
+    return "{alarmName: $alarmName, alarmTime: $alarmTime, alarmDOTW: $alarmDOTW, pathNodeList: $pathNodeList}";
   }
 }

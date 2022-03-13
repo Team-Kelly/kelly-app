@@ -9,7 +9,7 @@ class PathNodeList {
 
   @override
   String toString() {
-    return "{transportation: $transportation, durationTime: $durationTime,}";
+    return '{"pathNodeList": $transportation, "durationTime": $durationTime}';
   }
 }
 
@@ -28,7 +28,7 @@ abstract class PathNode {
 
   @override
   String toString() {
-    return "{startStationName: $startStationName, endStationName: $endStationName, stationCnt: $stationCnt, name: $name, }";
+    return '{"startStationName": "$startStationName", "endStationName": "$endStationName", "stationCnt": $stationCnt, "name": "$name"}';
   }
 }
 
@@ -58,7 +58,7 @@ class PathNodeBus extends PathNode {
 
   @override
   String toString() {
-    return "{name: $name, startStationName: $startStationName, endStationName: $endStationName, stationCnt: $stationCnt, busId: $busId, busType: $busType, busTypeDetail: $busTypeDetail, startStationId: $startStationId, cityCode: $cityCode}";
+    return '{"transportation": "bus", "busName": "$name", "startStationName": "$startStationName", "endStationName": "$endStationName", "stationCnt": $stationCnt, "busId": "$busId", "busType": $busType, "busTypeDetail": "$busTypeDetail", "startStationId": "$startStationId", "cityCode": "$cityCode"}';
   }
 }
 
@@ -84,7 +84,7 @@ class PathNodeSubway extends PathNode {
 
   @override
   String toString() {
-    return "{name: $name, startStationName: $startStationName, endStationName: $endStationName, stationCnt: $stationCnt, startStationId: $startStationId, direction: $direction, lineId: $lineId}";
+    return '{"transportation": "subway", "lineName": "$name", "startStationName": "$startStationName", "endStationName": "$endStationName", "stationCnt": $stationCnt, "startStationId": "$startStationId", "direction": "$direction", "lineId": "$lineId"}';
   }
 }
 
@@ -92,15 +92,15 @@ class PathNodeWalk extends PathNode {
   PathNodeWalk({
     required this.walkMeter,
   }) : super(
-            name: 'none',
-            startStationName: 'none',
+            name: "none",
+            startStationName: "none",
             stationCnt: -1,
-            endStationName: 'none');
+            endStationName: "none");
 
   int walkMeter;
 
   @override
   String toString() {
-    return "{walkMeter: $walkMeter}";
+    return '{"transportation": "walk", "walkMeter": $walkMeter}';
   }
 }

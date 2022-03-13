@@ -66,8 +66,7 @@ class _RouteInfoState extends State<RouteInfo> {
       ));
     }
     subtitle.removeLast();
-    return 
-    Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.start,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: subtitle,
@@ -82,13 +81,9 @@ class _RouteInfoState extends State<RouteInfo> {
           ? const EdgeInsets.fromLTRB(0.0, 4.0, 0.0, 4.0)
           : const EdgeInsets.all(4.0),
       onPressed: () {
-        setState(() {
-
-        });
-        // print(widget.nodeList);
-        // if (widget.isEnable == true) {
+        if (widget.onPressed != null) {
           widget.onPressed!(widget.nodeList);
-        // } 
+        }
       },
       child: SizedBox(
         width: 346,
@@ -122,7 +117,8 @@ class _RouteInfoState extends State<RouteInfo> {
                       fontWeight: FontWeight.w800,
                       color: Colors.black),
                 ),
-                SingleChildScrollView(scrollDirection :Axis.horizontal,
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
                   physics: const BouncingScrollPhysics(),
                   child: writeSubtitle(widget.nodeList),
                 ),
