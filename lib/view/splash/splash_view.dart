@@ -1,17 +1,8 @@
-import 'package:background_locator/settings/android_settings.dart';
-import 'package:background_locator/settings/locator_settings.dart';
-import 'package:background_locator/settings/ios_settings.dart';
-import 'package:background_locator/background_locator.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:app/util/location_service_repository.dart';
-import 'package:app/util/location_callback_handler.dart';
-import 'package:background_locator/location_dto.dart';
 import 'package:location/location.dart' as location;
 import 'package:app/util/preference_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:app/util/utils.dart';
-import 'dart:isolate';
-import 'dart:ui';
 
 class SplashView extends StatefulWidget {
   const SplashView({Key? key}) : super(key: key);
@@ -21,10 +12,6 @@ class SplashView extends StatefulWidget {
 }
 
 class _SplashViewState extends State<SplashView> {
-  ReceivePort port = ReceivePort();
-  late bool isBackgroudServiceRunning;
-  late LocationDto lastLocation;
-
   @override
   void initState() {
     runner();
@@ -94,62 +81,11 @@ class _SplashViewState extends State<SplashView> {
       makeToast(msg: "알람 정보가 손상되어 초기화합니다");
       await PreferenceManager.instance.deleteAllAlarm();
     }
-    if (IsolateNameServer.lookupPortByName(
-            LocationServiceRepository.isolateName) !=
-        null) {
-      IsolateNameServer.removePortNameMapping(
-          LocationServiceRepository.isolateName);
-    }
-
-    IsolateNameServer.registerPortWithName(
-        port.sendPort, LocationServiceRepository.isolateName);
-
-    port.listen(
-      (dynamic data) async {},
-    );
-
-    await initPlatformState();
-    await _startLocator();
 
     if (PreferenceManager.instance.readAlarm().isEmpty) {
       await Navigator.pushReplacementNamed(context, "/alarm");
     } else {
       await Navigator.pushReplacementNamed(context, "/home");
     }
-  }
-
-  Future<void> initPlatformState() async {
-    await BackgroundLocator.initialize();
-    final _isRunning = await BackgroundLocator.isServiceRunning();
-    setState(() {
-      isBackgroudServiceRunning = _isRunning;
-    });
-  }
-
-  Future<void> _startLocator() async {
-    Map<String, dynamic> data = {'countInit': 1};
-    return await BackgroundLocator.registerLocationUpdate(
-      LocationCallbackHandler.callback,
-      initCallback: LocationCallbackHandler.initCallback,
-      initDataCallback: data,
-      disposeCallback: LocationCallbackHandler.disposeCallback,
-      iosSettings: const IOSSettings(
-          accuracy: LocationAccuracy.NAVIGATION, distanceFilter: 0),
-      autoStop: false,
-      androidSettings: const AndroidSettings(
-        accuracy: LocationAccuracy.NAVIGATION,
-        interval: 5,
-        distanceFilter: 0,
-        client: LocationClient.google,
-        androidNotificationSettings: AndroidNotificationSettings(
-          notificationChannelName: '시작이반이다',
-          notificationTitle: '시작이반이다',
-          notificationMsg: '백그라운드 실행 중',
-          notificationBigMsg: '백그라운드 실행 중입니다. TTS 알림을 받기 위해서 동작합니다.',
-          notificationIconColor: Colors.grey,
-          notificationTapCallback: LocationCallbackHandler.notificationCallback,
-        ),
-      ),
-    );
   }
 }

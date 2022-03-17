@@ -1,9 +1,9 @@
+import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:app/util/preference_manager.dart';
 import 'package:app/util/route.vo.dart';
-import 'package:app/util/utils.dart';
-import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:app/util/utils.dart';
 
 class RouteInfoPlus extends StatefulWidget {
   const RouteInfoPlus({
@@ -91,7 +91,9 @@ class _RouteInfoPlusState extends State<RouteInfoPlus> {
         width: 346,
         height: 83,
         child: Container(
-          padding: widget.isEnable ? EdgeInsets.all(0) : EdgeInsets.all(4.0),
+          padding: widget.isEnable
+              ? const EdgeInsets.all(0)
+              : const EdgeInsets.all(4.0),
           margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
           decoration: BoxDecoration(
             color: widget.isEnable ? const Color(0xFFFFF8F8) : Colors.white,
@@ -110,7 +112,7 @@ class _RouteInfoPlusState extends State<RouteInfoPlus> {
           child: Row(
             children: [
               CupertinoButton(
-                padding: EdgeInsets.all(0.0),
+                padding: const EdgeInsets.all(0.0),
                 onPressed: () {
                   if (widget.onTimePressed != null) {
                     widget.onTimePressed!();
@@ -130,7 +132,7 @@ class _RouteInfoPlusState extends State<RouteInfoPlus> {
                               text: widget.alarm.alarmTime.hour >= 12
                                   ? "pm"
                                   : "am",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 14,
                                 fontWeight: FontWeight.w900,
@@ -139,7 +141,7 @@ class _RouteInfoPlusState extends State<RouteInfoPlus> {
                             TextSpan(
                               text:
                                   "${widget.alarm.alarmTime.hour > 12 ? widget.alarm.alarmTime.hour - 12 : widget.alarm.alarmTime.hour}:${widget.alarm.alarmTime.minute > 10 ? widget.alarm.alarmTime.minute : "0" + widget.alarm.alarmTime.minute.toString()}",
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 22,
                                 fontWeight: FontWeight.w900,
@@ -152,7 +154,7 @@ class _RouteInfoPlusState extends State<RouteInfoPlus> {
                         height: 15,
                         child: Text(
                           dotwName(widget.alarm.alarmDOTW),
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: CandyColors.candyPink,
                             fontWeight: FontWeight.w700,
                             fontSize: 12,

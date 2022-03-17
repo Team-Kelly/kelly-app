@@ -1,7 +1,7 @@
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app/util/route.dto.dart';
 import 'package:app/util/route.vo.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: constant_identifier_names
 const String LOG = "PrefManager:: ";
@@ -256,6 +256,6 @@ class Alarm {
 
   @override
   String toString() {
-    return "{alarmName: $alarmName, alarmTime: $alarmTime, alarmDOTW: $alarmDOTW, pathNodeList: $pathNodeList}";
+    return "{\"alarmName\": \"$alarmName\", \"alarmTime\": \"$alarmTime\", \"alarmDOTW\": $alarmDOTW, \"pathNodeList\": $pathNodeList}";
   }
 }

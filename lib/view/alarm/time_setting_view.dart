@@ -1,9 +1,9 @@
-import 'package:app/util/preference_manager.dart';
-import 'package:app/util/utils.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
+import 'package:app/util/preference_manager.dart';
 import 'package:app/view/main/home_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:app/util/utils.dart';
 import '../../util/route.vo.dart';
 
 class TimeSettingView extends StatefulWidget {
@@ -177,8 +177,6 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                   ampmScrollController: ampmScrollController,
                   width: MediaQuery.of(context).size.width - 75,
                   onChanged: (hour, minute) {
-                    // TODO: hour 오전 오후에 따른 시간 오류
-                    // TODO: 밤 11시에 조작 시, 11:## 분으로 바뀜
                     print("$hour:$minute");
                     selectedHour = hour;
                     selectedMinute = minute;

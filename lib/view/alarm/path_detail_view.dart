@@ -1,7 +1,7 @@
-import 'package:app/util/route.vo.dart';
-import 'package:app/view/alarm/time_setting_view.dart';
 import 'package:app/view/alarm/widgets/route_info.dart';
+import 'package:app/view/alarm/time_setting_view.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
+import 'package:app/util/route.vo.dart';
 import 'package:flutter/material.dart';
 
 class PathDetailView extends StatefulWidget {
@@ -61,7 +61,7 @@ class _PathDetailViewState extends State<PathDetailView> {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.fromLTRB(0, 0, 0, 52),
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 50),
         child: Center(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -86,6 +86,8 @@ class _PathDetailViewState extends State<PathDetailView> {
                       ),
                       title: Text(
                         node.startStationName,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                         style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w900),
                       ),
@@ -102,7 +104,7 @@ class _PathDetailViewState extends State<PathDetailView> {
                         color: Colors.white,
                       ),
                       title: Text(
-                        node.startStationName,
+                        (node.startStationName.length>10)?"${node.startStationName.substring(0, 10)}...":node.startStationName,
                         style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w900),
                       ),
@@ -133,7 +135,7 @@ class _PathDetailViewState extends State<PathDetailView> {
                 }
 
                 return SizedBox(
-                  height: MediaQuery.of(context).size.height / 2,
+                  height: MediaQuery.of(context).size.height * (4 / 7),
                   child: SingleChildScrollView(
                     physics: const BouncingScrollPhysics(),
                     child: CandyTimeLine(

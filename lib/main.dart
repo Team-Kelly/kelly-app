@@ -1,4 +1,3 @@
-import 'package:app/provider/alarm_info_provider.dart';
 import 'package:app/view/alarm/assign_alarm_view.dart';
 import 'package:app/view/splash/splash_view.dart';
 import 'package:app/view/main/home_view.dart';
@@ -10,7 +9,6 @@ void main() {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider<PersonalInfo>(create: (context) => PersonalInfo()),
-      ChangeNotifierProvider<AlarmInfo>(create: (context) => AlarmInfo()),
     ],
     child: const MyApp(),
   ));
@@ -26,8 +24,8 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return Consumer2<PersonalInfo, AlarmInfo>(
-      builder: (context, personalInfo, alarmInfo, child) {
+    return Consumer<PersonalInfo>(
+      builder: (context, personalInfo, child) {
         personalInfo.loadinfo();
         // alarmInfo.loadinfo();
         return MaterialApp(

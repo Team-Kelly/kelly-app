@@ -1,6 +1,4 @@
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:timezone/data/latest.dart';
-import 'package:timezone/timezone.dart';
 
 class Noti {
   final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
@@ -8,7 +6,8 @@ class Noti {
 
   AndroidNotificationDetails android = const AndroidNotificationDetails(
       'id', 'notiChannel',
-      importance: Importance.max, priority: Priority.max);
+      importance: Importance.max,
+      priority: Priority.max);
   IOSNotificationDetails ios = const IOSNotificationDetails();
 
   late NotificationDetails detail =
@@ -16,7 +15,7 @@ class Noti {
 
   Future<void> init() async {
     AndroidInitializationSettings initSettingsAndroid =
-        const AndroidInitializationSettings('app_icon');
+        const AndroidInitializationSettings('dog');
     IOSInitializationSettings initSettingsIOS = const IOSInitializationSettings(
       requestSoundPermission: true,
       requestBadgePermission: true,
@@ -29,24 +28,25 @@ class Noti {
 
     flutterLocalNotificationsPlugin.initialize(
       initSettings,
-      //onSelectNotification: onSelectNotification
+      // onSelectNotification: (_)async{await tts.speak('알람이 클릭되었습니다.');}
     );
     // detail =
     //     NotificationDetails(android: android, iOS: ios);
   }
 
-  Future<void> alert() async {
+  Future<void> alert(int id, String ment) async {
     await flutterLocalNotificationsPlugin.show(
-        1,
-        '기본 알림',
-        '기본알림입니다.',
+        id,
+        '시작이 반이다',
+        ment,
         const NotificationDetails(
             android: AndroidNotificationDetails(
               'ChannelID',
-              '출근길 알림',
+              'TTS 알림',
               importance: Importance.max,
               priority: Priority.max,
               playSound: true,
+              icon: 'dog'
             ),
             iOS: IOSNotificationDetails()));
   }

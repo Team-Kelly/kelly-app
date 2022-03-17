@@ -1,30 +1,189 @@
 import 'package:background_locator/location_dto.dart';
-import 'package:flutter/material.dart';
+import 'package:app/util/preference_manager.dart';
 import 'package:flutter_tts/flutter_tts.dart';
+import 'package:proj4dart/proj4dart.dart';
 import 'location_service_repository.dart';
+import 'package:app/util/wment.dto.dart';
+import 'package:app/util/wment.vo.dart';
+import 'package:app/util/noti.dart';
+import 'dart:convert';
 import 'dart:async';
 
+Noti noti = Noti();
+
 class LocationCallbackHandler {
+  // static late LocationDto lastLocation;
+  static String result = '';
   static Future<void> initCallback(Map<dynamic, dynamic> params) async {
-    await LocationServiceRepository.init(params);
+    LocationServiceRepository myLocationCallbackRepository =
+        LocationServiceRepository();
+    await myLocationCallbackRepository.init(params);
+    result = params['pref'];
+    List<dynamic> alarms = jsonDecode(result);
+    for (int i = 0; i<alarms.length;i++){
+      print(alarms[i]['alarmName']);
+    }
   }
 
   static Future<void> disposeCallback() async {
-    await LocationServiceRepository.dispose();
+    LocationServiceRepository myLocationCallbackRepository =
+        LocationServiceRepository();
+    await myLocationCallbackRepository.dispose();
   }
 
   static Future<void> callback(LocationDto locationDto) async {
+    LocationServiceRepository myLocationCallbackRepository =
+        LocationServiceRepository();
     FlutterTts tts = FlutterTts();
-    tts.speak('위치가 변경되었습니다.');
-    await LocationServiceRepository.callback(locationDto);
+    Noti noti = Noti();
+    
+    await tts.setVolume(1);
+    List<dynamic> alarms = jsonDecode(result);
+    int weekday = DateTime.now().weekday;
+    weekday = weekday == 7 ? 0 : weekday;
+    print(alarms.length);
+
+    for (int i = 0; i < alarms.length; i++) {
+      if (alarms[i]['alarmDOTW'][weekday]) {
+        DateTime now = DateTime.now();
+        print('weekday');
+        int alarmHour =
+            int.parse(alarms[i]['alarmTime'].split(' ')[1].split(':')[0]);
+        int alarmMinute =
+            int.parse(alarms[i]['alarmTime'].split(' ')[1].split(':')[1]);
+        if (now.hour == alarmHour && now.minute == alarmMinute) {
+          print('Alarm running');
+          //  알람 동작
+          if (!isTTSRunning) {
+            isTTSRunning = true;
+
+            int hour = DateTime.now().hour;
+            hour = hour > 12 ? hour - 12 : hour;
+
+            WeatherMentionVO mention = await WeatherMentionDTO.get(
+                location:
+                    Point(x: locationDto.latitude, y: locationDto.longitude));
+            await noti.alert((now.hour+now.minute),mention.prop[0]);
+            // TTS 멘트
+            // await tts.speak(mention.prop[0]);
+            // await Future.delayed(
+            //     Duration(milliseconds: mention.prop[0].length * 150));
+            // await tts.speak("현재 시간은 $hour시 ${DateTime.now().minute}분입니다.");
+            // await Future.delayed(const Duration(milliseconds: 3000));
+
+            await tts.speak(mention.prop[0]);
+            await Future.delayed(
+                Duration(milliseconds: mention.prop[0].length * 150));
+            await tts.speak("현재 시간은 $hour시 ${DateTime.now().minute}분입니다.");
+            await Future.delayed(const Duration(seconds: 60));
+            // 두 번만 울리게 임의 수정
+
+            isTTSRunning = false;
+          }
+        }
+      }
+    }
+    await myLocationCallbackRepository.callback(locationDto);
+    // await runner(locationDto, tts);
+  }
+
+  static bool isTTSRunning = false;
+  static Future<void> runner(LocationDto locationDto, FlutterTts tts) async {
+    // FlutterTts tts = FlutterTts();
+
+    // while (true) {
+    // print('runner is running');
+
+    // PreferenceManager prefs = PreferenceManager.instance;
+    // List<Alarm> alarms = prefs.readAlarm();
+    await tts.setVolume(1);
+    List<dynamic> alarms = jsonDecode(result);
+    int weekday = DateTime.now().weekday;
+    weekday = weekday == 7 ? 0 : weekday;
+
+    for (int i = 0; i < alarms.length; i++) {
+      if (alarms[i]['alarmDOTW'][weekday]) {
+        DateTime now = DateTime.now();
+        print('weekday');
+        int alarmHour =
+            int.parse(alarms[i]['alarmTime'].split(' ')[1].split(':')[0]);
+        int alarmMinute =
+            int.parse(alarms[i]['alarmTime'].split(' ')[1].split(':')[1]);
+        if (now.hour == alarmHour && now.minute == alarmMinute) {
+          print('Alarm running');
+          //  알람 동작
+          if (!isTTSRunning) {
+            isTTSRunning = true;
+
+            int hour = DateTime.now().hour;
+            hour = hour > 12 ? hour - 12 : hour;
+
+            WeatherMentionVO mention = await WeatherMentionDTO.get(
+                location:
+                    Point(x: locationDto.latitude, y: locationDto.longitude));
+
+            // TTS 멘트
+            await tts.speak(mention.prop[0]);
+            await Future.delayed(
+                Duration(milliseconds: mention.prop[0].length * 150));
+            await tts.speak("현재 시간은 $hour시 ${DateTime.now().minute}분입니다.");
+            await Future.delayed(const Duration(milliseconds: 3000));
+
+            await tts.speak(mention.prop[0]);
+            await Future.delayed(
+                Duration(milliseconds: mention.prop[0].length * 150));
+            await tts.speak("현재 시간은 $hour시 ${DateTime.now().minute}분입니다.");
+            await Future.delayed(const Duration(seconds: 60));
+            // 두 번만 울리게 임의 수정
+
+            isTTSRunning = false;
+          }
+        }
+      }
+    }
+    // for (Alarm item in alarms) {
+    //   if (item.alarmDOTW[weekday]) {
+    //     DateTime now = DateTime.now();
+    //     print('weekday');
+    //     if (now.hour == item.alarmTime.hour &&
+    //         now.minute == item.alarmTime.minute) {
+    //       print('Alarm running');
+    //       //  알람 동작
+    //       if (!isTTSRunning) {
+    //         isTTSRunning = true;
+
+    //         int hour = DateTime.now().hour;
+    //         hour = hour > 12 ? hour - 12 : hour;
+
+    //         WeatherMentionVO mention = await WeatherMentionDTO.get(
+    //             location:
+    //                 Point(x: locationDto.latitude, y: locationDto.longitude));
+
+    //         // TTS 멘트
+    //         await tts.speak(mention.prop[0]);
+    //         await Future.delayed(
+    //             Duration(milliseconds: mention.prop[0].length * 150));
+    //         await tts.speak("현재 시간은 $hour시 ${DateTime.now().minute}분입니다.");
+    //         await Future.delayed(const Duration(milliseconds: 3000));
+
+    //         await tts.speak(mention.prop[0]);
+    //         await Future.delayed(
+    //             Duration(milliseconds: mention.prop[0].length * 150));
+    //         await tts.speak("현재 시간은 $hour시 ${DateTime.now().minute}분입니다.");
+    //         await Future.delayed(const Duration(seconds: 60));
+    //         // 두 번만 울리게 임의 수정
+
+    //         isTTSRunning = false;
+    //       }
+    //     }
+    //   }
+    // }
+
+    await Future.delayed(const Duration(milliseconds: 5000));
+    // }
   }
 
   static Future<void> notificationCallback() async {
     print('***notificationCallback');
-  }
-
-  void alarmTimer() {
-    int nowHour = TimeOfDay.now().hour;
-    int nowminute = TimeOfDay.now().minute;
   }
 }

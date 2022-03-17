@@ -1,10 +1,10 @@
+import 'package:app/view/alarm/widgets/route_info_list.dart';
+import 'package:app/view/alarm/path_detail_view.dart';
+import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:app/util/route.dto.dart';
 import 'package:app/util/route.vo.dart';
-import 'package:app/util/utils.dart';
-import 'package:app/view/alarm/path_detail_view.dart';
-import 'package:app/view/alarm/widgets/route_info_list.dart';
-import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/material.dart';
+import 'package:app/util/utils.dart';
 
 class Coordinate {
   Coordinate({

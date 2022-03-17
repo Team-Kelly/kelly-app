@@ -1,8 +1,8 @@
-import 'package:app/util/route.vo.dart';
-import 'package:app/util/utils.dart';
 import 'package:cotton_candy_ui/cotton_candy_ui.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:app/util/route.vo.dart';
 import 'package:flutter/material.dart';
+import 'package:app/util/utils.dart';
 
 class RouteInfo extends StatefulWidget {
   const RouteInfo({
@@ -89,7 +89,9 @@ class _RouteInfoState extends State<RouteInfo> {
         width: 346,
         height: 83,
         child: Container(
-          padding: widget.isEnable ? EdgeInsets.all(0) : EdgeInsets.all(4.0),
+          padding: widget.isEnable
+              ? const EdgeInsets.all(0)
+              : const EdgeInsets.all(4.0),
           margin: const EdgeInsets.fromLTRB(0, 0, 0, 10),
           decoration: BoxDecoration(
             color: widget.isEnable ? const Color(0xFFFFF8F8) : Colors.white,
