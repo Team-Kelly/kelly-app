@@ -1,4 +1,3 @@
-import 'package:app/util/utils.dart';
 import 'package:background_locator/settings/locator_settings.dart';
 import 'package:background_locator/settings/android_settings.dart';
 import 'package:background_locator/settings/ios_settings.dart';
@@ -323,8 +322,6 @@ class _HomeViewState extends State<HomeView> {
   Future<void> getList() async {
     location.Location loc = location.Location();
     location.LocationData data = await loc.getLocation();
-    // print(data.latitude);
-    // print(data.longitude);
 
     weather =
         await WeatherDTO.get(latitude: currentPoint.x, longitude: currentPoint.y
@@ -352,13 +349,6 @@ class _HomeViewState extends State<HomeView> {
     port.listen(
       (dynamic data) async {},
     );
-    //  // shared pref. 초기화/로드
-    // try {
-    //   await PreferenceManager.instance.init();
-    // } catch (err) {
-    //   makeToast(msg: "알람 정보가 손상되어 초기화합니다");
-    //   await PreferenceManager.instance.deleteAllAlarm();
-    // }
 
     await initPlatformState();
     await BackgroundLocator.unRegisterLocationUpdate();

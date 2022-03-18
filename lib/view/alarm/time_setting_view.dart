@@ -177,7 +177,7 @@ class _TimeSettingViewState extends State<TimeSettingView> {
                   ampmScrollController: ampmScrollController,
                   width: MediaQuery.of(context).size.width - 75,
                   onChanged: (hour, minute) {
-                    print("$hour:$minute");
+                    // print("$hour:$minute");
                     selectedHour = hour;
                     selectedMinute = minute;
                   },
