@@ -140,7 +140,7 @@ class _RouteInfoPlusState extends State<RouteInfoPlus> {
                             ),
                             TextSpan(
                               text:
-                                  "${widget.alarm.alarmTime.hour > 12 ? widget.alarm.alarmTime.hour - 12 : widget.alarm.alarmTime.hour}:${widget.alarm.alarmTime.minute > 10 ? widget.alarm.alarmTime.minute : "0" + widget.alarm.alarmTime.minute.toString()}",
+                                  "${widget.alarm.alarmTime.hour > 12 ? widget.alarm.alarmTime.hour - 12 : widget.alarm.alarmTime.hour}:${widget.alarm.alarmTime.minute > 9 ? widget.alarm.alarmTime.minute : "0" + widget.alarm.alarmTime.minute.toString()}",
                               style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 22,

@@ -6,8 +6,7 @@ class Noti {
 
   AndroidNotificationDetails android = const AndroidNotificationDetails(
       'id', 'notiChannel',
-      importance: Importance.max,
-      priority: Priority.max);
+      importance: Importance.max, priority: Priority.max);
   IOSNotificationDetails ios = const IOSNotificationDetails();
 
   late NotificationDetails detail =
@@ -40,14 +39,11 @@ class Noti {
         '시작이 반이다',
         ment,
         const NotificationDetails(
-            android: AndroidNotificationDetails(
-              'ChannelID',
-              'TTS 알림',
-              importance: Importance.max,
-              priority: Priority.max,
-              playSound: true,
-              icon: 'dog'
-            ),
+            android: AndroidNotificationDetails('ChannelID', 'TTS 알림',
+                importance: Importance.max,
+                priority: Priority.max,
+                playSound: true,
+                icon: 'dog'),
             iOS: IOSNotificationDetails()));
   }
 }

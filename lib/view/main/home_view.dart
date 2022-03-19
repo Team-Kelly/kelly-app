@@ -202,10 +202,10 @@ class _HomeViewState extends State<HomeView> {
                                             : '+' + i.toString() + '시간',
                                         color: WeatherColors.tileColors[weather!
                                             .result[0]['weatherStatusCode']],
-                                        temper: weather!.result[0]['temp']
+                                        temper: weather!.result[i]['temp']
                                                 .toString() +
                                             '℃',
-                                        icon: weatherStatus(weather!.result[0]
+                                        icon: weatherStatus(weather!.result[i]
                                             ['weatherStatusCode']),
                                       ));
                                     }
@@ -335,7 +335,7 @@ class _HomeViewState extends State<HomeView> {
 
     setState(() {});
   }
-  
+
   Future<void> runner() async {
     if (IsolateNameServer.lookupPortByName(
             LocationServiceRepository.isolateName) !=

@@ -85,7 +85,9 @@ class _PathDetailViewState extends State<PathDetailView> {
                         color: Colors.white,
                       ),
                       title: Text(
-                        (node.startStationName.length>22)?"${node.startStationName.substring(0, 22)}...":node.startStationName,
+                        (node.startStationName.length > 22)
+                            ? "${node.startStationName.substring(0, 22)}..."
+                            : node.startStationName,
                         style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w900),
                       ),
@@ -102,7 +104,9 @@ class _PathDetailViewState extends State<PathDetailView> {
                         color: Colors.white,
                       ),
                       title: Text(
-                        (node.startStationName.length>22)?"${node.startStationName.substring(0, 22)}...":node.startStationName,
+                        (node.startStationName.length > 22)
+                            ? "${node.startStationName.substring(0, 22)}..."
+                            : node.startStationName,
                         style: const TextStyle(
                             fontSize: 15, fontWeight: FontWeight.w900),
                       ),

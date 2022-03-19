@@ -35,7 +35,7 @@ class LocationCallbackHandler {
         LocationServiceRepository();
     FlutterTts tts = FlutterTts();
     Noti noti = Noti();
-    
+
     await tts.setVolume(1);
     List<dynamic> alarms = jsonDecode(result);
     int weekday = DateTime.now().weekday;
@@ -59,7 +59,7 @@ class LocationCallbackHandler {
             WeatherMentionVO mention = await WeatherMentionDTO.get(
                 location:
                     Point(x: locationDto.latitude, y: locationDto.longitude));
-            await noti.alert((now.hour+now.minute),mention.prop[0]);
+            await noti.alert((now.hour + now.minute), mention.prop[0]);
             // TTS 멘트
             // await tts.speak(mention.prop[0]);
             // await Future.delayed(
