@@ -71,6 +71,7 @@ class _SplashViewState extends State<SplashView> {
       }
       await Future.delayed(const Duration(milliseconds: 2000));
     }
+    await Permission.ignoreBatteryOptimizations.request();
 
     await checkLocationOn();
 

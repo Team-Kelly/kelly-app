@@ -134,39 +134,35 @@ class _SelectPathViewState extends State<SelectPathView> {
                   },
                 ),
               ),
-              Expanded(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    CandyButton(
-                      height: 55,
-                      width: 346,
-                      child: const Text(
-                        '경로 적용',
-                        style: TextStyle(
-                          fontSize: 20,
-                          color: Colors.white,
-                        ),
-                      ),
-                      buttonColor: (selectedRoute != null)
-                          ? CandyColors.candyPink
-                          : const Color(0xFFFECFC3),
-                      onPressed: () => (selectedRoute != null)
-                          ? Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => PathDetailView(
-                                  startKeyword: widget.startKeyword,
-                                  endKeyword: widget.endKeyword,
-                                  selectedRoute: selectedRoute!,
-                                ),
-                              ),
-                            )
-                          : null,
+              Container(
+                padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                child: CandyButton(
+                  height: 55,
+                  width: 346,
+                  child: const Text(
+                    '경로 적용',
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.white,
                     ),
-                  ],
+                  ),
+                  buttonColor: (selectedRoute != null)
+                      ? CandyColors.candyPink
+                      : const Color(0xFFFECFC3),
+                  onPressed: () => (selectedRoute != null)
+                      ? Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => PathDetailView(
+                              startKeyword: widget.startKeyword,
+                              endKeyword: widget.endKeyword,
+                              selectedRoute: selectedRoute!,
+                            ),
+                          ),
+                        )
+                      : null,
                 ),
-              )
+              ),
             ],
           ),
         ),
