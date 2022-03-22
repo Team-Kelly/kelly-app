@@ -124,7 +124,7 @@ class _SelectPathViewState extends State<SelectPathView> {
               ),
               const SizedBox(height: 20),
               SizedBox(
-                height: 430,
+                height: MediaQuery.of(context).size.height / 2,
                 child: RouteInfoList(
                   routeInfos: [...pathResults],
                   onChanged: (value) {
@@ -135,7 +135,7 @@ class _SelectPathViewState extends State<SelectPathView> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
                 child: CandyButton(
                   height: 55,
                   width: 346,
